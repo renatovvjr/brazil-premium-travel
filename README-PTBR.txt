@@ -1,47 +1,87 @@
-BRAZIL PREMIUM LANDING - PASSO A PASSO RÁPIDO
+# 🇧🇷 Brazil Premium Travel
 
-1) Baixe e extraia este .zip em uma pasta do seu computador.
+A luxury travel landing page designed to showcase an exclusive curated journey across Brazil for international travellers seeking comfort, authenticity, and unforgettable experiences.
 
-2) Abra o VS Code.
-   - Clique em "Arquivo"
-   - Clique em "Abrir Pasta..."
-   - Selecione a pasta 'brazil-premium-landing-starter'
+## ✨ About the Project
 
-3) No terminal do VS Code:
-   - Clique em "Terminal"
-   - Clique em "Novo Terminal"
+This project was developed to promote a premium 25-day travel experience through Brazil, combining iconic destinations with high-end hospitality and curated adventures.
 
-4) Rode:
-   npm install
+The experience includes destinations such as:
 
-5) Crie um arquivo chamado .env.local na raiz do projeto
-   e copie o conteúdo de .env.example, preenchendo com seus dados reais.
+- Rio de Janeiro
+- Amazon Rainforest
+- Pantanal
+- Bonito
+- Salvador
+- Minas Gerais
+- Ilha Grande
+- Iguazu Falls
+- São Paulo
 
-6) Para rodar localmente:
-   npm run dev
+The landing page was built with a strong focus on:
+- modern UI/UX
+- premium visual presentation
+- lead generation
+- responsive design
+- performance and scalability
 
-7) Depois abra no navegador o endereço mostrado no terminal.
-   Normalmente será algo como:
-   http://localhost:5173
+---
 
-8) No Supabase, crie a tabela leads e a policy de insert.
+# 🚀 Live Demo
 
-SQL da tabela:
-create table if not exists public.leads (
-  id bigint generated always as identity primary key,
-  first_name text,
-  last_name text,
-  email text not null,
-  message text,
-  created_at timestamptz default now()
-);
+🔗 https://brazil-premium-travel.vercel.app/
 
-alter table public.leads enable row level security;
+---
 
-create policy "Allow public insert on leads"
-on public.leads
-for insert
-to anon
-with check (true);
+# 🛠️ Technologies Used
 
-9) Quando tudo funcionar, publique na Vercel.
+- React
+- Vite
+- Tailwind CSS
+- React Router DOM
+- Supabase
+- Vercel
+
+---
+
+# 📦 Features
+
+✅ Fully responsive premium landing page  
+✅ Destination showcase sections  
+✅ Integrated lead capture form  
+✅ WhatsApp contact integration  
+✅ Supabase database integration  
+✅ Automatic deployment with Vercel  
+✅ Optimized image delivery with WebP  
+✅ SPA routing support for Vercel  
+
+---
+
+# 🗄️ Backend & Database
+
+The project uses Supabase for:
+
+- lead storage
+- database management
+- API integration
+
+Captured leads are automatically stored in the database and redirected to WhatsApp for direct contact.
+
+---
+
+# 📸 Project Preview
+
+Luxury-inspired interface focused on:
+- elegant presentation
+- immersive destination imagery
+- high-conversion structure
+- premium travel branding
+
+---
+
+# ⚙️ Local Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/renatovvjr/brazil-premium-travel.git
