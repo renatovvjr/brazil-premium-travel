@@ -17,20 +17,39 @@ export default function App() {
     { title: 'Iguazu Falls', text: 'Spectacular finale.', image: '/images/cataratas_do_iguacu.webp' },
   ]
 
-  const handleWhatsAppForm = () => {
-    const firstName = document.getElementById('firstName')?.value || ''
-    const email = document.getElementById('email')?.value || ''
+const handleWhatsAppForm = async () => {
+  const firstName = document.getElementById('firstName')?.value || ''
+  const email = document.getElementById('email')?.value || ''
 
-    if (!firstName || !email) {
-      alert('Please fill in your details')
-      return
-    }
-
-    const text = `Hi Renato, I'm interested in the Brazil Ultimate Signature Journey.\nName: ${firstName}\nEmail: ${email}`
-
-    window.location.href = `https://wa.me/61493141727?text=${encodeURIComponent(text)}`
+  if (!firstName || !email) {
+    alert('Please fill in your details')
+    return
   }
 
+  setLoading(true)
+
+  const { error } = await supabase
+    .from('leads')
+    .insert([
+      {
+        first_name: firstName,
+        email: email,
+        message: 'Lead from landing page'
+      }
+    ])
+
+  if (error) {
+    console.error(error)
+    alert('Error saving lead')
+    setLoading(false)
+    return
+  }
+
+  const text = `Hi Renato, I'm interested in the Brazil Ultimate Signature Journey.\nName: ${firstName}\nEmail: ${email}`
+
+  window.location.href =
+    `https://wa.me/61493141727?text=${encodeURIComponent(text)}`
+}
   return (
     <div className="min-h-screen bg-white text-zinc-900">
 
