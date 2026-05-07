@@ -82,12 +82,12 @@ const data = {
   bonito: {
     title: 'Bonito',
     gallery: [
-      '/images/bonito.webp',
-      '/images/bonito.webp',
-      '/images/bonito.webp',
-      '/images/bonito.webp',
-      '/images/bonito.webp',
-      '/images/bonito.webp',
+      '/images/bonito1.webp',
+      '/images/bonito2.webp',
+      '/images/bonito3.webp',
+      '/images/bonito4.webp',
+      '/images/bonito5.webp',
+      '/images/bonito6.webp',
     ],
     sections: [
       {
