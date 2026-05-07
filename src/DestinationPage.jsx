@@ -13,16 +13,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `São Paulo é o motor econômico e cultural do Brasil. Formada por grandes ondas de imigração italiana, japonesa, árabe e de muitos outros povos, a cidade se tornou um dos centros urbanos mais diversos do mundo. Essa mistura influenciou sua arquitetura, sua gastronomia e seu estilo de vida vibrante. Hoje, São Paulo combina tradição e modernidade, reunindo museus, centros culturais, arte, negócios e uma atmosfera cosmopolita que traduz a complexidade e a riqueza do Brasil.`,
+        title: 'History, Culture and Lifestyle',
+        text: `São Paulo is the economic and cultural powerhouse of Brazil. Shaped by large waves of Italian, Japanese, Arab, and many other immigrant communities, the city became one of the most diverse urban centers in the world. This multicultural influence can be seen in its architecture, gastronomy, and vibrant lifestyle. Today, São Paulo blends tradition and modernity, bringing together museums, cultural institutions, art, business, and a cosmopolitan atmosphere that reflects the complexity and richness of Brazil.`,
       },
       {
-        title: 'Por que os viajantes são atraídos por São Paulo?',
-        text: `Os viajantes procuram São Paulo por sua sofisticação e autenticidade. Não é uma cidade de turismo óbvio, mas um destino para quem aprecia gastronomia de alto nível, cultura urbana, bairros elegantes e experiências reais. De rooftops com vista para a cidade a restaurantes renomados e centros de arte contemporânea, São Paulo atrai quem valoriza profundidade, diversidade e uma introdução refinada ao Brasil.`,
+        title: 'Why are travelers attracted to São Paulo?',
+        text: `Travelers are drawn to São Paulo for its sophistication and authenticity. It is not a destination focused on traditional tourism, but rather a city for those who appreciate world-class gastronomy, urban culture, elegant neighborhoods, and genuine experiences. From rooftop bars overlooking the skyline to renowned restaurants and contemporary art centers, São Paulo attracts visitors who value depth, diversity, and a refined introduction to Brazil.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Em São Paulo, é possível explorar o Parque Ibirapuera, visitar museus icônicos como o MASP, descobrir cafés e boutiques, experimentar restaurantes de padrão internacional e viver uma vida noturna vibrante. A cidade também funciona como um ponto de partida ideal para uma grande viagem pelo Brasil, oferecendo estrutura, conforto e uma primeira impressão dinâmica do país.`,
+        title: 'Experiences and Highlights',
+        text: `In São Paulo, visitors can explore Ibirapuera Park, visit iconic museums such as MASP, discover stylish cafés and boutiques, enjoy internationally recognized restaurants, and experience a vibrant nightlife scene. The city also serves as the perfect starting point for a grand journey across Brazil, offering excellent infrastructure, comfort, and a dynamic first impression of the country.`,
       },
     ],
   },
@@ -39,16 +39,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `A Amazônia é uma das regiões mais emblemáticas do planeta e ocupa um lugar central na identidade ambiental e cultural do Brasil. Sua história está profundamente ligada aos povos originários, aos rios que conectam comunidades e a uma relação ancestral entre ser humano e floresta. Mais do que um cenário natural grandioso, a região representa diversidade cultural, saberes tradicionais e uma forma de vida moldada pelo ritmo das águas, da natureza e das comunidades locais.`,
+        title: 'History, Culture and Lifestyle',
+        text: `The Amazon is one of the most iconic regions on the planet and holds a central place in Brazil’s environmental and cultural identity. Its history is deeply connected to Indigenous communities, the vast rivers that link remote areas, and an ancestral relationship between people and the rainforest. More than a breathtaking natural landscape, the region represents cultural diversity, traditional knowledge, and a way of life shaped by the rhythm of the waters, nature, and local communities.`,
       },
       {
-        title: 'Por que os viajantes são atraídos pela Amazônia?',
-        text: `Os viajantes procuram a Amazônia por sua dimensão única, sua biodiversidade e pelo sentimento de estar diante de algo verdadeiramente raro no mundo. É um destino que oferece exclusividade, contemplação e profundidade. Para quem busca uma viagem marcante, a Amazônia representa natureza em escala monumental, silêncio, autenticidade e a oportunidade de conhecer uma face mais essencial do Brasil.`,
+        title: 'Why are travelers attracted to the Amazon?',
+        text: `Travelers are drawn to the Amazon because of its unique scale, extraordinary biodiversity, and the feeling of standing before something truly rare in the world. It is a destination that offers exclusivity, contemplation, and depth. For those seeking a meaningful and unforgettable journey, the Amazon represents nature on a monumental scale, silence, authenticity, and the opportunity to discover a more essential side of Brazil.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Na Amazônia, os destaques incluem navegação por rios imensos, hospedagens em lodges integrados à floresta, observação da fauna, contato com tradições locais e vivências que conectam natureza e cultura. A região convida a desacelerar, observar e experimentar um tipo de luxo diferente: o privilégio de estar em um dos ecossistemas mais extraordinários do planeta.`,
+        title: 'Experiences and Highlights',
+        text: `In the Amazon, highlights include river expeditions through immense waterways, luxury lodges integrated into the rainforest, wildlife observation, contact with local traditions, and immersive experiences that connect nature and culture. The region invites travelers to slow down, observe, and experience a different kind of luxury: the privilege of being in one of the most extraordinary ecosystems on Earth.`,
       },
     ],
   },
@@ -65,16 +65,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `O Pantanal é uma das regiões naturais mais impressionantes do Brasil e uma das maiores áreas alagáveis do mundo. Sua história está ligada à vida no campo, à cultura pantaneira e a uma convivência muito próxima com a natureza. A paisagem, marcada por ciclos de cheia e seca, moldou não apenas a biodiversidade local, mas também o modo de vida das fazendas, das comunidades e das tradições da região.`,
+        title: 'History, Culture and Lifestyle',
+        text: `The Pantanal is one of Brazil’s most extraordinary natural regions and one of the largest wetlands in the world. Its history is deeply connected to rural life, Pantaneiro culture, and a close relationship with nature. The landscape, shaped by seasonal floods and dry periods, has influenced not only the local biodiversity but also the lifestyle of farms, communities, and regional traditions.`,
       },
       {
-        title: 'Por que os viajantes são atraídos pelo Pantanal?',
-        text: `Os viajantes escolhem o Pantanal porque ele oferece uma experiência de vida selvagem rara e altamente desejada. Para muitos, é o melhor lugar da América do Sul para observar animais em liberdade, incluindo a onça-pintada. A combinação de natureza dramática, autenticidade rural e sensação de exclusividade faz do Pantanal um destino fascinante para quem busca algo muito além do turismo convencional.`,
+        title: 'Why are travelers attracted to the Pantanal?',
+        text: `Travelers choose the Pantanal because it offers a rare and highly sought-after wildlife experience. For many, it is the best place in South America to observe animals in the wild, including the jaguar. The combination of dramatic landscapes, authentic rural culture, and a strong sense of exclusivity makes the Pantanal a fascinating destination for those seeking something far beyond conventional tourism.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Entre as experiências mais marcantes estão os safáris fotográficos, passeios de barco, cavalgadas, observação de aves e momentos de contemplação em fazendas e lodges integrados à paisagem. O Pantanal oferece uma conexão intensa com a natureza, aliada ao conforto e à hospitalidade de uma região que tem forte identidade e grande valor ecológico.`,
+        title: 'Experiences and Highlights',
+        text: `Among the most remarkable experiences are wildlife safaris, boat tours, horseback riding, birdwatching, and moments of contemplation in farms and lodges integrated into the natural landscape. The Pantanal provides an intense connection with nature, combined with the comfort and hospitality of a region known for its strong identity and ecological importance.`,
       },
     ],
   },
@@ -91,16 +91,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `Bonito se consolidou como um dos maiores exemplos de ecoturismo organizado do Brasil. A região construiu sua reputação valorizando a conservação ambiental, o controle de visitação e a proteção de seus rios, cavernas e nascentes. O estilo de vida local está profundamente associado à natureza, ao turismo sustentável e a um sentimento de orgulho por preservar um patrimônio natural raro e delicado.`,
+        title: 'History, Culture and Lifestyle',
+        text: `Bonito has become one of Brazil’s greatest examples of organized ecotourism. The region built its reputation through environmental conservation, controlled tourism, and the protection of its rivers, caves, and natural springs. The local lifestyle is deeply connected to nature, sustainable tourism, and a strong sense of pride in preserving a rare and delicate natural heritage.`,
       },
       {
-        title: 'Por que os viajantes são atraídos por Bonito?',
-        text: `Os viajantes procuram Bonito por suas águas cristalinas, sua paisagem preservada e pela sensação de estar em um paraíso natural cuidadosamente protegido. É um destino que combina beleza visual, leveza, segurança e exclusividade. Para muitos, Bonito representa uma experiência quase surreal, com rios transparentes, peixes coloridos e cenários que parecem intocados.`,
+        title: 'Why are travelers attracted to Bonito?',
+        text: `Travelers are drawn to Bonito because of its crystal-clear waters, preserved landscapes, and the feeling of being in a carefully protected natural paradise. It is a destination that combines visual beauty, tranquility, safety, and exclusivity. For many visitors, Bonito feels almost surreal, with transparent rivers, colorful fish, and scenery that appears untouched.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Bonito oferece atividades como flutuação em rios transparentes, visitas a cavernas, cachoeiras, trilhas leves e experiências em meio a uma natureza extremamente bem preservada. É um destino ideal para quem quer relaxar, se impressionar com a paisagem e viver experiências suaves, elegantes e memoráveis em ambiente natural.`,
+        title: 'Experiences and Highlights',
+        text: `Bonito offers experiences such as floating in transparent rivers, visiting caves, exploring waterfalls, enjoying light hiking trails, and immersing yourself in exceptionally well-preserved nature. It is the perfect destination for those seeking relaxation, breathtaking scenery, and elegant, memorable experiences surrounded by natural beauty.`,
       },
     ],
   },
@@ -117,16 +117,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `Salvador ocupa um lugar central na história do Brasil. Foi a primeira capital do país e um dos maiores centros de formação da identidade cultural brasileira, especialmente pela forte influência africana. Sua arquitetura colonial, sua religiosidade, sua música, sua culinária e sua energia urbana fazem dela um destino único. O estilo de vida em Salvador mistura tradição, espiritualidade, arte, ritmo e litoral.`,
+        title: 'History, Culture and Lifestyle',
+        text: `Salvador holds a central place in Brazil’s history. It was the country’s first capital and one of the most important centers in the formation of Brazilian cultural identity, especially due to its strong African influence. Its colonial architecture, spirituality, music, cuisine, and vibrant urban energy make it a truly unique destination. The lifestyle in Salvador blends tradition, spirituality, art, rhythm, and coastal living.`,
       },
       {
-        title: 'Por que os viajantes são atraídos por Salvador?',
-        text: `Os viajantes se encantam por Salvador porque a cidade oferece uma experiência cultural intensa e inesquecível. É um destino que não se resume a paisagens: ele envolve história, música, sabores, herança afro-brasileira e uma atmosfera vibrante. Quem visita Salvador costuma buscar autenticidade, identidade e uma vivência emocionalmente rica do Brasil.`,
+        title: 'Why are travelers attracted to Salvador?',
+        text: `Travelers are captivated by Salvador because the city offers an intense and unforgettable cultural experience. It is a destination that goes far beyond beautiful landscapes, embracing history, music, flavors, Afro-Brazilian heritage, and a vibrant atmosphere. Visitors who come to Salvador are usually seeking authenticity, identity, and an emotionally rich experience of Brazil.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Em Salvador, os destaques incluem o centro histórico, igrejas e construções coloniais, experiências gastronômicas com sabores baianos, música ao vivo, cultura popular e momentos de lazer no litoral. A cidade oferece uma combinação rara entre profundidade histórica, beleza arquitetônica e energia cultural, tornando-se uma etapa essencial em uma viagem sofisticada pelo Brasil.`,
+        title: 'Experiences and Highlights',
+        text: `In Salvador, highlights include the historic center, colonial churches and architecture, gastronomic experiences featuring Bahian flavors, live music, local traditions, and relaxing moments along the coastline. The city offers a rare combination of historical depth, architectural beauty, and cultural energy, making it an essential stop on a sophisticated journey through Brazil.`,
       },
     ],
   },
@@ -142,24 +142,24 @@ const data = {
       '/images/minas_gerais.webp',
     ],
     sections: [
-    {
+      {
         title: 'History, Culture & Lifestyle',
         text: `Minas Gerais is one of the most historically significant regions in Brazil. Its past is deeply connected to the gold rush, the rise of colonial towns and the political and cultural movements that helped shape the country. Baroque churches, cobblestone streets, strong family traditions and a deeply rooted culinary heritage define the soul of the region. 
 
     At the same time, Belo Horizonte, the state’s capital, introduces a more contemporary dimension to the experience, with modern architecture, vibrant urban life and one of the most celebrated food scenes in Brazil. The local lifestyle blends hospitality, a slower pace of life and a quiet elegance that can be felt both in historic towns and in the capital.`,
-    },
-    {
+      },
+      {
         title: 'Why travellers are drawn to Minas Gerais',
         text: `Travellers are drawn to Minas Gerais for its authenticity, historical richness and its ability to offer a more refined and immersive version of Brazil. It is a destination for those who appreciate colonial architecture, outstanding cuisine and a welcoming atmosphere.
 
     The presence of Belo Horizonte enhances the experience, offering comfort, excellent infrastructure and access to one of the best gastronomic scenes in the country. Minas Gerais stands out for its balance between culture, history and the simple pleasure of living well.`,
-    },
-    {
+      },
+      {
         title: 'Experiences & Highlights',
         text: `Highlights include historic towns such as Ouro Preto, Tiradentes and Mariana, known for their colonial architecture and strong cultural identity, as well as mountainous landscapes and experiences connected to art, history and gastronomy.
 
     In Belo Horizonte, the journey is complemented by traditional markets, award-winning restaurants, iconic bars and easy access to cultural landmarks such as Pampulha and Inhotim. Minas Gerais offers a deeply sensory journey, where every detail — from food to architecture — reinforces a rich, elegant and memorable Brazilian identity.`,
-    },
+      },
     ]
   },
 
@@ -175,16 +175,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `O Rio de Janeiro é um dos símbolos mais reconhecidos do Brasil no mundo. Sua história passa pelo período imperial, pela vida política e cultural do país e por uma identidade construída entre montanhas, mar e vida urbana. O estilo de vida carioca é marcado por luz, paisagem, sociabilidade e um senso de beleza muito próprio. O Rio representa uma mistura rara de natureza monumental, cultura popular e sofisticação.`,
+        title: 'History, Culture and Lifestyle',
+        text: `Rio de Janeiro is one of the most internationally recognized symbols of Brazil. Its history is connected to the imperial era, the country’s political and cultural development, and an identity shaped by mountains, the ocean, and vibrant urban life. The Carioca lifestyle is defined by light, natural beauty, sociability, and a unique sense of style. Rio represents a rare combination of monumental landscapes, popular culture, and sophistication.`,
       },
       {
-        title: 'Por que os viajantes são atraídos pelo Rio de Janeiro?',
-        text: `Os viajantes escolhem o Rio porque a cidade oferece uma combinação quase única no mundo: paisagens icônicas, energia urbana, glamour, praias e pontos turísticos mundialmente famosos. É um destino que desperta desejo imediato, tanto pela sua imagem internacional quanto pela sensação de viver um cenário extraordinário. O Rio tem apelo emocional, visual e cultural ao mesmo tempo.`,
+        title: 'Why are travelers attracted to Rio de Janeiro?',
+        text: `Travelers choose Rio because the city offers a combination that is almost unique in the world: iconic scenery, urban energy, glamour, beaches, and world-famous landmarks. It is a destination that immediately inspires desire, both because of its international image and the feeling of experiencing an extraordinary setting. Rio combines emotional, visual, and cultural appeal all at once.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Entre os destaques estão o Cristo Redentor, o Pão de Açúcar, vistas panorâmicas, experiências gastronômicas, bairros elegantes, vida noturna e passeios que combinam natureza e cidade. O Rio de Janeiro oferece impacto visual, estilo e momentos memoráveis, sendo uma das etapas mais marcantes de qualquer viagem premium ao Brasil.`,
+        title: 'Experiences and Highlights',
+        text: `Among the highlights are Christ the Redeemer, Sugarloaf Mountain, panoramic viewpoints, fine dining experiences, elegant neighborhoods, vibrant nightlife, and excursions that blend nature and city life. Rio de Janeiro offers visual impact, style, and unforgettable moments, making it one of the most remarkable stages of any premium journey through Brazil.`,
       },
     ],
   },
@@ -201,16 +201,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `Ilha Grande faz parte do imaginário do litoral brasileiro mais preservado. Com natureza abundante, mar transparente e uma atmosfera mais desacelerada, a ilha construiu sua identidade em torno da simplicidade sofisticada, da beleza natural e da sensação de refúgio. Seu estilo de vida é profundamente ligado ao mar, ao ritmo tranquilo e à valorização do ambiente natural.`,
+        title: 'History, Culture and Lifestyle',
+        text: `Ilha Grande is part of the image of Brazil’s most preserved tropical coastline. Surrounded by abundant nature, crystal-clear waters, and a slower pace of life, the island has built its identity around understated sophistication, natural beauty, and a true sense of escape. The local lifestyle is deeply connected to the ocean, tranquility, and the appreciation of the natural environment.`,
       },
       {
-        title: 'Por que os viajantes são atraídos por Ilha Grande?',
-        text: `Os viajantes procuram Ilha Grande em busca de exclusividade, paisagens tropicais e uma sensação de desconexão do ritmo urbano. É um destino que transmite leveza, privacidade e beleza natural. Para quem deseja um escape de luxo com água cristalina, vegetação exuberante e clima relaxado, Ilha Grande é uma escolha muito desejada.`,
+        title: 'Why are travelers attracted to Ilha Grande?',
+        text: `Travelers are drawn to Ilha Grande in search of exclusivity, tropical landscapes, and a feeling of disconnecting from urban life. It is a destination that conveys lightness, privacy, and natural beauty. For those seeking a luxurious escape with transparent waters, lush vegetation, and a relaxed atmosphere, Ilha Grande is an exceptionally desirable choice.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Os destaques incluem passeios de barco, praias paradisíacas, enseadas de água transparente, momentos de contemplação e experiências que combinam natureza e conforto. Ilha Grande oferece um luxo mais silencioso e sensorial, ideal para quem quer viver o litoral brasileiro com elegância e tranquilidade.`,
+        title: 'Experiences and Highlights',
+        text: `Highlights include private boat tours, paradise beaches, crystal-clear bays, moments of contemplation, and experiences that combine nature with comfort. Ilha Grande offers a quieter and more sensory form of luxury, ideal for travelers who wish to experience the Brazilian coastline with elegance and tranquility.`,
       },
     ],
   },
@@ -227,16 +227,16 @@ const data = {
     ],
     sections: [
       {
-        title: 'História, Cultura e Estilo de Vida',
-        text: `As Cataratas do Iguaçu ocupam um lugar especial no patrimônio natural do Brasil e da América do Sul. Reconhecidas mundialmente, elas fazem parte de uma região de enorme valor ecológico e simbólico. Mais do que um ponto turístico, representam a força da natureza em escala monumental e o orgulho de um dos maiores tesouros naturais do país.`,
+        title: 'History, Culture and Lifestyle',
+        text: `Iguazu Falls holds a special place in the natural heritage of Brazil and South America. Internationally recognized, the falls are part of a region of enormous ecological and symbolic importance. More than simply a tourist attraction, they represent the overwhelming power of nature on a monumental scale and the pride of one of Brazil’s greatest natural treasures.`,
       },
       {
-        title: 'Por que os viajantes são atraídos por Foz do Iguaçu?',
-        text: `Os viajantes visitam Foz do Iguaçu porque querem vivenciar um dos espetáculos naturais mais impressionantes do mundo. A grandiosidade das quedas, a energia do lugar e o impacto visual tornam a visita inesquecível. É um destino que combina emoção, contemplação e a sensação de estar diante de algo verdadeiramente extraordinário.`,
+        title: 'Why are travelers attracted to Foz do Iguaçu?',
+        text: `Travelers visit Foz do Iguaçu to experience one of the most breathtaking natural spectacles in the world. The scale of the waterfalls, the energy of the environment, and the visual impact make the experience unforgettable. It is a destination that combines emotion, contemplation, and the feeling of standing before something truly extraordinary.`,
       },
       {
-        title: 'Experiências e destaques',
-        text: `Entre os destaques estão os mirantes das cataratas, passeios panorâmicos, trilhas e experiências em meio à natureza exuberante da região. Foz do Iguaçu funciona como um grande final para a viagem: um encerramento poderoso, visualmente inesquecível e à altura de uma jornada premium pelo Brasil.`,
+        title: 'Experiences and Highlights',
+        text: `Highlights include panoramic viewpoints overlooking the waterfalls, scenic tours, nature trails, and immersive experiences surrounded by the region’s lush landscapes. Foz do Iguaçu serves as a grand finale to the journey — a powerful, visually unforgettable ending worthy of a premium experience through Brazil.`,
       },
     ],
   },
