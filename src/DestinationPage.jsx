@@ -273,12 +273,16 @@ export default function DestinationPage() {
 
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
           {destination.gallery.map((img, i) => (
-            <img
+            <div
               key={i}
-              src={img}
-              alt={`${destination.title} ${i + 1}`}
-              className="h-56 w-full rounded-xl object-cover transition duration-300 hover:scale-105"
-            />
+              className="overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src={img}
+                alt={`${destination.title} ${i + 1}`}
+                className="h-56 w-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            </div>
           ))}
         </div>
 
