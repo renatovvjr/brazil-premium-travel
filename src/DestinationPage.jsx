@@ -138,7 +138,7 @@ const data = {
       '/images/minas_gerais2.webp',
       '/images/minas_gerais3.webp',
       '/images/minas_gerais4.webp',
-      '/images/minas_gerais5.webp',
+      '/images/minas_gerais05.webp',
       '/images/minas_gerais6.webp',
       '/images/minas_gerais7.webp',
       '/images/minas_gerais8.webp',
