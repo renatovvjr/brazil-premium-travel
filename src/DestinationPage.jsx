@@ -108,12 +108,12 @@ const data = {
   salvador: {
     title: 'Salvador',
     gallery: [
-      '/images/salvador.webp',
-      '/images/salvador.webp',
-      '/images/salvador.webp',
-      '/images/salvador.webp',
-      '/images/salvador.webp',
-      '/images/salvador.webp',
+      '/images/salvado1.webp',
+      '/images/salvador2.webp',
+      '/images/salvador3.webp',
+      '/images/salvador4.webp',
+      '/images/salvador5.webp',
+      '/images/salvador6.webp',
     ],
     sections: [
       {
