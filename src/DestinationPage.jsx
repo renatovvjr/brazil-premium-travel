@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
 const data = {
@@ -248,6 +249,7 @@ const data = {
 export default function DestinationPage() {
   const { name } = useParams()
   const destination = data[name]
+  const [selectedImage, setSelectedImage] = useState(null)
 
   if (!destination) {
     return (
@@ -278,7 +280,8 @@ export default function DestinationPage() {
           {destination.gallery.map((img, i) => (
             <div
               key={i}
-              className="overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500"
+              onClick={() => setSelectedImage(i)}
+              className="cursor-pointer overflow-hidden rounded-xl shadow-md transition-all duration-500 hover:shadow-2xl"
             >
               <img
                 src={img}
@@ -309,6 +312,49 @@ export default function DestinationPage() {
           </Link>
         </div>
       </div>
+
+      {selectedImage !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-4">
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute right-6 top-6 text-4xl text-white transition hover:text-zinc-300"
+          >
+            ×
+          </button>
+
+          <button
+            onClick={() =>
+              setSelectedImage(
+                selectedImage === 0
+                  ? destination.gallery.length - 1
+                  : selectedImage - 1
+              )
+            }
+            className="absolute left-6 text-5xl text-white transition hover:text-zinc-300"
+          >
+            ‹
+          </button>
+
+          <img
+            src={destination.gallery[selectedImage]}
+            alt={`${destination.title} expanded`}
+            className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
+          />
+
+          <button
+            onClick={() =>
+              setSelectedImage(
+                selectedImage === destination.gallery.length - 1
+                  ? 0
+                  : selectedImage + 1
+              )
+            }
+            className="absolute right-6 text-5xl text-white transition hover:text-zinc-300"
+          >
+            ›
+          </button>
+        </div>
+      )}
     </div>
   )
 }
