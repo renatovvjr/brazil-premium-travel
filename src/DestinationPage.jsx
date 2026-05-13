@@ -134,12 +134,14 @@ const data = {
   'minas-gerais': {
     title: 'Minas Gerais',
     gallery: [
-      '/images/minas_gerais.webp',
-      '/images/minas_gerais.webp',
-      '/images/minas_gerais.webp',
-      '/images/minas_gerais.webp',
-      '/images/minas_gerais.webp',
-      '/images/minas_gerais.webp',
+      '/images/minas_gerais1.webp',
+      '/images/minas_gerais2.webp',
+      '/images/minas_gerais3.webp',
+      '/images/minas_gerais4.webp',
+      '/images/minas_gerais5./webp',
+      '/images/minas_gerais6.webp',
+      '/images/minas_gerais7.webp',
+      '/images/minas_gerais8.webp',
     ],
     sections: [
       {
