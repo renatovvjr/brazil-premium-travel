@@ -108,7 +108,7 @@ const data = {
   salvador: {
     title: 'Salvador',
     gallery: [
-      '/images/salvado1.webp',
+      '/images/salvador1.webp',
       '/images/salvador2.webp',
       '/images/salvador3.webp',
       '/images/salvador4.webp',
