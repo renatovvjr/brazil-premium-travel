@@ -170,12 +170,12 @@ const data = {
   'rio-de-janeiro': {
     title: 'Rio de Janeiro',
     gallery: [
-      '/images/rio_de_janeiro.webp',
-      '/images/rio_de_janeiro.webp',
-      '/images/rio_de_janeiro.webp',
-      '/images/rio_de_janeiro.webp',
-      '/images/rio_de_janeiro.webp',
-      '/images/rio_de_janeiro.webp',
+      '/images/rio_de_janeiro1.webp',
+      '/images/rio_de_janeiro2.webp',
+      '/images/rio_de_janeiro3.webp',
+      '/images/rio_de_janeiro4.webp',
+      '/images/rio_de_janeiro5.webp',
+      '/images/rio_de_janeiro6.webp',
     ],
     sections: [
       {
