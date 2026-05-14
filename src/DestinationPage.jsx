@@ -209,6 +209,8 @@ const data = {
 
   'ilha-grande': {
     title: 'Ilha Grande',
+    subtitle: 'Crystal-clear waters, tropical escape and private boat experiences.',
+    hero: '/images/ilha_grande.webp',
     gallery: [
       '/images/ilha_grande1.webp',
       '/images/ilha_grande2.webp',
