@@ -90,7 +90,7 @@ export default function App() {
 
       {/* HERO */}
       <section
-        className="relative text-white"
+        className="relative min-h-screen text-white"
         style={{
           backgroundImage:
             "linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('/images/rio_de_janeiro.background.webp')",
