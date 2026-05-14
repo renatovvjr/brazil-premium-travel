@@ -196,12 +196,12 @@ const data = {
   'ilha-grande': {
     title: 'Ilha Grande',
     gallery: [
-      '/images/ilha_grande.webp',
-      '/images/ilha_grande.webp',
-      '/images/ilha_grande.webp',
-      '/images/ilha_grande.webp',
-      '/images/ilha_grande.webp',
-      '/images/ilha_grande.webp',
+      '/images/ilha_grande1.webp',
+      '/images/ilha_grande2.webp',
+      '/images/ilha_grande3.webp',
+      '/images/ilha_grande4.webp',
+      '/images/ilha_grande5.webp',
+      '/images/ilha_grande6.webp',
     ],
     sections: [
       {
