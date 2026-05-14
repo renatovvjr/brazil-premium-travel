@@ -236,9 +236,9 @@ const data = {
   },
 
   'iguazu-falls': {
-    title: 'Foz do Iguaçu',
+    title: 'Iguazu Falls',
     subtitle: 'One of the world’s greatest natural spectacles.',
-    hero: '/images/foz_do_iguacu6.webp',
+    hero: '/images/cataratas_do_iguacu9.webp',
     gallery: [
       '/images/cataratas_do_iguacu1.webp',
       '/images/cataratas_do_iguacu2.webp',
