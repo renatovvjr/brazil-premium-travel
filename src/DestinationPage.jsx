@@ -169,6 +169,8 @@ const data = {
 
   'rio-de-janeiro': {
     title: 'Rio de Janeiro',
+    subtitle: 'Luxury, culture and breathtaking landscapes.',
+    hero: '/images/rio_de_janeiro1.webp',
     gallery: [
       '/images/rio_de_janeiro1.webp',
       '/images/rio_de_janeiro2.webp',
@@ -275,9 +277,32 @@ export default function DestinationPage() {
   return (
     <div className="min-h-screen bg-white px-6 py-16 text-zinc-900">
       <div className="mx-auto max-w-5xl">
-        <h1 className="text-4xl font-semibold md:text-5xl">
-          {destination.title}
-        </h1>
+        <div className="relative h-[70vh] overflow-hidden rounded-3xl shadow-2xl">
+          <img
+            src={destination.hero}
+            alt={destination.title}
+            className="h-full w-full object-cover"
+          />
+
+          <div className="absolute inset-0 bg-black/40" />
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
+            <h1 className="text-5xl font-semibold md:text-7xl">
+              {destination.title}
+            </h1>
+
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-zinc-200 md:text-2xl">
+              {destination.subtitle}
+            </p>
+
+            <a
+              href="#experiences"
+              className="mt-8 rounded-full bg-white px-8 py-3 text-sm font-semibold text-zinc-900 transition hover:scale-105 hover:bg-zinc-100"
+            >
+              Explore Experiences
+            </a>
+          </div>
+        </div>
 
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
           {destination.gallery.map((img, i) => (
@@ -295,7 +320,10 @@ export default function DestinationPage() {
           ))}
         </div>
 
-        <div className="mt-12 space-y-10 text-lg leading-8 text-zinc-700">
+        <div
+          id="experiences"
+          className="mt-12 space-y-10 text-lg leading-8 text-zinc-700"
+        >
           {destination.sections.map((section, i) => (
             <div key={i}>
               <h2 className="mb-3 text-2xl font-semibold text-zinc-900">
