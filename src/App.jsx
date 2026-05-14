@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { supabase } from './lib/supabase'
 import { Link } from 'react-router-dom'
 
@@ -124,7 +125,14 @@ export default function App() {
       </section>
 
       {/* JOURNEY */}
-      <section id="journey" className="py-16 px-6 max-w-7xl mx-auto">
+      <motion.section
+        id="journey"
+        className="py-16 px-6 max-w-7xl mx-auto"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
         <h2 className="text-3xl font-semibold mb-10">
           A curated route across Brazil
         </h2>
@@ -150,7 +158,7 @@ export default function App() {
             </Link>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* WHAT'S INCLUDED */}
       <section className="mx-auto max-w-7xl px-6 py-16">
