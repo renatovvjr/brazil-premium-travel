@@ -5,7 +5,7 @@ const data = {
   'sao-paulo': {
     title: 'São Paulo',
     subtitle: 'Sophistication, gastronomy and cosmopolitan energy.',
-    hero: '/images/sao_paulo6.webp',
+    hero: '/images/sp6.webp',
     gallery: [
       '/images/sp1.webp',
       '/images/sp2.webp',
