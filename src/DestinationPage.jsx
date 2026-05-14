@@ -222,12 +222,15 @@ const data = {
   'iguazu-falls': {
     title: 'Iguazu Falls',
     gallery: [
-      '/images/cataratas_do_iguacu.webp',
-      '/images/cataratas_do_iguacu.webp',
-      '/images/cataratas_do_iguacu.webp',
-      '/images/cataratas_do_iguacu.webp',
-      '/images/cataratas_do_iguacu.webp',
-      '/images/cataratas_do_iguacu.webp',
+      '/images/cataratas_do_iguacu1.webp',
+      '/images/cataratas_do_iguacu2.webp',
+      '/images/cataratas_do_iguacu3.webp',
+      '/images/cataratas_do_iguacu4.webp',
+      '/images/cataratas_do_iguacu5.webp',
+      '/images/cataratas_do_iguacu6.webp',
+      '/images/cataratas_do_iguacu7.webp',
+      '/images/cataratas_do_iguacu8.webp',
+      '/images/cataratas_do_iguacu9.webp',
     ],
     sections: [
       {
