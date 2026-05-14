@@ -30,7 +30,7 @@ const data = {
     ],
   },
 
-  'amazonia': {
+  'amazon': {
     title: 'Amazon',
     subtitle: 'Immersion in the world’s largest tropical rainforest.',
     hero: '/images/amazonia.webp',
@@ -235,7 +235,7 @@ const data = {
     ],
   },
 
-  'foz-do-iguacu': {
+  'iguazu-falls': {
     title: 'Foz do Iguaçu',
     subtitle: 'One of the world’s greatest natural spectacles.',
     hero: '/images/foz_do_iguacu6.webp',
