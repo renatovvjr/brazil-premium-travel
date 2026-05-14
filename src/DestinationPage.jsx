@@ -4,6 +4,8 @@ import { useParams, Link } from 'react-router-dom'
 const data = {
   'sao-paulo': {
     title: 'São Paulo',
+    subtitle: 'Sophistication, gastronomy and cosmopolitan energy.',
+    hero: '/images/sao_paulo6.webp',
     gallery: [
       '/images/sp1.webp',
       '/images/sp2.webp',
@@ -28,8 +30,10 @@ const data = {
     ],
   },
 
-  amazon: {
+  'amazonia': {
     title: 'Amazon',
+    subtitle: 'Immersion in the world’s largest tropical rainforest.',
+    hero: '/images/amazonia.webp',
     gallery: [
       '/images/amazonia1.webp',
       '/images/amazonia2.webp',
@@ -54,8 +58,10 @@ const data = {
     ],
   },
 
-  pantanal: {
+  'pantanal': {
     title: 'Pantanal',
+    subtitle: 'Wildlife encounters and untouched natural beauty.',
+    hero: '/images/pantanal.webp',
     gallery: [
       '/images/pantanal1.webp',
       '/images/pantanal2.webp',
@@ -80,8 +86,10 @@ const data = {
     ],
   },
 
-  bonito: {
+  'bonito': {
     title: 'Bonito',
+    subtitle: 'Transparent rivers and unforgettable ecotourism experiences.',
+    hero: '/images/bonito6.webp',
     gallery: [
       '/images/bonito1.webp',
       '/images/bonito2.webp',
@@ -106,8 +114,10 @@ const data = {
     ],
   },
 
-  salvador: {
+  'salvador': {
     title: 'Salvador',
+    subtitle: 'Afro-Brazilian culture, history and coastal elegance.',
+    hero: '/images/salvador1.webp',
     gallery: [
       '/images/salvador1.webp',
       '/images/salvador2.webp',
@@ -134,6 +144,8 @@ const data = {
 
   'minas-gerais': {
     title: 'Minas Gerais',
+    subtitle: 'Culture, gastronomy and authentic Brazilian lifestyle.',
+    hero: '/images/minas_gerais.webp',
     gallery: [
       '/images/minas_gerais1.webp',
       '/images/minas_gerais2.webp',
@@ -221,8 +233,10 @@ const data = {
     ],
   },
 
-  'iguazu-falls': {
-    title: 'Iguazu Falls',
+  'foz-do-iguacu': {
+    title: 'Foz do Iguaçu',
+    subtitle: 'One of the world’s greatest natural spectacles.',
+    hero: '/images/foz_do_iguacu6.webp',
     gallery: [
       '/images/cataratas_do_iguacu1.webp',
       '/images/cataratas_do_iguacu2.webp',
