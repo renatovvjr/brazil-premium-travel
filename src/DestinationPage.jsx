@@ -293,7 +293,7 @@ export default function DestinationPage() {
   return (
     <div className="min-h-screen bg-white px-6 py-16 text-zinc-900">
       <div className="mx-auto max-w-5xl">
-        <div className="relative h-[70vh] overflow-hidden rounded-3xl shadow-2xl">
+        <div className="relative h-[60vh] overflow-hidden rounded-3xl shadow-2xl md:h-[70vh]">
           <img
             src={destination.hero}
             alt={destination.title}
@@ -303,11 +303,11 @@ export default function DestinationPage() {
           <div className="absolute inset-0 bg-black/40" />
 
           <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-            <h1 className="text-5xl font-semibold md:text-7xl">
+            <h1 className="text-4xl font-semibold md:text-7xl">
               {destination.title}
             </h1>
 
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-zinc-200 md:text-2xl">
+            <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-200 md:mt-5 md:text-2xl md:leading-8">
               {destination.subtitle}
             </p>
 
@@ -320,7 +320,7 @@ export default function DestinationPage() {
           </div>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {destination.gallery.map((img, i) => (
             <div
               key={i}
