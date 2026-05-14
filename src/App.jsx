@@ -17,41 +17,76 @@ export default function App() {
     { title: 'Iguazu Falls', text: 'Spectacular finale.', image: '/images/cataratas_do_iguacu.webp' },
   ]
 
-const handleWhatsAppForm = async () => {
-  const firstName = document.getElementById('firstName')?.value || ''
-  const email = document.getElementById('email')?.value || ''
+  const handleWhatsAppForm = async () => {
+    const firstName = document.getElementById('firstName')?.value || ''
+    const email = document.getElementById('email')?.value || ''
 
-  if (!firstName || !email) {
-    alert('Please fill in your details')
-    return
+    if (!firstName || !email) {
+      alert('Please fill in your details')
+      return
+    }
+
+    setLoading(true)
+
+    const { error } = await supabase
+      .from('leads')
+      .insert([
+        {
+          first_name: firstName,
+          email: email,
+          message: 'Lead from landing page'
+        }
+      ])
+
+    if (error) {
+      console.error(error)
+      alert('Error saving lead')
+      setLoading(false)
+      return
+    }
+
+    const text = `Hi Renato, I'm interested in the Brazil Ultimate Signature Journey.\nName: ${firstName}\nEmail: ${email}`
+
+    window.location.href =
+      `https://wa.me/61493141727?text=${encodeURIComponent(text)}`
   }
-
-  setLoading(true)
-
-  const { error } = await supabase
-    .from('leads')
-    .insert([
-      {
-        first_name: firstName,
-        email: email,
-        message: 'Lead from landing page'
-      }
-    ])
-
-  if (error) {
-    console.error(error)
-    alert('Error saving lead')
-    setLoading(false)
-    return
-  }
-
-  const text = `Hi Renato, I'm interested in the Brazil Ultimate Signature Journey.\nName: ${firstName}\nEmail: ${email}`
-
-  window.location.href =
-    `https://wa.me/61493141727?text=${encodeURIComponent(text)}`
-}
   return (
     <div className="min-h-screen bg-white text-zinc-900">
+      <nav className="fixed top-0 left-0 z-50 w-full bg-black/20 backdrop-blur-md border-b border-white/10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+
+          <a
+            href="/"
+            className="text-xl font-semibold tracking-wide text-white"
+          >
+            Brazil Signature Journey
+          </a>
+
+          <div className="hidden items-center gap-8 md:flex">
+            <a
+              href="#journey"
+              className="text-sm text-white/90 transition hover:text-white"
+            >
+              Journey
+            </a>
+
+            <a
+              href="#apply"
+              className="text-sm text-white/90 transition hover:text-white"
+            >
+              Apply
+            </a>
+
+            <a
+              href="#apply"
+              className="rounded-full bg-white px-5 py-2 text-sm font-medium text-zinc-900 transition hover:scale-105"
+            >
+              Start Your Journey
+            </a>
+          </div>
+
+        </div>
+      </nav>
 
       {/* HERO */}
       <section
