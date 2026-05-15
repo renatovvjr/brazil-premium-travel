@@ -327,7 +327,7 @@ export default function App() {
         </div>
       </section>
       {/* CONTACT */}
-      <section className="border-t border-zinc-200 px-6 py-12">
+      <section className="border-t border-[#c8a46b] bg-[#f8f6f2] px-6 py-20">
         <div className="mx-auto max-w-7xl text-center">
 
           <h3 className="text-2xl font-semibold text-zinc-900">
