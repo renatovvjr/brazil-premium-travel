@@ -328,7 +328,7 @@ export default function App() {
       </section>
       {/* CONTACT */}
       <section className="border-t border-[#c8a46b] bg-[#f8f6f2] px-6 py-20">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-7xl grid md:grid-cols-3 gap-12 text-left">
 
           <h3 className="text-2xl font-semibold text-zinc-900">
             Curated Brazil
