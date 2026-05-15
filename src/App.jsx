@@ -327,27 +327,44 @@ export default function App() {
         </div>
       </section>
       {/* CONTACT */}
-      <section className="border-t border-[#c8a46b] bg-[#f8f6f2] px-6 py-16">
-        <div className="mx-auto max-w-7xl grid md:grid-cols-3 gap-16 items-start">
+      <section className="border-t border-[#c8a46b]/30 bg-[#0b0b0b] px-6 py-20 text-white">
 
-          <img
-            src="/images/logo.jpeg"
-            alt="Curated Brazil"
-            className="h-48 md:h-56 w-auto"
-          />
+        <div className="mx-auto max-w-7xl">
 
-          <p className="mt-4 text-zinc-600">
-            Premium journeys across Brazil designed with elegance, comfort and authenticity.
-          </p>
+          <div className="flex flex-col items-center text-center">
 
-          <div className="mt-6 space-y-2 text-sm text-zinc-500">
-            <p>WhatsApp: +61 470 289 562</p>
-            <p>curatedbrazil@gmail.com</p>
+            <div className="rounded-[32px] border border-[#c8a46b]/20 bg-black/40 p-6 shadow-[0_0_60px_rgba(200,164,107,0.08)]">
+              <img
+                src="/images/logo-premium.png"
+                alt="Curated Brazil"
+                className="h-40 w-auto md:h-52"
+              />
+            </div>
+
+            <h3 className="mt-10 text-3xl font-light tracking-[0.35em] text-white">
+              CURATED BRAZIL
+            </h3>
+
+            <p className="mt-6 text-sm uppercase tracking-[0.25em] text-[#c8a46b]">
+              Luxury Journeys. Exclusive Experiences.
+            </p>
+
+            <p className="mt-3 text-sm uppercase tracking-[0.25em] text-zinc-400">
+              Brazil, curated for you.
+            </p>
+
+            <div className="mt-10 space-y-2 text-sm text-zinc-400">
+              <p>WhatsApp: +61 470 289 562</p>
+              <p>curatedbrazil@gmail.com</p>
+            </div>
+
+            <div className="mt-12 h-px w-32 bg-[#c8a46b]/30"></div>
+
+            <p className="mt-8 text-xs tracking-[0.2em] text-zinc-500">
+              © 2026 Curated Brazil. All rights reserved.
+            </p>
+
           </div>
-
-          <p className="mt-8 text-xs text-zinc-400">
-            © 2026 Curated Brazil. All rights reserved.
-          </p>
 
         </div>
       </section>
