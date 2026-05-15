@@ -333,7 +333,7 @@ export default function App() {
           <img
             src="/images/logo.jpeg"
             alt="Curated Brazil"
-            className="h-28 w-auto"
+            className="h-48 md:h-56 w-auto"
           />
 
           <p className="mt-4 text-zinc-600">
