@@ -327,12 +327,14 @@ export default function App() {
         </div>
       </section>
       {/* CONTACT */}
-      <section className="border-t border-[#c8a46b] bg-[#f8f6f2] px-6 py-20">
-        <div className="mx-auto max-w-7xl grid md:grid-cols-3 gap-12 text-left">
+      <section className="border-t border-[#c8a46b] bg-[#f8f6f2] px-6 py-16">
+        <div className="mx-auto max-w-7xl grid md:grid-cols-3 gap-16 items-start">
 
-          <h3 className="text-2xl font-semibold text-zinc-900">
-            Curated Brazil
-          </h3>
+          <img
+            src="/images/logo.jpeg"
+            alt="Curated Brazil"
+            className="h-28 w-auto"
+          />
 
           <p className="mt-4 text-zinc-600">
             Premium journeys across Brazil designed with elegance, comfort and authenticity.
