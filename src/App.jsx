@@ -49,7 +49,7 @@ export default function App() {
     const text = `Hi Renato, I'm interested in the Brazil Ultimate Signature Journey.\nName: ${firstName}\nEmail: ${email}`
 
     window.location.href =
-      `https://wa.me/61493141727?text=${encodeURIComponent(text)}`
+      `https://wa.me/61470289562?text=${encodeURIComponent(text)}`
   }
   return (
     <div className="min-h-screen bg-white text-zinc-900">
@@ -326,7 +326,29 @@ export default function App() {
           </div>
         </div>
       </section>
+      {/* CONTACT */}
+      <section className="border-t border-zinc-200 px-6 py-12">
+        <div className="mx-auto max-w-7xl text-center">
 
+          <h3 className="text-2xl font-semibold text-zinc-900">
+            Curated Brazil
+          </h3>
+
+          <p className="mt-4 text-zinc-600">
+            Premium journeys across Brazil designed with elegance, comfort and authenticity.
+          </p>
+
+          <div className="mt-6 space-y-2 text-sm text-zinc-500">
+            <p>WhatsApp: +61 470 289 562</p>
+            <p>curatedbrazil@gmail.com</p>
+          </div>
+
+          <p className="mt-8 text-xs text-zinc-400">
+            © 2026 Curated Brazil. All rights reserved.
+          </p>
+
+        </div>
+      </section>
     </div>
   )
 }
