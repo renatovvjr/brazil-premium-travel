@@ -327,47 +327,102 @@ export default function App() {
         </div>
       </section>
       {/* CONTACT */}
-      <section className="border-t border-[#c8a46b]/30 bg-[#0b0b0b] px-6 py-20 text-white">
-
+      <footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-14">
         <div className="mx-auto max-w-7xl">
 
-          <div className="flex flex-col items-center text-center">
+          <div className="grid gap-12 md:grid-cols-4 md:items-start">
 
-            <div className="rounded-[32px] border border-[#c8a46b]/20 bg-black/40 p-6 shadow-[0_0_60px_rgba(200,164,107,0.08)]">
+            {/* BRAND */}
+            <div className="text-center md:text-left">
               <img
                 src="/images/logo-premium.png"
                 alt="Curated Brazil"
-                className="h-40 w-auto md:h-52"
+                className="mx-auto h-20 w-auto rounded-2xl md:mx-0"
               />
+
+              <h3 className="mt-5 text-xl font-semibold tracking-[0.18em] text-zinc-900">
+                CURATED BRAZIL
+              </h3>
+
+              <div className="mt-4 h-px w-14 bg-[#c8a46b] mx-auto md:mx-0"></div>
+
+              <p className="mt-5 max-w-xs text-sm leading-6 text-zinc-600">
+                Premium journeys across Brazil designed with elegance, comfort and authenticity.
+              </p>
             </div>
 
-            <h3 className="mt-10 text-3xl font-light tracking-[0.35em] text-white">
-              CURATED BRAZIL
-            </h3>
+            {/* CONTACT */}
+            <div>
+              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
+                Get in touch
+              </h4>
 
-            <p className="mt-6 text-sm uppercase tracking-[0.25em] text-[#c8a46b]">
-              Luxury Journeys. Exclusive Experiences.
-            </p>
-
-            <p className="mt-3 text-sm uppercase tracking-[0.25em] text-zinc-400">
-              Brazil, curated for you.
-            </p>
-
-            <div className="mt-10 space-y-2 text-sm text-zinc-400">
-              <p>WhatsApp: +61 470 289 562</p>
-              <p>curatedbrazil@gmail.com</p>
+              <div className="mt-6 space-y-4 text-sm text-zinc-700">
+                <p>WhatsApp: +61 470 289 562</p>
+                <p>curatedbrazil@gmail.com</p>
+              </div>
             </div>
 
-            <div className="mt-12 h-px w-32 bg-[#c8a46b]/30"></div>
+            {/* EXPLORE */}
+            <div>
+              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
+                Explore
+              </h4>
 
-            <p className="mt-8 text-xs tracking-[0.2em] text-zinc-500">
+              <div className="mt-6 space-y-4 text-sm text-zinc-700">
+                <a href="#journey" className="block transition hover:text-[#9c7a3c]">
+                  Journey
+                </a>
+                <a href="#apply" className="block transition hover:text-[#9c7a3c]">
+                  Apply
+                </a>
+                <a href="#apply" className="block transition hover:text-[#9c7a3c]">
+                  Start Your Journey
+                </a>
+              </div>
+            </div>
+
+            {/* SOCIAL */}
+            <div>
+              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
+                Follow us
+              </h4>
+
+              <div className="mt-6 flex gap-4">
+                <a
+                  href="#"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
+                >
+                  IG
+                </a>
+
+                <a
+                  href="https://wa.me/61470289562"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
+                >
+                  WA
+                </a>
+
+                <a
+                  href="mailto:curatedbrazil@gmail.com"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
+                >
+                  ✉
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 border-t border-zinc-300/70 pt-6 text-center">
+            <p className="text-xs text-zinc-500">
               © 2026 Curated Brazil. All rights reserved.
             </p>
-
           </div>
 
         </div>
-      </section>
+      </footer>
     </div>
   )
 }
