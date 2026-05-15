@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Instagram, MessageCircle, Mail } from 'lucide-react'
 import { supabase } from './lib/supabase'
 import { Link } from 'react-router-dom'
+
 
 export default function App() {
   const [loading, setLoading] = useState(false)
@@ -330,14 +332,14 @@ export default function App() {
       <footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-14">
         <div className="mx-auto max-w-7xl">
 
-          <div className="grid gap-12 md:grid-cols-4 md:items-start">
+          <div className="grid gap-12 md:grid-cols-4 md:items-start divide-y md:divide-y-0 md:divide-x divide-[#c8a46b]/20">
 
             {/* BRAND */}
-            <div className="text-center md:text-left">
+            <div className="flex flex-col items-center text-center md:items-start md:text-left">
               <img
                 src="/images/logo-premium.png"
                 alt="Curated Brazil"
-                className="mx-auto h-20 w-auto rounded-2xl md:mx-0"
+                className="mx-auto h-40 w-auto rounded-3xl md:mx-0"
               />
 
               <h3 className="mt-5 text-xl font-semibold tracking-[0.18em] text-zinc-900">
@@ -352,7 +354,7 @@ export default function App() {
             </div>
 
             {/* CONTACT */}
-            <div>
+            <div className="md:pl-10">
               <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
                 Get in touch
               </h4>
@@ -364,7 +366,7 @@ export default function App() {
             </div>
 
             {/* EXPLORE */}
-            <div>
+            <div className="md:pl-10">
               <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
                 Explore
               </h4>
@@ -383,7 +385,7 @@ export default function App() {
             </div>
 
             {/* SOCIAL */}
-            <div>
+            <div className="md:pl-10">
               <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
                 Follow us
               </h4>
@@ -393,7 +395,7 @@ export default function App() {
                   href="#"
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  IG
+                  <Instagram size={18} />
                 </a>
 
                 <a
@@ -402,14 +404,14 @@ export default function App() {
                   rel="noreferrer"
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  WA
+                  <MessageCircle size={18} />
                 </a>
 
                 <a
                   href="mailto:curatedbrazil@gmail.com"
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  ✉
+                  <Mail size={18} />
                 </a>
               </div>
             </div>
