@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Camera, MessageCircle, Mail } from 'lucide-react'
+import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
 import { Link } from 'react-router-dom'
 
@@ -385,45 +385,48 @@ export default function App() {
             </div>
 
             {/* SOCIAL */}
-            <div className="md:pl-10">
+            <div className="md:pl-6">
               <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#9c7a3c]">
                 Follow us
               </h4>
 
-              <div className="mt-6 flex gap-4">
+              <div className="mt-5 flex gap-4">
+
                 <a
-                  href="#"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  <Camera size={18} />
+                  <FaInstagram size={16} />
                 </a>
 
                 <a
                   href="https://wa.me/61470289562"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  <MessageCircle size={18} />
+                  <FaWhatsapp size={16} />
                 </a>
 
                 <a
                   href="mailto:curatedbrazil@gmail.com"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  <Mail size={18} />
+                  <FaEnvelope size={15} />
                 </a>
+
               </div>
             </div>
-          </div>
 
-          <div className="mt-12 border-t border-zinc-300/70 pt-6 text-center">
-            <p className="text-xs text-zinc-500">
-              © 2026 Curated Brazil. All rights reserved.
-            </p>
-          </div>
+            <div className="mt-12 border-t border-zinc-300/70 pt-6 text-center">
+              <p className="text-xs text-zinc-500">
+                © 2026 Curated Brazil. All rights reserved.
+              </p>
+            </div>
 
-        </div>
+          </div>
       </footer>
     </div>
   )
