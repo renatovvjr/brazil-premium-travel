@@ -124,21 +124,16 @@ export default function App() {
           {heroImages.map((image, index) => (
             <div
               key={index}
-              className="relative h-full min-w-full flex-shrink-0"
-              style={{
-                backgroundImage: `
-            linear-gradient(
-              180deg,
-              rgba(0,0,0,0.40),
-              rgba(0,0,0,0.70)
-            ),
-            url(${image})
-          `,
-                backgroundSize: '110%',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
+              className="relative h-full w-screen flex-shrink-0 overflow-hidden"
+            >
+              <img
+                src={image}
+                alt={`Curated Brazil hero ${index + 1}`}
+                className="h-full w-full object-cover object-center"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70" />
+            </div>
           ))}
         </div>
 
