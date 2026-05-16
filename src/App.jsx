@@ -119,7 +119,7 @@ export default function App() {
           {heroImages.map((image, index) => (
             <div
               key={index}
-              className="relative h-full w-full flex-shrink-0"
+              className="relative h-full min-w-full flex-shrink-0"
               style={{
                 backgroundImage: `
             linear-gradient(
