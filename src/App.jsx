@@ -130,7 +130,7 @@ export default function App() {
             url(${image})
           `,
                 backgroundSize: 'cover',
-                backgroundPosition: '25% 20%',
+                backgroundPosition: 'center center',
               }}
             />
           ))}
