@@ -129,8 +129,9 @@ export default function App() {
             ),
             url(${image})
           `,
-                backgroundSize: 'cover',
+                backgroundSize: '110%',
                 backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
               }}
             />
           ))}
@@ -178,8 +179,8 @@ export default function App() {
               key={index}
               onClick={() => setCurrentHero(index)}
               className={`h-3 w-3 rounded-full transition-all ${currentHero === index
-                  ? 'bg-white scale-125'
-                  : 'bg-white/40 hover:bg-white/70'
+                ? 'bg-white scale-125'
+                : 'bg-white/40 hover:bg-white/70'
                 }`}
             />
           ))}
