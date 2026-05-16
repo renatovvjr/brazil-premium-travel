@@ -138,7 +138,12 @@ export default function App() {
 
         {/* CONTENT */}
         <div className="absolute inset-0 z-10 flex items-center">
-          <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            className="mx-auto max-w-7xl px-6"
+            initial={{ opacity: 0, y: 35 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, ease: 'easeOut' }}
+          >
 
             <h1 className="max-w-3xl text-4xl font-semibold md:text-6xl">
               Experience Brazil like few ever will — a private, curated journey
@@ -168,7 +173,7 @@ export default function App() {
               Limited availability — curated for a select group of travellers
             </p>
 
-          </div>
+          </motion.div>
         </div>
 
         {/* DOTS */}
@@ -185,13 +190,14 @@ export default function App() {
           ))}
         </div>
 
-      </section>
+      </section >
 
       {/* JOURNEY */}
-      <motion.section
+      < motion.section
         id="journey"
         className="py-16 px-6 max-w-7xl mx-auto"
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 40 }
+        }
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
@@ -221,10 +227,10 @@ export default function App() {
             </Link>
           ))}
         </div>
-      </motion.section>
+      </motion.section >
 
       {/* WHAT'S INCLUDED */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      < section className="mx-auto max-w-7xl px-6 py-16" >
         <h2 className="text-3xl font-semibold mb-6">
           What’s included
         </h2>
@@ -239,10 +245,10 @@ export default function App() {
           <p>✔ Selected meals included</p>
           <p>✔ Small group (6–10 travellers)</p>
         </div>
-      </section>
+      </section >
 
       {/* WHY */}
-      <section className="bg-gray-50 py-16 px-6">
+      < section className="bg-gray-50 py-16 px-6" >
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-semibold">
             Why travellers say yes
@@ -279,10 +285,10 @@ export default function App() {
 
           </div>
         </div>
-      </section>
+      </section >
 
       {/* PRICING */}
-      <section className="py-16 px-6 max-w-5xl mx-auto">
+      < section className="py-16 px-6 max-w-5xl mx-auto" >
         <h2 className="text-3xl font-semibold mb-6">
           Premium value for a once-in-a-lifetime experience
         </h2>
@@ -314,10 +320,10 @@ export default function App() {
           </div>
 
         </div>
-      </section>
+      </section >
 
       {/* FAQ */}
-      <section className="bg-gray-50 py-16 px-6">
+      < section className="bg-gray-50 py-16 px-6" >
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-semibold">
             Frequently asked questions
@@ -367,10 +373,10 @@ export default function App() {
 
           </div>
         </div>
-      </section>
+      </section >
 
       {/* FORM */}
-      <section id="apply" className="py-16 px-6">
+      < section id="apply" className="py-16 px-6" >
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-3xl font-semibold">
             Request your private itinerary
@@ -388,9 +394,9 @@ export default function App() {
             </button>
           </div>
         </div>
-      </section>
+      </section >
       {/* CONTACT */}
-      <footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-12">
+      < footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-12" >
         <div className="mx-auto max-w-7xl">
 
           <div className="grid gap-12 md:grid-cols-4 md:items-start divide-y md:divide-y-0 md:divide-x divide-[#c8a46b]/20">
@@ -489,7 +495,7 @@ export default function App() {
           </div>
 
         </div>
-      </footer>
-    </div>
+      </footer >
+    </div >
   )
 }
