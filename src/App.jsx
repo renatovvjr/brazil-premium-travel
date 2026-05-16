@@ -17,7 +17,7 @@ export default function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentHero((prev) => (prev + 1) % heroImages.length)
-    }, 5000)
+    }, 7000)
 
     return () => clearInterval(interval)
   }, [])
@@ -106,7 +106,7 @@ export default function App() {
 
       {/* HERO */}
       <section
-        className="relative h-[82vh] text-white transition-all duration-1000"
+        className="relative h-[82vh] text-white transition-all duration-2500ms"
         style={{
           backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75)),url(${heroImages[currentHero]})`,
           backgroundSize: 'cover',
