@@ -75,11 +75,11 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <nav className="fixed top-0 left-0 z-50 w-full bg-black/20 backdrop-blur-md border-b border-white/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex items-center justify-between px-8 py-4">
 
           <a
             href="/"
-            className="text-xl font-semibold tracking-wide text-white"
+            className="text-2xl font-semibold tracking-[0.08em] text-white"
           >
             Brazil Signature Journey
           </a>
@@ -87,21 +87,21 @@ export default function App() {
           <div className="hidden items-center gap-8 md:flex">
             <a
               href="#journey"
-              className="text-sm text-white/90 transition hover:text-white"
+              className="text-sm uppercase tracking-[0.18em] text-white/80 transition hover:text-white"
             >
               Journey
             </a>
 
             <a
               href="#apply"
-              className="text-sm text-white/90 transition hover:text-white"
+              className="text-sm uppercase tracking-[0.18em] text-white/80 transition hover:text-white"
             >
               Apply
             </a>
 
             <a
               href="#apply"
-              className="rounded-full bg-white px-5 py-2 text-sm font-medium text-zinc-900 transition hover:scale-105"
+              className="rounded-full border border-[#d4af37]/50 bg-white/10 px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-white backdrop-blur-md transition hover:border-[#d4af37] hover:bg-[#d4af37] hover:text-black"
             >
               Start Your Journey
             </a>
