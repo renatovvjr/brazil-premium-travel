@@ -329,7 +329,7 @@ export default function App() {
         </div>
       </section>
       {/* CONTACT */}
-      <footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-14">
+      <footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-12">
         <div className="mx-auto max-w-7xl">
 
           <div className="grid gap-12 md:grid-cols-4 md:items-start divide-y md:divide-y-0 md:divide-x divide-[#c8a46b]/20">
