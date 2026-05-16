@@ -129,7 +129,7 @@ export default function App() {
             ),
             url(${image})
           `,
-                backgroundSize: '110%',
+                backgroundSize: '75%',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
               }}
