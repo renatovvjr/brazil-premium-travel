@@ -93,7 +93,6 @@ export default function App() {
 
       {/* HERO */}
       <section
-        <section
         className="relative h-[82vh] text-white"
         style={{
           backgroundImage:
