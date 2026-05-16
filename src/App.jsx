@@ -8,9 +8,14 @@ import { Link } from 'react-router-dom'
 export default function App() {
   const [loading, setLoading] = useState(false)
   const heroImages = [
-    '/images/rio_de_janeiro.background.webp',
-    '/images/rio_de_janeiro1.webp',
-    '/images/rio_de_janeiro4.webp',
+    '/images/rio_de_janeiro_carrossel.png',
+    '/images/rio_de_janeiro_carrossel0.png',
+    '/images/rio_de_janeiro_carrossel1.png',
+    '/images/rio_de_janeiro_carrossel2.png',
+    '/images/rio_de_janeiro_carrosse3.png',
+    '/images/rio_de_janeiro_carrossel4.png',
+    '/images/rio_de_janeiro_carrossel5.png',
+    '/images/rio_de_janeiro_carrossel6.png',
   ]
 
   const [currentHero, setCurrentHero] = useState(0)
@@ -129,7 +134,7 @@ export default function App() {
             ),
             url(${image})
           `,
-                backgroundSize: '95%',
+                backgroundSize: '110%',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
               }}
