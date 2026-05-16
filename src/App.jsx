@@ -14,6 +14,7 @@ export default function App() {
   ]
 
   const [currentHero, setCurrentHero] = useState(0)
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentHero((prev) => (prev + 1) % heroImages.length)
@@ -105,37 +106,85 @@ export default function App() {
       </nav>
 
       {/* HERO */}
-      <section
-        className="relative h-[82vh] text-white transition-all duration-2500ms"
-        style={{
-          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75)),url(${heroImages[currentHero]})`,
-          backgroundSize: 'cover',
-          backgroundPosition: '20% center',
-        }}
-      >
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <h1 className="text-4xl md:text-6xl font-semibold max-w-3xl">
-            Experience Brazil like few ever will — a private, curated journey
-          </h1>
+      <section className="relative h-[82vh] overflow-hidden text-white">
 
-          <p className="mt-6 text-lg max-w-2xl text-white/90">
-            A 25-day premium experience designed for comfort, safety and unforgettable moments.
-          </p>
-
-          <div className="mt-8 flex gap-4">
-            <a href="#apply" className="bg-emerald-600 px-6 py-3 rounded-xl hover:scale-105 transition">
-              Request Your Private Itinerary
-            </a>
-
-            <a href="#journey" className="border border-white px-6 py-3 rounded-xl">
-              Discover the Journey
-            </a>
-          </div>
-
-          <p className="mt-3 text-sm text-white/70">
-            Limited availability — curated for a select group of travellers
-          </p>
+        {/* SLIDES */}
+        <div
+          className="flex h-full transition-transform duration-[1800ms] ease-in-out"
+          style={{
+            transform: `translateX(-${currentHero * 100}%)`,
+            width: `${heroImages.length * 100}%`,
+          }}
+        >
+          {heroImages.map((image, index) => (
+            <div
+              key={index}
+              className="relative h-full w-full flex-shrink-0"
+              style={{
+                backgroundImage: `
+            linear-gradient(
+              180deg,
+              rgba(0,0,0,0.40),
+              rgba(0,0,0,0.70)
+            ),
+            url(${image})
+          `,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+          ))}
         </div>
+
+        {/* CONTENT */}
+        <div className="absolute inset-0 z-10 flex items-center">
+          <div className="mx-auto max-w-7xl px-6">
+
+            <h1 className="max-w-3xl text-4xl font-semibold md:text-6xl">
+              Experience Brazil like few ever will — a private, curated journey
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-lg text-white/90">
+              A 25-day premium experience designed for comfort, safety and unforgettable moments.
+            </p>
+
+            <div className="mt-8 flex gap-4">
+              <a
+                href="#apply"
+                className="rounded-xl bg-emerald-600 px-6 py-3 transition hover:scale-105"
+              >
+                Request Your Private Itinerary
+              </a>
+
+              <a
+                href="#journey"
+                className="rounded-xl border border-white px-6 py-3"
+              >
+                Discover the Journey
+              </a>
+            </div>
+
+            <p className="mt-3 text-sm text-white/70">
+              Limited availability — curated for a select group of travellers
+            </p>
+
+          </div>
+        </div>
+
+        {/* DOTS */}
+        <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentHero(index)}
+              className={`h-3 w-3 rounded-full transition-all ${currentHero === index
+                  ? 'bg-white scale-125'
+                  : 'bg-white/40 hover:bg-white/70'
+                }`}
+            />
+          ))}
+        </div>
+
       </section>
 
       {/* JOURNEY */}
