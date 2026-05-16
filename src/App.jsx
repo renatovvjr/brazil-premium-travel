@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
@@ -7,7 +7,20 @@ import { Link } from 'react-router-dom'
 
 export default function App() {
   const [loading, setLoading] = useState(false)
+  const heroImages = [
+    '/images/rio_de_janeiro.background.webp',
+    '/images/rio_de_janeiro1.webp',
+    '/images/rio_de_janeiro4.webp',
+  ]
 
+  const [currentHero, setCurrentHero] = useState(0)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHero((prev) => (prev + 1) % heroImages.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
   const destinations = [
     { title: 'São Paulo', text: 'Luxury arrival and green spaces.', image: '/images/sao_paulo.webp' },
     { title: 'Amazon', text: 'Rainforest immersion.', image: '/images/amazonia.webp' },
@@ -93,10 +106,9 @@ export default function App() {
 
       {/* HERO */}
       <section
-        className="relative h-[82vh] text-white"
+        className="relative h-[82vh] text-white transition-all duration-1000"
         style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('/images/rio_de_janeiro.background.webp')",
+          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75)),url(${heroImages[currentHero]})`,
           backgroundSize: 'cover',
           backgroundPosition: '20% center',
         }}
