@@ -207,24 +207,35 @@ export default function App() {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {destinations.map((item) => (
-            <Link
+          {destinations.map((item, index) => (
+            <motion.div
               key={item.title}
-              to={`/destino/${item.title
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
-                .replace(/\s+/g, '-')}`}
-              className="block hover:scale-105 transition"
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.08 }}
+              viewport={{ once: true }}
             >
-              <div className="bg-white rounded-xl shadow">
-                <img src={item.image} className="h-56 w-full object-cover rounded-t-xl" />
-                <div className="p-5">
-                  <h3 className="font-semibold text-lg">{item.title}</h3>
-                  <p className="text-sm text-gray-600 mt-2">{item.text}</p>
+              <Link
+                to={`/destino/${item.title
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
+                  .toLowerCase()
+                  .replace(/\s+/g, '-')}`}
+                className="group block transition duration-500 hover:-translate-y-2"
+              >
+                <div className="overflow-hidden rounded-2xl bg-white shadow-md transition duration-500 group-hover:shadow-2xl">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-56 w-full object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="p-5">
+                    <h3 className="font-semibold text-lg">{item.title}</h3>
+                    <p className="text-sm text-gray-600 mt-2">{item.text}</p>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </motion.section >
