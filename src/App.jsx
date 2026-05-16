@@ -511,6 +511,19 @@ export default function App() {
 
         </div>
       </footer >
+      {/* FLOATING WHATSAPP */}
+      <a
+        href="https://wa.me/61470289562"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-[#25D366] px-5 py-4 text-white shadow-[0_10px_35px_rgba(37,211,102,0.35)] transition duration-300 hover:scale-105 hover:shadow-[0_15px_45px_rgba(37,211,102,0.45)]"
+      >
+        <FaWhatsapp size={24} />
+
+        <span className="hidden text-sm font-medium md:block">
+          Chat with us
+        </span>
+      </a>
     </div >
   )
 }
