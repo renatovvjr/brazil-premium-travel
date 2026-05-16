@@ -93,7 +93,8 @@ export default function App() {
 
       {/* HERO */}
       <section
-        className="relative min-h-screen text-white"
+        <section
+        className="relative h-[82vh] text-white"
         style={{
           backgroundImage:
             "linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('/images/rio_de_janeiro.background.webp')",
@@ -101,7 +102,7 @@ export default function App() {
           backgroundPosition: '20% center',
         }}
       >
-        <div className="mx-auto max-w-7xl px-6 py-28">
+        <div className="mx-auto max-w-7xl px-6 py-20">
           <h1 className="text-4xl md:text-6xl font-semibold max-w-3xl">
             Experience Brazil like few ever will — a private, curated journey
           </h1>
