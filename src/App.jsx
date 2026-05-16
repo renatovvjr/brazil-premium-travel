@@ -117,14 +117,14 @@ export default function App() {
         <div
           className="flex h-full transition-transform duration-[1800ms] ease-in-out"
           style={{
-            transform: `translateX(-${currentHero * (100 / heroImages.length)}%)`,
+            transform: `translateX(-${currentHero * 100}%)`,
             width: `${heroImages.length * 100}%`,
           }}
         >
           {heroImages.map((image, index) => (
             <div
               key={index}
-              className="relative h-full min-w-full flex-shrink-0 overflow-hidden"
+              className="relative h-full w-full flex-shrink-0 overflow-hidden"
             >
               <img
                 src={image}
