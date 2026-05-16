@@ -393,7 +393,7 @@ export default function App() {
               <div className="mt-5 flex gap-4">
 
                 <a
-                  href="https://instagram.com"
+                  href="https://instagram.com/curatedbrazil"
                   target="_blank"
                   rel="noreferrer"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
