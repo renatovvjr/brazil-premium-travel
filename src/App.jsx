@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Instagram, MessageCircle, Mail } from 'lucide-react'
+import { Camera, MessageCircle, Mail } from 'lucide-react'
 import { supabase } from './lib/supabase'
 import { Link } from 'react-router-dom'
 
@@ -395,7 +395,7 @@ export default function App() {
                   href="#"
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c8a46b]/60 text-sm text-zinc-800 transition hover:bg-[#c8a46b] hover:text-white"
                 >
-                  <Instagram size={18} />
+                  <Camera size={18} />
                 </a>
 
                 <a
