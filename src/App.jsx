@@ -12,7 +12,7 @@ export default function App() {
     '/images/rio_de_janeiro_carrossel0.png',
     '/images/rio_de_janeiro_carrossel1.png',
     '/images/rio_de_janeiro_carrossel2.png',
-    '/images/rio_de_janeiro_carrosse3.png',
+    '/images/rio_de_janeiro_carrossel3.png',
     '/images/rio_de_janeiro_carrossel4.png',
     '/images/rio_de_janeiro_carrossel5.png',
     '/images/rio_de_janeiro_carrossel6.png',
