@@ -224,11 +224,15 @@ export default function App() {
                 className="group block transition duration-500 hover:-translate-y-2"
               >
                 <div className="overflow-hidden rounded-2xl bg-white shadow-md transition duration-500 group-hover:shadow-2xl">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-56 w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
+                  <div className="relative h-56 overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition duration-1000 ease-out group-hover:scale-110"
+                    />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent opacity-60 transition duration-700 group-hover:opacity-80" />
+                  </div>
                   <div className="p-5">
                     <h3 className="font-semibold text-lg">{item.title}</h3>
                     <p className="text-sm text-gray-600 mt-2">{item.text}</p>
