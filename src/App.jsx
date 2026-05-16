@@ -419,14 +419,15 @@ export default function App() {
 
               </div>
             </div>
-
-            <div className="mt-12 border-t border-zinc-300/70 pt-6 text-center">
-              <p className="text-xs text-zinc-500">
-                © 2026 Curated Brazil. All rights reserved.
-              </p>
-            </div>
-
           </div>
+
+          <div className="mt-12 border-t border-zinc-300/70 pt-6 text-center">
+            <p className="text-xs text-zinc-500">
+              © 2026 Curated Brazil. All rights reserved.
+            </p>
+          </div>
+
+        </div>
       </footer>
     </div>
   )
