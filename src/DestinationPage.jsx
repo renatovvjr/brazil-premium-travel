@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useParams, Link } from 'react-router-dom'
 
 const data = {
@@ -272,15 +273,41 @@ export default function DestinationPage() {
   const destination = data[name]
   const [selectedImage, setSelectedImage] = useState(null)
 
+  useEffect(() => {
+    if (selectedImage === null) return
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setSelectedImage(null)
+      if (event.key === 'ArrowLeft') {
+        setSelectedImage((current) =>
+          current === 0 ? destination.gallery.length - 1 : current - 1
+        )
+      }
+      if (event.key === 'ArrowRight') {
+        setSelectedImage((current) =>
+          current === destination.gallery.length - 1 ? 0 : current + 1
+        )
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = ''
+    }
+  }, [selectedImage, destination?.gallery.length])
+
   if (!destination) {
     return (
-      <div className="min-h-screen bg-white px-6 py-16 text-zinc-900">
+      <div className="min-h-screen bg-[#fbfaf7] px-6 py-16 text-zinc-900">
         <div className="mx-auto max-w-5xl">
           <h1 className="text-3xl font-semibold">Destination not found</h1>
           <div className="mt-8">
             <Link
               to="/"
-              className="inline-block rounded-xl bg-emerald-600 px-6 py-3 text-white transition hover:scale-105"
+              className="inline-block rounded-full bg-emerald-600 px-6 py-3 text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] transition hover:-translate-y-0.5 hover:bg-emerald-500"
             >
               Back to journey
             </Link>
@@ -291,19 +318,33 @@ export default function DestinationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white px-6 py-16 text-zinc-900">
-      <div className="mx-auto max-w-5xl">
-        <div className="relative h-[60vh] overflow-hidden rounded-3xl shadow-2xl md:h-[70vh]">
+    <div className="min-h-screen bg-[#fbfaf7] px-5 py-8 text-zinc-900 md:px-6 md:py-12">
+      <div className="mx-auto max-w-6xl">
+        <Link
+          to="/"
+          className="mb-5 inline-flex rounded-full border border-black/10 bg-white px-5 py-3 text-sm font-medium text-zinc-700 shadow-sm outline-none transition hover:-translate-y-0.5 hover:border-[#d4af37]/60 hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-[#d4af37]/60"
+        >
+          Back to journey
+        </Link>
+
+        <motion.div
+          className="relative h-[68vh] min-h-[560px] overflow-hidden rounded-[2rem] shadow-[0_35px_100px_rgba(24,24,27,0.22)] md:h-[76vh]"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
           <img
             src={destination.hero}
             alt={destination.title}
             className="h-full w-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(255,255,255,0.12),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.72)),linear-gradient(90deg,rgba(0,0,0,0.58),rgba(0,0,0,0.14),rgba(0,0,0,0.58))]" />
 
           <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-            <h1 className="text-4xl font-semibold md:text-7xl">
+            <div className="mb-8 h-px w-20 bg-[#d4af37]" />
+
+            <h1 className="text-4xl font-semibold leading-none drop-shadow-2xl md:text-7xl">
               {destination.title}
             </h1>
 
@@ -313,47 +354,57 @@ export default function DestinationPage() {
 
             <a
               href="#experiences"
-              className="mt-8 rounded-full bg-white px-8 py-3 text-sm font-semibold text-zinc-900 transition hover:scale-105 hover:bg-zinc-100"
+              className="mt-8 rounded-full bg-white px-8 py-3 text-sm font-semibold text-zinc-900 shadow-[0_18px_45px_rgba(0,0,0,0.22)] outline-none transition hover:-translate-y-0.5 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-white/80"
             >
               Explore Experiences
             </a>
           </div>
-        </div>
+        </motion.div>
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {destination.gallery.map((img, i) => (
-            <div
+            <button
+              type="button"
               key={i}
               onClick={() => setSelectedImage(i)}
-              className="cursor-pointer overflow-hidden rounded-xl shadow-md transition-all duration-500 hover:shadow-2xl"
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-black/5 bg-white p-0 text-left shadow-[0_18px_55px_rgba(24,24,27,0.08)] outline-none transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(24,24,27,0.16)] focus-visible:ring-2 focus-visible:ring-[#d4af37]/70"
+              aria-label={`${destination.title} ${i + 1}`}
             >
               <img
                 src={img}
                 alt={`${destination.title} ${i + 1}`}
-                className="h-56 w-full object-cover transition-transform duration-500 hover:scale-105"
+                loading="lazy"
+                className="h-60 w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
+            </button>
           ))}
         </div>
 
         <div
           id="experiences"
-          className="mt-12 space-y-10 text-lg leading-8 text-zinc-700"
+          className="mt-16 space-y-6 text-lg leading-8 text-zinc-700"
         >
           {destination.sections.map((section, i) => (
-            <div key={i}>
-              <h2 className="mb-3 text-2xl font-semibold text-zinc-900">
+            <motion.div
+              key={i}
+              className="rounded-3xl border border-black/5 bg-white p-7 shadow-[0_18px_55px_rgba(24,24,27,0.06)] md:p-9"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <h2 className="mb-4 text-2xl font-semibold text-zinc-900">
                 {section.title}
               </h2>
               <p>{section.text}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         <div className="mt-12">
           <Link
             to="/"
-            className="inline-block rounded-xl bg-emerald-600 px-6 py-3 text-white transition hover:scale-105"
+            className="inline-block rounded-full bg-emerald-600 px-6 py-3 text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] transition hover:-translate-y-0.5 hover:bg-emerald-500"
           >
             Back to journey
           </Link>
@@ -361,15 +412,18 @@ export default function DestinationPage() {
       </div>
 
       {selectedImage !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-4 backdrop-blur-sm" role="dialog" aria-modal="true">
           <button
+            type="button"
             onClick={() => setSelectedImage(null)}
-            className="absolute right-6 top-6 text-4xl text-white transition hover:text-zinc-300"
+            className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-4xl text-white outline-none backdrop-blur-md transition hover:bg-white hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-white/80 md:right-8 md:top-8"
+            aria-label="Close"
           >
             ×
           </button>
 
           <button
+            type="button"
             onClick={() =>
               setSelectedImage(
                 selectedImage === 0
@@ -377,7 +431,8 @@ export default function DestinationPage() {
                   : selectedImage - 1
               )
             }
-            className="absolute left-6 text-5xl text-white transition hover:text-zinc-300"
+            className="absolute left-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-5xl text-white outline-none backdrop-blur-md transition hover:bg-white hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-white/80 md:left-8"
+            aria-label="Previous"
           >
             ‹
           </button>
@@ -385,10 +440,11 @@ export default function DestinationPage() {
           <img
             src={destination.gallery[selectedImage]}
             alt={`${destination.title} expanded`}
-            className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
+            className="max-h-[84vh] max-w-[88vw] rounded-3xl object-contain shadow-[0_35px_100px_rgba(0,0,0,0.45)]"
           />
 
           <button
+            type="button"
             onClick={() =>
               setSelectedImage(
                 selectedImage === destination.gallery.length - 1
@@ -396,7 +452,8 @@ export default function DestinationPage() {
                   : selectedImage + 1
               )
             }
-            className="absolute right-6 text-5xl text-white transition hover:text-zinc-300"
+            className="absolute right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-5xl text-white outline-none backdrop-blur-md transition hover:bg-white hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-white/80 md:right-8"
+            aria-label="Next"
           >
             ›
           </button>
