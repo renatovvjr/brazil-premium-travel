@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,7 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [openExperience, setOpenExperience] = useState('signature')
   const heroImages = [
     '/images/rio_de_janeiro_carrossel.png',
     '/images/rio_de_janeiro_carrossel0.png',
@@ -47,6 +48,58 @@ export default function App() {
     { title: 'Rio de Janeiro', text: 'Iconic landscapes.', image: '/images/rio_de_janeiro.webp' },
     { title: 'Ilha Grande', text: 'Turquoise waters.', image: '/images/ilha_grande.webp' },
     { title: 'Iguazu Falls', text: 'Spectacular finale.', image: '/images/cataratas_do_iguacu.webp' },
+  ]
+
+  const pricingExperiences = [
+    {
+      id: 'signature',
+      tag: 'Most Popular',
+      title: 'Curated Brazil Signature',
+      price: 'AUD 29,900',
+      description:
+        'A fully curated luxury journey across Brazil designed for travellers seeking comfort, authenticity and unforgettable experiences.',
+      included: [
+        'Premium hotels',
+        'All domestic flights within Brazil',
+        'Private airport transfers',
+        'Curated local experiences',
+        'Selected fine dining experiences',
+        'Private guides',
+        'English-speaking interpreter support',
+        'Professional travel assistance',
+        'Selected photography coverage',
+        'Small premium group experience',
+      ],
+      whatsappMessage:
+        "Hi Renato, I'm interested in the Curated Brazil Signature experience (AUD 29,900) and would like to learn more about joining the waitlist.",
+    },
+    {
+      id: 'all-inclusive',
+      tag: 'Ultimate Comfort',
+      title: 'Curated Brazil All-Inclusive',
+      price: 'AUD 35,900',
+      description:
+        'An effortless luxury experience including international flights, premium comfort travel and complete concierge-style coordination.',
+      highlight: 'You simply arrive. We handle everything.',
+      included: [
+        'International flights Australia ↔ Brazil',
+        'Premium comfort seating',
+        '2 checked bags',
+        'VIP airport lounge access',
+        'Premium hotels',
+        'All domestic flights within Brazil',
+        'Private airport transfers',
+        'Curated local experiences',
+        'Selected fine dining experiences',
+        'Private guides',
+        'English-speaking interpreter support',
+        'Professional travel assistance',
+        'Selected photography coverage',
+        'Small premium group experience',
+      ],
+      whatsappMessage:
+        "Hi Renato, I'm interested in the Curated Brazil All-Inclusive experience (AUD 35,900) and would like to learn more about joining the waitlist.",
+    },
   ]
 
   const handleWhatsAppForm = async () => {
@@ -345,40 +398,129 @@ export default function App() {
         </div>
       </section >
 
-      {/* PRICING */}
-      < section className="mx-auto max-w-5xl px-6 py-20" >
-        <h2 className="mb-8 text-3xl font-semibold leading-tight md:text-4xl">
-          Premium value for a once-in-a-lifetime experience
-        </h2>
+      {/* EXPERIENCE PRICING */}
+      <section className="relative overflow-hidden border-y border-[#d4af37]/20 bg-[#11100d] px-6 py-18 text-white md:py-24 lg:py-26">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(212,175,55,0.16),transparent_26%),radial-gradient(circle_at_78%_0%,rgba(255,255,255,0.08),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_38%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/70 to-transparent" />
 
-        <div className="grid gap-6 md:grid-cols-2">
-
-          {/* MAIN PRICE */}
-          <div className="rounded-2xl border border-black/5 bg-white p-8 shadow-[0_18px_55px_rgba(24,24,27,0.08)]">
-            <h3 className="text-lg font-semibold">Standard Price</h3>
-            <p className="mt-4 text-4xl font-bold">AUD 32,900</p>
-            <p className="text-gray-500">per person</p>
-          </div>
-
-          {/* EARLY ACCESS */}
-          <div className="rounded-2xl bg-emerald-700 p-8 text-white shadow-[0_28px_80px_rgba(4,120,87,0.25)] ring-1 ring-emerald-300/20">
-            <p className="uppercase text-sm text-emerald-200">Early Access</p>
-            <p className="text-4xl font-bold mt-2">AUD 29,900</p>
-
-            <p className="mt-3 text-emerald-100">
-              Reserved for the first 3 travellers only
+        <motion.div
+          className="relative mx-auto max-w-7xl"
+          initial={{ opacity: 0, y: 36 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease: 'easeOut' }}
+          viewport={{ once: true, margin: '-80px' }}
+        >
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#d4af37]">
+              Limited departures • Small curated group • September 2026
             </p>
-
-            <a
-              href="#apply"
-              className="mt-6 block rounded-full bg-white py-3 text-center font-medium text-emerald-700 outline-none transition hover:bg-emerald-50 focus-visible:ring-2 focus-visible:ring-white/80"
-            >
-              Secure Early Access
-            </a>
+            <h2 className="mt-4 text-3xl font-semibold leading-tight text-balance md:text-5xl">
+              Choose Your Experience
+            </h2>
+            <div className="mx-auto mt-5 h-px w-20 bg-[#d4af37]/80" />
           </div>
 
-        </div>
-      </section >
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            {pricingExperiences.map((experience, index) => {
+              const isOpen = openExperience === experience.id
+              const detailsId = `${experience.id}-details`
+              const whatsappHref = `https://wa.me/61470289562?text=${encodeURIComponent(experience.whatsappMessage)}`
+
+              return (
+                <motion.article
+                  key={experience.id}
+                  className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-xl transition duration-700 hover:-translate-y-2 hover:border-[#d4af37]/55 hover:bg-white/[0.075] hover:shadow-[0_36px_110px_rgba(0,0,0,0.46)] md:p-6 lg:p-7"
+                  initial={{ opacity: 0, y: 34 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: index * 0.1, ease: 'easeOut' }}
+                  viewport={{ once: true }}
+                >
+                  <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent opacity-60 transition duration-700 group-hover:opacity-100" />
+                  <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[#d4af37]/10 blur-3xl transition duration-700 group-hover:bg-[#d4af37]/16" />
+
+                  <div className="relative flex min-h-full flex-col">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="inline-flex rounded-full border border-[#d4af37]/45 bg-[#d4af37]/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-[#f1d991]">
+                          {experience.tag}
+                        </p>
+                        <h3 className="mt-5 text-2xl font-semibold tracking-[-0.01em] md:text-[1.7rem] md:leading-tight">
+                          {experience.title}
+                        </h3>
+                      </div>
+
+                      <div className="hidden h-14 w-14 shrink-0 rounded-full border border-[#d4af37]/35 bg-black/20 md:block" />
+                    </div>
+
+                    <p className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-[#f8f2df] md:text-[2.8rem]">
+                      {experience.price}
+                    </p>
+                    <p className="mt-4 text-sm leading-6 text-white/70 md:text-[0.95rem]">
+                      {experience.description}
+                    </p>
+
+                    {experience.highlight && (
+                      <p className="mt-5 rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 px-4 py-3 font-serif text-lg italic leading-7 text-[#f7e8bd]">
+                        {experience.highlight}
+                      </p>
+                    )}
+
+                    <div className="mt-6">
+                      <button
+                        type="button"
+                        onClick={() => setOpenExperience(isOpen ? '' : experience.id)}
+                        className="flex w-full items-center justify-between rounded-full border border-white/15 bg-black/20 px-5 py-3.5 text-left text-sm font-medium uppercase tracking-[0.14em] text-white outline-none transition duration-300 hover:border-[#d4af37]/55 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
+                        aria-expanded={isOpen}
+                        aria-controls={detailsId}
+                      >
+                        <span>Included</span>
+                        <span className={`text-lg leading-none text-[#d4af37] transition duration-300 ${isOpen ? 'rotate-45' : ''}`}>
+                          +
+                        </span>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            id={detailsId}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.42, ease: 'easeInOut' }}
+                            className="overflow-hidden"
+                          >
+                            <ul className="grid gap-2.5 px-1 pb-1 pt-5 text-sm leading-6 text-white/76 sm:grid-cols-2">
+                              {experience.included.map((item) => (
+                                <li key={item} className="flex gap-3">
+                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d4af37]" />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#d4af37] px-7 py-3.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_20px_55px_rgba(212,175,55,0.22)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-[#f0d57e] hover:shadow-[0_24px_70px_rgba(212,175,55,0.32)] focus-visible:ring-2 focus-visible:ring-[#f6e7bd]"
+                    >
+                      Join the Waitlist
+                    </a>
+                  </div>
+                </motion.article>
+              )
+            })}
+          </div>
+
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm uppercase tracking-[0.18em] text-[#f6e7bd]/80">
+            Only 8 exclusive spots available for the inaugural journey.
+          </p>
+        </motion.div>
+      </section>
 
       {/* FAQ */}
       < section className="border-y border-black/5 bg-[#f3efe8] px-6 py-20" >
