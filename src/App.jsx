@@ -701,7 +701,7 @@ I would love to receive more information about the experience.`
             <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
               <div className="relative min-h-[360px] overflow-hidden bg-[#11100d] p-8 text-white md:p-10">
                 <img
-                  src="/images/rio_de_janeiro.webp"
+                  src="/images/rio_de_janeiro1.webp"
                   alt="Curated Brazil private journey"
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover opacity-60"
