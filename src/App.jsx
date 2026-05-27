@@ -16,7 +16,6 @@ export default function App() {
     email: '',
     whatsapp: '',
     travelers: 'Solo Traveler',
-    journey: 'September 2026 \u2014 Inaugural Journey',
     visitedBrazil: 'No',
     visitedPlaces: '',
     interests: [],
@@ -116,11 +115,7 @@ export default function App() {
   ]
 
   const travelerOptions = ['Solo Traveler', 'Couple', 'Family', 'Private Group']
-  const journeyOptions = [
-    'September 2026 \u2014 Inaugural Journey',
-    'Future Departures',
-    'Private Tailored Journey',
-  ]
+  const inauguralJourney = 'September 2026 \u2014 Inaugural Journey'
   const visitedBrazilOptions = ['Yes', 'No']
   const experienceOptions = [
     'Luxury Nature',
@@ -164,7 +159,6 @@ export default function App() {
       email,
       whatsapp,
       travelers,
-      journey,
       visitedBrazil,
       visitedPlaces,
       interests,
@@ -186,7 +180,7 @@ export default function App() {
       email,
       whatsapp,
       travelers,
-      preferred_journey: journey,
+      preferred_journey: inauguralJourney,
       visited_brazil: visitedBrazil,
       visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
       experience_interests: interests,
@@ -218,7 +212,7 @@ export default function App() {
 My name is ${fullName}.
 I'm interested in a curated luxury journey through Brazil.
 
-Preferred journey: ${journey}
+Preferred journey: ${inauguralJourney}
 Travelers: ${travelers}
 Experience interests: ${interestsText}
 
@@ -775,19 +769,17 @@ I would love to receive more information about the experience.`
                     </select>
                   </label>
 
-                  <label className="block text-left">
-                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Preferred Journey</span>
-                    <select
-                      name="journey"
-                      value={applicationForm.journey}
-                      onChange={handleApplicationChange}
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
-                    >
-                      {journeyOptions.map((option) => (
-                        <option key={option} value={option}>{option}</option>
-                      ))}
-                    </select>
-                  </label>
+                  <div className="rounded-xl border border-[#d4af37]/25 bg-[#d4af37]/10 p-4 text-left">
+                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#9c7a3c]">
+                      Inaugural Luxury Journey
+                    </p>
+                    <p className="mt-2 text-base font-semibold tracking-[0.06em] text-zinc-900">
+                      September 4th, 2026
+                    </p>
+                    <p className="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+                      Only 8 curated guests
+                    </p>
+                  </div>
 
                   <label className="block text-left">
                     <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Have you visited Brazil before?</span>
