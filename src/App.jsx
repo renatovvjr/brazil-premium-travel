@@ -629,7 +629,7 @@ export default function App() {
 
               <div className="mt-6 space-y-4 text-sm text-zinc-700">
                 <p>WhatsApp: +61 470 289 562</p>
-                <p>curatedbrazil@gmail.com</p>
+                <p>hello@curatedbraziltravel.com</p>
               </div>
             </div>
 
@@ -679,7 +679,7 @@ export default function App() {
                 </a>
 
                 <a
-                  href="mailto:curatedbrazil@gmail.com"
+                  href="mailto:hello@curatedbraziltravel.com"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
                 >
                   <FaEnvelope size={15} />
