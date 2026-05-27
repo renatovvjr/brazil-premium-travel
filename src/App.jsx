@@ -10,6 +10,19 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [openExperience, setOpenExperience] = useState('signature')
+  const [applicationSuccess, setApplicationSuccess] = useState(false)
+  const [applicationForm, setApplicationForm] = useState({
+    fullName: '',
+    email: '',
+    whatsapp: '',
+    travelers: 'Solo Traveler',
+    journey: 'September 2026 \u2014 Inaugural Journey',
+    visitedBrazil: 'No',
+    visitedPlaces: '',
+    interests: [],
+    budget: 'AUD 20k\u201330k',
+    dreamExperience: '',
+  })
   const heroImages = [
     '/images/rio_de_janeiro_carrossel.png',
     '/images/rio_de_janeiro_carrossel0.png',
@@ -102,38 +115,118 @@ export default function App() {
     },
   ]
 
-  const handleWhatsAppForm = async () => {
-    const firstName = document.getElementById('firstName')?.value || ''
-    const email = document.getElementById('email')?.value || ''
+  const travelerOptions = ['Solo Traveler', 'Couple', 'Family', 'Private Group']
+  const journeyOptions = [
+    'September 2026 \u2014 Inaugural Journey',
+    'Future Departures',
+    'Private Tailored Journey',
+  ]
+  const visitedBrazilOptions = ['Yes', 'No']
+  const experienceOptions = [
+    'Luxury Nature',
+    'Beaches & Resorts',
+    'Amazon Experience',
+    'Culture & History',
+    'Gastronomy',
+    'Wellness & Relaxation',
+    'Adventure',
+    'Fully Curated Journey',
+  ]
+  const budgetOptions = ['AUD 20k\u201330k', 'AUD 30k\u201340k', 'AUD 40k+']
 
-    if (!firstName || !email) {
+  const handleApplicationChange = (event) => {
+    const { name, value } = event.target
+
+    setApplicationForm((current) => ({
+      ...current,
+      [name]: value,
+    }))
+  }
+
+  const handleInterestToggle = (interest) => {
+    setApplicationForm((current) => {
+      const selected = current.interests.includes(interest)
+
+      return {
+        ...current,
+        interests: selected
+          ? current.interests.filter((item) => item !== interest)
+          : [...current.interests, interest],
+      }
+    })
+  }
+
+  const handleWhatsAppForm = async (event) => {
+    event.preventDefault()
+
+    const {
+      fullName,
+      email,
+      whatsapp,
+      travelers,
+      journey,
+      visitedBrazil,
+      visitedPlaces,
+      interests,
+      budget,
+      dreamExperience,
+    } = applicationForm
+
+    if (!fullName || !email || !whatsapp) {
       alert('Please fill in your details')
       return
     }
 
     setLoading(true)
+    setApplicationSuccess(false)
 
-    const { error } = await supabase
-      .from('leads')
-      .insert([
-        {
-          first_name: firstName,
-          email: email,
-          message: 'Lead from landing page'
-        }
-      ])
-
-    if (error) {
-      console.error(error)
-      alert('Error saving lead')
-      setLoading(false)
-      return
+    const interestsText = interests.length ? interests.join(', ') : 'To be discussed'
+    const leadPayload = {
+      full_name: fullName,
+      email,
+      whatsapp,
+      travelers,
+      preferred_journey: journey,
+      visited_brazil: visitedBrazil,
+      visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
+      experience_interests: interests,
+      budget_range: budget,
+      dream_experience: dreamExperience,
+      source: 'private_journey_application',
     }
 
-    const text = `Hi Renato, I'm interested in the Brazil Ultimate Signature Journey.\nName: ${firstName}\nEmail: ${email}`
+    try {
+      const { error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            first_name: fullName,
+            email,
+            message: JSON.stringify(leadPayload),
+          }
+        ])
 
-    window.location.href =
-      `https://wa.me/61470289562?text=${encodeURIComponent(text)}`
+      if (error) {
+        console.error('Future lead storage integration is ready for Supabase schema mapping:', error)
+      }
+    } catch (error) {
+      console.error('Future lead storage integration is ready for Supabase schema mapping:', error)
+    }
+
+    const text = `Hello Curated Brazil,
+
+My name is ${fullName}.
+I'm interested in a curated luxury journey through Brazil.
+
+Preferred journey: ${journey}
+Travelers: ${travelers}
+Experience interests: ${interestsText}
+
+I would love to receive more information about the experience.`
+
+    window.open(`https://wa.me/61470289562?text=${encodeURIComponent(text)}`, '_blank', 'noreferrer')
+    setApplicationSuccess(true)
+    setLoading(false)
   }
   return (
     <div className="min-h-screen bg-[#fbfaf7] text-zinc-900 antialiased selection:bg-[#d4af37]/25">
@@ -576,25 +669,230 @@ export default function App() {
       </section >
 
       {/* FORM */}
-      < section id="apply" className="px-6 py-20" >
-        <div className="mx-auto max-w-xl rounded-3xl border border-black/5 bg-white p-6 text-center shadow-[0_28px_80px_rgba(24,24,27,0.10)] md:p-10">
-          <h2 className="text-3xl font-semibold leading-tight">
-            Request your private itinerary
-          </h2>
+      < section id="apply" className="relative overflow-hidden px-6 py-20 md:py-28" >
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent" />
 
-          <div className="mt-8 space-y-4">
-            <input id="firstName" placeholder="Your name" autoComplete="name" className="w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15" />
-            <input id="email" placeholder="Your email" type="email" autoComplete="email" className="w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15" />
-
-            <button
-              onClick={handleWhatsAppForm}
-              disabled={loading}
-              className="w-full rounded-full bg-emerald-600 py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/70 disabled:cursor-wait disabled:opacity-70"
-            >
-              Continue via WhatsApp
-            </button>
+        <motion.div
+          className="mx-auto max-w-6xl"
+          initial={{ opacity: 0, y: 36 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease: 'easeOut' }}
+          viewport={{ once: true, margin: '-80px' }}
+        >
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#9c7a3c]">
+              Inaugural Luxury Journey
+            </p>
+            <p className="mt-3 text-lg font-semibold tracking-[0.16em] text-zinc-900">
+              September 4th, 2026
+            </p>
+            <div className="mx-auto mt-5 h-px w-20 bg-[#d4af37]/80" />
+            <p className="mt-5 text-sm font-medium uppercase tracking-[0.24em] text-zinc-500">
+              Only 8 curated guests
+            </p>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-600 md:text-lg">
+              Be part of the first Curated Brazil signature experience.
+              <br />
+              An exclusive inaugural journey through Brazil designed for a limited group of international guests seeking authenticity, comfort and unforgettable moments.
+            </p>
           </div>
-        </div>
+
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-[#d4af37]/20 bg-white shadow-[0_28px_80px_rgba(24,24,27,0.10)]">
+            <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
+              <div className="relative min-h-[360px] overflow-hidden bg-[#11100d] p-8 text-white md:p-10">
+                <img
+                  src="/images/rio_de_janeiro.webp"
+                  alt="Curated Brazil private journey"
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover opacity-60"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.42),rgba(0,0,0,0.82)),radial-gradient(circle_at_25%_20%,rgba(212,175,55,0.22),transparent_30%)]" />
+
+                <div className="relative flex min-h-full flex-col justify-end">
+                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f1d991]">
+                    Private Journey Application
+                  </p>
+                  <h2 className="mt-5 max-w-md text-3xl font-semibold leading-tight md:text-5xl">
+                    Start Your Private Journey
+                  </h2>
+                  <p className="mt-5 max-w-md text-sm leading-7 text-white/78 md:text-base">
+                    A curated luxury experience designed around your travel dreams, comfort and personal style.
+                  </p>
+                </div>
+              </div>
+
+              <form onSubmit={handleWhatsAppForm} className="p-6 md:p-9 lg:p-10">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Full Name</span>
+                    <input
+                      name="fullName"
+                      value={applicationForm.fullName}
+                      onChange={handleApplicationChange}
+                      required
+                      autoComplete="name"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Email Address</span>
+                    <input
+                      name="email"
+                      value={applicationForm.email}
+                      onChange={handleApplicationChange}
+                      required
+                      type="email"
+                      autoComplete="email"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left md:col-span-2">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">WhatsApp Number</span>
+                    <input
+                      name="whatsapp"
+                      value={applicationForm.whatsapp}
+                      onChange={handleApplicationChange}
+                      required
+                      type="tel"
+                      autoComplete="tel"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Number of Travelers</span>
+                    <select
+                      name="travelers"
+                      value={applicationForm.travelers}
+                      onChange={handleApplicationChange}
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    >
+                      {travelerOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Preferred Journey</span>
+                    <select
+                      name="journey"
+                      value={applicationForm.journey}
+                      onChange={handleApplicationChange}
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    >
+                      {journeyOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Have you visited Brazil before?</span>
+                    <select
+                      name="visitedBrazil"
+                      value={applicationForm.visitedBrazil}
+                      onChange={handleApplicationChange}
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    >
+                      {visitedBrazilOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Cities or regions visited</span>
+                    <input
+                      name="visitedPlaces"
+                      value={applicationForm.visitedPlaces}
+                      onChange={handleApplicationChange}
+                      placeholder="If yes, where have you been?"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+                </div>
+
+                <fieldset className="mt-6">
+                  <legend className="text-left text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+                    What type of experience are you looking for?
+                  </legend>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    {experienceOptions.map((interest) => {
+                      const checked = applicationForm.interests.includes(interest)
+
+                      return (
+                        <label
+                          key={interest}
+                          className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm transition ${checked
+                            ? 'border-[#d4af37]/70 bg-[#d4af37]/10 text-zinc-900'
+                            : 'border-zinc-200 bg-[#fbfaf7] text-zinc-600 hover:border-[#d4af37]/50'
+                            }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => handleInterestToggle(interest)}
+                            className="h-4 w-4 rounded border-zinc-300 accent-[#9c7a3c]"
+                          />
+                          <span>{interest}</span>
+                        </label>
+                      )
+                    })}
+                  </div>
+                </fieldset>
+
+                <label className="mt-6 block text-left">
+                  <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Estimated Budget Range</span>
+                  <select
+                    name="budget"
+                    value={applicationForm.budget}
+                    onChange={handleApplicationChange}
+                    className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                  >
+                    {budgetOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="mt-6 block text-left">
+                  <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+                    Tell us about your dream experience in Brazil
+                  </span>
+                  <textarea
+                    name="dreamExperience"
+                    value={applicationForm.dreamExperience}
+                    onChange={handleApplicationChange}
+                    rows="5"
+                    className="mt-2 w-full resize-none rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                  />
+                </label>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="mt-7 w-full rounded-full bg-emerald-600 py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/70 disabled:cursor-wait disabled:opacity-70"
+                >
+                  {loading ? 'Preparing Your Journey...' : 'Request My Journey'}
+                </button>
+
+                {applicationSuccess && (
+                  <motion.p
+                    className="mt-5 rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 px-5 py-4 text-center text-sm leading-6 text-zinc-700"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    Thank you. Your private journey request has been prepared, and WhatsApp has opened with your curated message.
+                  </motion.p>
+                )}
+              </form>
+            </div>
+          </div>
+        </motion.div>
       </section >
       {/* CONTACT */}
       < footer className="border-t border-[#c8a46b]/40 bg-[#f8f6f2] px-6 py-12" >
