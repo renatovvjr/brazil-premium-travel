@@ -1,9 +1,20 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
+import { FaInstagram, FaWhatsapp, FaEnvelope, FaCheck } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
 import { Link } from 'react-router-dom'
 
+const getInitialApplicationForm = () => ({
+  fullName: '',
+  email: '',
+  whatsapp: '',
+  travelers: 'Solo Traveler',
+  visitedBrazil: 'No',
+  visitedPlaces: '',
+  interests: [],
+  budget: 'AUD 20k\u201330k',
+  dreamExperience: '',
+})
 
 export default function App() {
   const [loading, setLoading] = useState(false)
@@ -11,17 +22,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const [openExperience, setOpenExperience] = useState('signature')
   const [applicationSuccess, setApplicationSuccess] = useState(false)
-  const [applicationForm, setApplicationForm] = useState({
-    fullName: '',
-    email: '',
-    whatsapp: '',
-    travelers: 'Solo Traveler',
-    visitedBrazil: 'No',
-    visitedPlaces: '',
-    interests: [],
-    budget: 'AUD 20k\u201330k',
-    dreamExperience: '',
-  })
+  const [applicationForm, setApplicationForm] = useState(getInitialApplicationForm)
   const heroImages = [
     '/images/rio_de_janeiro_carrossel.png',
     '/images/rio_de_janeiro_carrossel0.png',
@@ -151,6 +152,11 @@ export default function App() {
     })
   }
 
+  const handleApplicationReset = () => {
+    setApplicationForm(getInitialApplicationForm())
+    setApplicationSuccess(false)
+  }
+
   const handleWhatsAppForm = async (event) => {
     event.preventDefault()
 
@@ -175,17 +181,20 @@ export default function App() {
     setApplicationSuccess(false)
 
     const interestsText = interests.length ? interests.join(', ') : 'To be discussed'
+    const submissionTimestamp = new Date().toISOString()
     const leadPayload = {
       full_name: fullName,
       email,
       whatsapp,
       travelers,
       preferred_journey: inauguralJourney,
+      journey_date: 'September 4th, 2026',
       visited_brazil: visitedBrazil,
       visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
       experience_interests: interests,
       budget_range: budget,
       dream_experience: dreamExperience,
+      submission_timestamp: submissionTimestamp,
       source: 'private_journey_application',
     }
 
@@ -217,6 +226,15 @@ Travelers: ${travelers}
 Experience interests: ${interestsText}
 
 I would love to receive more information about the experience.`
+
+    fetch('/api/send-application-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify(leadPayload),
+    }).catch((error) => {
+      console.error('Application email notification could not be sent:', error)
+    })
 
     window.open(`https://wa.me/61470289562?text=${encodeURIComponent(text)}`, '_blank', 'noreferrer')
     setApplicationSuccess(true)
@@ -715,7 +733,66 @@ I would love to receive more information about the experience.`
                 </div>
               </div>
 
-              <form onSubmit={handleWhatsAppForm} className="p-6 md:p-9 lg:p-10">
+              <AnimatePresence mode="wait">
+                {applicationSuccess ? (
+                  <motion.div
+                    key="application-success"
+                    className="flex min-h-full items-center p-6 md:p-9 lg:p-10"
+                    initial={{ opacity: 0, scale: 0.97, y: 12 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.98, y: 8 }}
+                    transition={{ duration: 0.45, ease: 'easeOut' }}
+                  >
+                    <div className="w-full rounded-[1.75rem] border border-[#d4af37]/25 bg-[#fbfaf7] px-6 py-8 text-center shadow-[0_22px_60px_rgba(24,24,27,0.08)] md:px-10 md:py-12">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af37]/35 bg-[#d4af37]/10 text-[#9c7a3c] shadow-[0_14px_35px_rgba(212,175,55,0.14)]">
+                        <FaCheck size={18} />
+                      </div>
+
+                      <p className="mt-7 text-xs font-medium uppercase tracking-[0.28em] text-[#9c7a3c]">
+                        APPLICATION RECEIVED
+                      </p>
+
+                      <h3 className="mt-4 text-3xl font-semibold leading-tight text-zinc-900 md:text-4xl">
+                        Your Journey Begins Here
+                      </h3>
+
+                      <div className="mx-auto mt-5 h-px w-16 bg-[#d4af37]/80" />
+
+                      <div className="mx-auto mt-6 max-w-xl space-y-5 text-sm leading-7 text-zinc-600 md:text-base md:leading-8">
+                        <p>
+                          Thank you for your interest in joining Curated Brazil's inaugural luxury journey.
+                        </p>
+                        <p>
+                          Our team will carefully review your application and contact you with the next steps.
+                        </p>
+                        <p>
+                          You are now one step closer to experiencing Brazil through a private collection of unforgettable moments, authentic connections and extraordinary destinations.
+                        </p>
+                      </div>
+
+                      <p className="mx-auto mt-7 max-w-xl rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 px-5 py-4 text-sm font-medium leading-7 text-zinc-700">
+                        Selected guests will receive personalised communication by email and WhatsApp regarding availability, planning and journey details.
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={handleApplicationReset}
+                        className="mt-8 w-full rounded-full bg-emerald-600 py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/70"
+                      >
+                        I Can't Wait to Begin
+                      </button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="application-form"
+                    onSubmit={handleWhatsAppForm}
+                    className="p-6 md:p-9 lg:p-10"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
                 <div className="grid gap-4 md:grid-cols-2">
                   <label className="block text-left">
                     <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Full Name</span>
@@ -871,17 +948,9 @@ I would love to receive more information about the experience.`
                   {loading ? 'Preparing Your Journey...' : 'Request My Journey'}
                 </button>
 
-                {applicationSuccess && (
-                  <motion.p
-                    className="mt-5 rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 px-5 py-4 text-center text-sm leading-6 text-zinc-700"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35 }}
-                  >
-                    Thank you. Your private journey request has been prepared, and WhatsApp has opened with your curated message.
-                  </motion.p>
+                  </motion.form>
                 )}
-              </form>
+              </AnimatePresence>
             </div>
           </div>
         </motion.div>
