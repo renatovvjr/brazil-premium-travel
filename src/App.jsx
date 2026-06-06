@@ -1124,6 +1124,9 @@ I would love to receive more information about the experience.`
                 <a href="#apply" className="block transition hover:text-[#9c7a3c]">
                   Start Your Journey
                 </a>
+                <Link to="/workspace" className="block text-xs uppercase tracking-[0.18em] text-zinc-500 transition hover:text-[#9c7a3c]">
+                  Workspace
+                </Link>
               </div>
             </div>
 
