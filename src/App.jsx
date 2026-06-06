@@ -466,7 +466,7 @@ I would love to receive more information about the experience.`
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 md:text-xl">
-              A 25-day premium experience designed for comfort, safety and unforgettable moments.
+              A 28-day premium experience designed for comfort, safety and unforgettable moments.
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
