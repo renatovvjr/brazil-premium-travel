@@ -46,6 +46,7 @@ export default function Workspace() {
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
   const [accessDenied, setAccessDenied] = useState(false)
+  const [authorizing, setAuthorizing] = useState(false)
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [loginError, setLoginError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -86,14 +87,26 @@ export default function Workspace() {
     const verifyAdmin = async () => {
       if (!session?.user?.id) return
 
-      setLoading(true)
+      setAuthorizing(true)
+      console.group('Workspace authorization')
+      console.log('authenticated user object:', session.user)
+      console.log('user.id:', session.user.id)
+
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, role, full_name, email')
+        .select('id, role')
         .eq('id', session.user.id)
         .maybeSingle()
 
-      if (error || data?.role !== 'admin') {
+      const isAdmin = !error && data?.role === 'admin'
+
+      console.log('profile record returned from public.profiles:', data)
+      console.log('profile query error:', error)
+      console.log('role value:', data?.role)
+      console.log('authorization decision:', isAdmin ? 'granted' : 'denied')
+      console.groupEnd()
+
+      if (!isAdmin) {
         setAccessDenied(true)
         setProfile(null)
       } else {
@@ -101,7 +114,7 @@ export default function Workspace() {
         setProfile(data)
       }
 
-      setLoading(false)
+      setAuthorizing(false)
     }
 
     verifyAdmin()
@@ -289,6 +302,16 @@ export default function Workspace() {
               </Link>
             </div>
           </form>
+        </div>
+      </WorkspaceShell>
+    )
+  }
+
+  if (authorizing || (session && !profile && !accessDenied)) {
+    return (
+      <WorkspaceShell>
+        <div className="flex min-h-screen items-center justify-center text-sm uppercase tracking-[0.24em] text-[#9c7a3c]">
+          Verifying private access...
         </div>
       </WorkspaceShell>
     )
