@@ -355,7 +355,6 @@ I would love to receive more information about the experience.`
       console.error('Application email notification could not be sent:', error)
     })
 
-    window.open(`https://wa.me/61470289562?text=${encodeURIComponent(text)}`, '_blank', 'noreferrer')
     setApplicationSuccess(true)
     setLoading(false)
   }
