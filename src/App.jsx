@@ -16,8 +16,20 @@ const getInitialApplicationForm = () => ({
   dreamExperience: '',
 })
 
+const getInitialWhatsAppLeadForm = () => ({
+  fullName: '',
+  email: '',
+  countryOfResidence: '',
+  city: '',
+  birthDate: '',
+  referralSource: '',
+})
+
 export default function App() {
   const [loading, setLoading] = useState(false)
+  const [whatsAppLeadLoading, setWhatsAppLeadLoading] = useState(false)
+  const [whatsAppLeadModalOpen, setWhatsAppLeadModalOpen] = useState(false)
+  const [whatsAppLeadForm, setWhatsAppLeadForm] = useState(getInitialWhatsAppLeadForm)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [openExperience, setOpenExperience] = useState('signature')
@@ -129,6 +141,34 @@ export default function App() {
     'Fully Curated Journey',
   ]
   const budgetOptions = ['AUD 20k\u201330k', 'AUD 30k\u201340k', 'AUD 40k+']
+  const referralOptions = [
+    'Instagram',
+    'Facebook',
+    'Google Search',
+    'Friend Recommendation',
+    'Travel Agent',
+    'Other',
+  ]
+  const whatsAppWelcomeMessage = `Welcome to Curated Brazil! 🇧🇷✨
+
+Thank you for reaching out.
+
+We are delighted by your interest in discovering Brazil through carefully curated and unforgettable experiences.
+
+This WhatsApp channel is dedicated to providing personalized assistance. Whether you have questions about our journeys, destinations, accommodations, activities, or would simply like to discuss your travel plans, our team will be happy to assist you personally.
+
+If you are interested in joining our exclusive Brazil Signature Journey, we invite you to complete our application form at:
+
+🌎 www.curatedbraziltravel.com
+
+Once submitted, we will carefully review your preferences and contact you with more details about the experience.
+
+We look forward to helping you create a truly remarkable journey through Brazil.
+
+Warm regards,
+
+Curated Brazil
+Luxury Travel Experiences`
 
   const handleApplicationChange = (event) => {
     const { name, value } = event.target
@@ -155,6 +195,74 @@ export default function App() {
   const handleApplicationReset = () => {
     setApplicationForm(getInitialApplicationForm())
     setApplicationSuccess(false)
+  }
+
+  const handleWhatsAppLeadChange = (event) => {
+    const { name, value } = event.target
+
+    setWhatsAppLeadForm((current) => ({
+      ...current,
+      [name]: value,
+    }))
+  }
+
+  const openWhatsAppLeadModal = () => {
+    setMobileMenuOpen(false)
+    setWhatsAppLeadModalOpen(true)
+  }
+
+  const closeWhatsAppLeadModal = () => {
+    if (!whatsAppLeadLoading) {
+      setWhatsAppLeadModalOpen(false)
+    }
+  }
+
+  const handleWhatsAppLeadSubmit = async (event) => {
+    event.preventDefault()
+
+    const {
+      fullName,
+      email,
+      countryOfResidence,
+      city,
+      birthDate,
+      referralSource,
+    } = whatsAppLeadForm
+
+    if (!fullName || !email || !countryOfResidence) {
+      alert('Please fill in your details')
+      return
+    }
+
+    setWhatsAppLeadLoading(true)
+
+    try {
+      const { error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            full_name: fullName,
+            email,
+            country_of_residence: countryOfResidence,
+            city: city || null,
+            birth_date: birthDate || null,
+            referral_source: referralSource || null,
+            source: 'whatsapp_consultation',
+            created_at: new Date().toISOString(),
+          },
+        ])
+
+      if (error) {
+        console.error('WhatsApp consultation lead could not be saved:', error)
+      }
+    } catch (error) {
+      console.error('WhatsApp consultation lead could not be saved:', error)
+    }
+
+    window.open(`https://wa.me/61470289562?text=${encodeURIComponent(whatsAppWelcomeMessage)}`, '_blank', 'noreferrer')
+    setWhatsAppLeadLoading(false)
+    setWhatsAppLeadModalOpen(false)
+    setWhatsAppLeadForm(getInitialWhatsAppLeadForm())
   }
 
   const handleWhatsAppForm = async (event) => {
@@ -200,20 +308,31 @@ export default function App() {
 
     try {
       const { error } = await supabase
-        .from('leads')
+        .from('luxury_applications')
         .insert([
           {
-            first_name: fullName,
+            full_name: fullName,
             email,
-            message: JSON.stringify(leadPayload),
-          }
+            whatsapp,
+            travelers,
+            preferred_journey: inauguralJourney,
+            journey_date: 'September 4th, 2026',
+            visited_brazil: visitedBrazil,
+            visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
+            experience_interests: interests,
+            budget_range: budget,
+            dream_experience: dreamExperience,
+            submission_timestamp: submissionTimestamp,
+            source: 'private_journey_application',
+            created_at: submissionTimestamp,
+          },
         ])
 
       if (error) {
-        console.error('Future lead storage integration is ready for Supabase schema mapping:', error)
+        console.error('Luxury application could not be saved:', error)
       }
     } catch (error) {
-      console.error('Future lead storage integration is ready for Supabase schema mapping:', error)
+      console.error('Luxury application could not be saved:', error)
     }
 
     const text = `Hello Curated Brazil,
@@ -529,7 +648,6 @@ I would love to receive more information about the experience.`
             {pricingExperiences.map((experience, index) => {
               const isOpen = openExperience === experience.id
               const detailsId = `${experience.id}-details`
-              const whatsappHref = `https://wa.me/61470289562?text=${encodeURIComponent(experience.whatsappMessage)}`
 
               return (
                 <motion.article
@@ -607,14 +725,13 @@ I would love to receive more information about the experience.`
                       </AnimatePresence>
                     </div>
 
-                    <a
-                      href={whatsappHref}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      type="button"
+                      onClick={openWhatsAppLeadModal}
                       className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#d4af37] px-7 py-3.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_20px_55px_rgba(212,175,55,0.22)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-[#f0d57e] hover:shadow-[0_24px_70px_rgba(212,175,55,0.32)] focus-visible:ring-2 focus-visible:ring-[#f6e7bd]"
                     >
                       Join the Waitlist
-                    </a>
+                    </button>
                   </div>
                 </motion.article>
               )
@@ -1028,14 +1145,14 @@ I would love to receive more information about the experience.`
                   <FaInstagram size={16} />
                 </a>
 
-                <a
-                  href="https://wa.me/61470289562"
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={openWhatsAppLeadModal}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
+                  aria-label="Open WhatsApp consultation"
                 >
                   <FaWhatsapp size={16} />
-                </a>
+                </button>
 
                 <a
                   href="mailto:hello@curatedbraziltravel.com"
@@ -1056,19 +1173,148 @@ I would love to receive more information about the experience.`
 
         </div>
       </footer >
+      <AnimatePresence>
+        {whatsAppLeadModalOpen && (
+          <motion.div
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="whatsapp-consultation-title"
+          >
+            <motion.div
+              className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-[#d4af37]/25 bg-[#fbfaf7] shadow-[0_28px_90px_rgba(0,0,0,0.35)]"
+              initial={{ opacity: 0, scale: 0.96, y: 18 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97, y: 12 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+            >
+              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent" />
+              <button
+                type="button"
+                onClick={closeWhatsAppLeadModal}
+                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-[#d4af37]/30 bg-white/70 text-zinc-700 outline-none transition hover:border-[#d4af37] hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-[#d4af37]/70"
+                aria-label="Close consultation form"
+              >
+                ×
+              </button>
+
+              <div className="border-b border-[#d4af37]/20 bg-[#11100d] px-6 py-8 text-white md:px-9">
+                <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f1d991]">
+                  Curated Brazil
+                </p>
+                <h2 id="whatsapp-consultation-title" className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">
+                  Private Travel Consultation
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-white/76 md:text-base">
+                  Please tell us a little about yourself before connecting with a Curated Brazil Travel Specialist.
+                </p>
+              </div>
+
+              <form onSubmit={handleWhatsAppLeadSubmit} className="p-6 md:p-9">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="block text-left md:col-span-2">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Full Name</span>
+                    <input
+                      name="fullName"
+                      value={whatsAppLeadForm.fullName}
+                      onChange={handleWhatsAppLeadChange}
+                      required
+                      autoComplete="name"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Email Address</span>
+                    <input
+                      name="email"
+                      value={whatsAppLeadForm.email}
+                      onChange={handleWhatsAppLeadChange}
+                      required
+                      type="email"
+                      autoComplete="email"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Country of Residence</span>
+                    <input
+                      name="countryOfResidence"
+                      value={whatsAppLeadForm.countryOfResidence}
+                      onChange={handleWhatsAppLeadChange}
+                      required
+                      autoComplete="country-name"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">City</span>
+                    <input
+                      name="city"
+                      value={whatsAppLeadForm.city}
+                      onChange={handleWhatsAppLeadChange}
+                      autoComplete="address-level2"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">Date of Birth</span>
+                    <input
+                      name="birthDate"
+                      value={whatsAppLeadForm.birthDate}
+                      onChange={handleWhatsAppLeadChange}
+                      type="date"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    />
+                  </label>
+
+                  <label className="block text-left md:col-span-2">
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">How did you hear about Curated Brazil?</span>
+                    <select
+                      name="referralSource"
+                      value={whatsAppLeadForm.referralSource}
+                      onChange={handleWhatsAppLeadChange}
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    >
+                      <option value="">Select an option</option>
+                      {referralOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={whatsAppLeadLoading}
+                  className="mt-7 w-full rounded-full bg-[#d4af37] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_18px_45px_rgba(212,175,55,0.24)] outline-none transition hover:bg-[#f0d57e] focus-visible:ring-2 focus-visible:ring-[#d4af37]/70 disabled:cursor-wait disabled:opacity-70"
+                >
+                  {whatsAppLeadLoading ? 'Connecting...' : 'Continue to WhatsApp'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* FLOATING WHATSAPP */}
-      <a
-        href="https://wa.me/61470289562"
-        target="_blank"
-        rel="noreferrer"
+      <button
+        type="button"
+        onClick={openWhatsAppLeadModal}
         className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-[#25D366] px-5 py-4 text-white shadow-[0_10px_35px_rgba(37,211,102,0.35)] transition duration-300 hover:scale-105 hover:shadow-[0_15px_45px_rgba(37,211,102,0.45)]"
+        aria-label="Open WhatsApp consultation"
       >
         <FaWhatsapp size={24} />
 
         <span className="hidden text-sm font-medium md:block">
           Chat with us
         </span>
-      </a>
+      </button>
     </div >
   )
 }
