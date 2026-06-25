@@ -166,7 +166,7 @@ Before deploying, configure the same environment variables from `.env.local` in 
 
 ## Author
 
-Developed by **Renato Vieira**.
+Developed by **Renato Valle**.
 
 If you found this project interesting, consider leaving a star on the repository.
 

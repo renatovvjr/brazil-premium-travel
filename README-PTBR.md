@@ -164,7 +164,7 @@ Antes do deploy, configure no painel da Vercel as mesmas variáveis presentes no
 
 ## Autor
 
-Desenvolvido por **Renato Vieira**.
+Desenvolvido por **Renato Valle**.
 
 Se este projeto chamou sua atenção, fique à vontade para deixar uma estrela no repositório.
 
