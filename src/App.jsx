@@ -128,7 +128,7 @@ export default function App() {
   ]
 
   const travelerOptions = ['Solo Traveler', 'Couple', 'Family', 'Private Group']
-  const inauguralJourney = 'September 2026 \u2014 Inaugural Journey'
+  const inauguralJourney = 'To be defined \u2014 Inaugural Journey'
   const visitedBrazilOptions = ['Yes', 'No']
   const experienceOptions = [
     'Luxury Nature',
@@ -296,7 +296,7 @@ Luxury Travel Experiences`
       whatsapp,
       travelers,
       preferred_journey: inauguralJourney,
-      journey_date: 'September 4th, 2026',
+      journey_date: 'To be defined',
       visited_brazil: visitedBrazil,
       visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
       experience_interests: interests,
@@ -316,7 +316,7 @@ Luxury Travel Experiences`
             whatsapp,
             travelers,
             preferred_journey: inauguralJourney,
-            journey_date: 'September 4th, 2026',
+            journey_date: 'To be defined',
             visited_brazil: visitedBrazil,
             visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
             experience_interests: interests,
@@ -635,7 +635,7 @@ I would love to receive more information about the experience.`
         >
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#d4af37]">
-              Limited departures • Small curated group • September 2026
+              Limited departures • Small curated group • To be defined
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-balance md:text-5xl">
               Choose Your Experience
@@ -812,7 +812,7 @@ I would love to receive more information about the experience.`
               Inaugural Luxury Journey
             </p>
             <p className="mt-3 text-lg font-semibold tracking-[0.16em] text-zinc-900">
-              September 4th, 2026
+              To be defined
             </p>
             <div className="mx-auto mt-5 h-px w-20 bg-[#d4af37]/80" />
             <p className="mt-5 text-sm font-medium uppercase tracking-[0.24em] text-zinc-500">
@@ -967,7 +967,7 @@ I would love to receive more information about the experience.`
                       Inaugural Luxury Journey
                     </p>
                     <p className="mt-2 text-base font-semibold tracking-[0.06em] text-zinc-900">
-                      September 4th, 2026
+                      To be defined
                     </p>
                     <p className="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
                       Only 8 curated guests
