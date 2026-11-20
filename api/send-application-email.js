@@ -63,7 +63,7 @@ export default async function handler(req, res) {
     ['Email Address', formatValue(application.email)],
     ['WhatsApp Number', formatValue(application.whatsapp)],
     ['Number of Travelers', formatValue(application.travelers)],
-    ['Journey Date', 'September 4th, 2026'],
+    ['Journey Date', 'To be confirmed'],
     ['Previous Brazil Experience', formatValue(application.visited_brazil)],
     ['Cities or Regions Visited', formatValue(application.visited_places)],
     ['Selected Experience Types', formatValue(application.experience_interests, 'To be discussed')],
@@ -119,7 +119,7 @@ export default async function handler(req, res) {
 
 Thank you for your interest in Curated Brazil.
 
-We have received your application for our inaugural luxury journey departing on September 4th, 2026.
+We have received your application for our inaugural luxury journey departing on To be confirmed.
 
 Our team is now carefully reviewing your preferences and travel aspirations. Over the next few days, we will contact you to discuss the next steps of your personalized experience.
 
@@ -156,7 +156,7 @@ www.curatedbraziltravel.com`
 
                     <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Thank you for your interest in Curated Brazil.</p>
 
-                    <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">We have received your application for our inaugural luxury journey departing on <strong style="color:#18181b;">September 4th, 2026</strong>.</p>
+                    <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">We have received your application for our inaugural luxury journey departing on <strong style="color:#18181b;">To be confirmed</strong>.</p>
 
                     <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Our team is now carefully reviewing your preferences and travel aspirations. Over the next few days, we will contact you to discuss the next steps of your personalized experience.</p>
 

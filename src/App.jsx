@@ -259,7 +259,7 @@ Luxury Travel Experiences`
       console.error('WhatsApp consultation lead could not be saved:', error)
     }
 
-    window.open(`https://wa.me/61470289562?text=${encodeURIComponent(whatsAppWelcomeMessage)}`, '_blank', 'noreferrer')
+    window.open(`https://wa.me/61467652458?text=${encodeURIComponent(whatsAppWelcomeMessage)}`, '_blank', 'noreferrer')
     setWhatsAppLeadLoading(false)
     setWhatsAppLeadModalOpen(false)
     setWhatsAppLeadForm(getInitialWhatsAppLeadForm())
@@ -1103,7 +1103,7 @@ I would love to receive more information about the experience.`
               </h4>
 
               <div className="mt-6 space-y-4 text-sm text-zinc-700">
-                <p>WhatsApp: +61 470 289 562</p>
+                <p>WhatsApp: +61 467 652 458</p>
                 <p>hello@curatedbraziltravel.com</p>
               </div>
             </div>
