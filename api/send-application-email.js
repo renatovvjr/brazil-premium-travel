@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 const recipientEmail = 'hello@curatedbraziltravel.com'
 const fromEmail = process.env.RESEND_FROM_EMAIL || 'Curated Brazil <onboarding@resend.dev>'
 
@@ -41,6 +39,10 @@ const parseBody = (body) => {
 }
 
 export default async function handler(req, res) {
+  if (process.env.VERCEL_ENV !== 'production') {
+    return res.status(403).json({ error: 'Email delivery is disabled outside Production' })
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed' })
@@ -49,6 +51,8 @@ export default async function handler(req, res) {
   if (!process.env.RESEND_API_KEY) {
     return res.status(500).json({ error: 'Email delivery is not configured' })
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY)
 
   let application
 
