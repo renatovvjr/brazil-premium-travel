@@ -15,6 +15,8 @@ export const carnavalImageMap = {
   rioStreet: variants('Carnaval Vibrante Sob o Pão de Açúcar rio de janeiro.png', 'carnaval-vibrante-sob-o-pao-de-acucar-rio-de-janeiro'),
   rioFriends: variants('Amigas no Carnaval no Sambódromo rio de janeiro.png', 'amigas-no-carnaval-no-sambodromo-rio-de-janeiro'),
   rioParade: variants('caranaval_sambodromo_Riodejaneiro.jpg', 'caranaval-sambodromo-riodejaneiro'),
+  rioHospitality: variants('camarote-rj.jpg', 'camarote-rj'),
+  rioHospitalityView: variants('camarote-rj1.jpg', 'camarote-rj1'),
   olindaTop: variants('foto_olinda_topo.jpg', 'foto-olinda-topo'),
   olindaGiants: variants('Carnaval de Bonecos Gigantes em Olinda.png', 'carnaval-de-bonecos-gigantes-em-olinda'),
   olindaUmbrellas: variants('carnaval_minisombrinha_olinda.jpg', 'carnaval-minisombrinha-olinda'),
@@ -29,6 +31,8 @@ export const carnavalImageMap = {
   salvadorTrio: variants('Carnaval noturno com trio elétrico Chiclete salvador.png', 'carnaval-noturno-com-trio-eletrico-chiclete-salvador'),
   salvadorDrums: variants('Cortejo noturno de tambores afro-brasileiros salvador.png', 'cortejo-noturno-de-tambores-afro-brasileiros-salvador'),
   salvadorFarol: variants('Carnaval Vibrante no Largo do Farol salvador.png', 'carnaval-vibrante-no-largo-do-farol-salvador'),
+  salvadorStreets: variants('ruas-salvador.jpg', 'ruas-salvador'),
+  salvadorBloco: variants('bloco-salvador.jpg', 'bloco-salvador'),
 }
 
 export const carnavalDestinations = {
@@ -55,6 +59,16 @@ export const carnavalDestinations = {
       'Street-bloco atmosphere across Rio’s neighbourhoods, with arrangements shaped around current conditions',
       'Time for iconic landscapes, beaches and viewpoints beyond the Carnaval programme',
     ],
+    premiumExperience: {
+      eyebrow: 'Premium Sambódromo hospitality',
+      title: 'A front-row feeling, with space to celebrate in comfort.',
+      copy: 'The collection is designed around a premium way to experience the parade — combining elevated views, hospitality, comfort and the extraordinary atmosphere of the Sambódromo.',
+      note: 'These photographs illustrate the category of premium Carnaval hospitality. They do not identify a confirmed venue, supplier or contracted experience.',
+      images: [
+        { image: carnavalImageMap.rioHospitality, alt: 'Premium hospitality overlooking a Sambódromo parade', label: 'Hospitality and parade views' },
+        { image: carnavalImageMap.rioHospitalityView, alt: 'Guests watching a samba parade from an elevated hospitality area', label: 'An elevated Carnaval perspective' },
+      ],
+    },
     gallery: [
       { image: carnavalImageMap.rioStreet, alt: 'Carnaval celebration with Sugarloaf Mountain in Rio', label: 'Street energy' },
       { image: carnavalImageMap.rioFriends, alt: 'Friends celebrating at the Sambódromo', label: 'Shared emotion' },
@@ -148,9 +162,9 @@ export const carnavalDestinations = {
       'Pelourinho, the historic centre and coastal landscapes beyond the principal circuits',
     ],
     gallery: [
-      { image: carnavalImageMap.salvadorTrio, alt: 'Night-time trio elétrico in Salvador', label: 'Trio elétrico' },
+      { image: carnavalImageMap.salvadorStreets, alt: 'Colourful historic architecture in Salvador', label: 'Architecture & heritage' },
+      { image: carnavalImageMap.salvadorBloco, alt: 'A trio elétrico moving through the Salvador Carnaval crowd', label: 'Carnaval in the streets' },
       { image: carnavalImageMap.salvadorDrums, alt: 'Afro-Brazilian drum procession in Salvador', label: 'Blocos afro' },
-      { image: carnavalImageMap.salvadorFarol, alt: 'Carnaval celebration at Farol da Barra', label: 'Atlantic circuit' },
     ],
   },
 }
@@ -158,39 +172,42 @@ export const carnavalDestinations = {
 export const carnavalDestinationOrder = ['rio', 'olinda', 'minas', 'salvador']
 
 export const carnavalCommercial = {
-  priceStatus: 'Price on Enquiry',
+  priceStatus: 'Indicative pricing · twin-share · international flights excluded',
+  priceNote: 'Indicative pricing based on twin-share accommodation. Final quotations depend on availability, travel arrangements and selected options.',
   flightOptions: [
     {
       id: 'with-international-flights',
-      label: 'Option A — With International Flights',
-      description: 'Includes round-trip international flights from the quoted departure city, all scheduled domestic flights, accommodation and the other included services.',
+      label: 'Include return international flights',
+      description: 'Request a quotation including return international flights from your nominated departure city or airport. The international airfare is quoted individually and is not calculated automatically.',
     },
     {
       id: 'without-international-flights',
-      label: 'Option B — Without International Flights',
-      description: 'Travellers arrange their own international flights. All scheduled domestic flights, airport transfers, accommodation and the other included services remain included.',
+      label: 'Exclude international flights',
+      description: 'Arrange your own international flights. Every scheduled domestic flight in the itinerary remains included in the package.',
     },
   ],
   occupancyOptions: [
-    { label: 'Price per person — Double/Twin Occupancy', value: 'Price on Enquiry' },
-    { label: 'Price per person — Single Occupancy', value: 'Price on Enquiry' },
-    { label: 'Private Group Enquiry — 3 or more travellers', value: 'Price on Enquiry' },
+    { label: 'Double / Twin Share', value: 'Basis of the indicative price' },
+    { label: 'Single Occupancy', value: 'Quoted separately on request' },
   ],
   inclusions: [
-    'Four- and five-star hotel accommodation',
-    'Daily hotel breakfast',
-    'Selected regional gastronomic experiences',
-    'All scheduled domestic flights',
-    'Scheduled airport and activity transfers',
-    'Private ground transportation for planned group activities',
-    'Dedicated bilingual Tour Leader',
-    'Local guides when required',
-    'Planned premium Sambódromo experience prioritising parade visibility, open bar, gastronomy, comfort and additional entertainment',
+    'Carefully selected 4-star hotels, standard rooms and daily breakfast.',
+    'All domestic flights included.',
+    'Airport meet-and-greet and transfers.',
+    'Private executive transportation during scheduled activities.',
+    'Dedicated bilingual Tour Leader throughout the journey.',
+    'Dedicated group security support.',
+    'Daily premium group dining experiences, featuring carefully selected restaurants and authentic Brazilian cuisine.',
+    'Premium Carnaval hospitality in Rio de Janeiro.',
+    'Cultural experiences, sightseeing and guided activities according to the itinerary.',
+    'Curated Brazil Travel welcome kit, including branded cap, beach backpack and Carnaval-style shirt.',
   ],
+  salvadorInclusion: 'Premium Carnaval hospitality in Salvador.',
   exclusions: [
-    'International flights when travelling under Option B',
-    'Experiences identified as optional or requested outside the final agreed itinerary',
-    'Any service not expressly listed in the final written proposal',
+    'International flights unless specifically requested and included in the final quotation.',
+    'Single-occupancy supplements unless included in the final quotation.',
+    'Personal expenses, travel insurance and services not expressly listed in the final written proposal.',
+    'Experiences identified as optional or requested outside the final agreed itinerary.',
   ],
   arrivalAndDeparture: [
     'São Paulo is the mandatory international arrival and group meeting point.',
@@ -198,18 +215,20 @@ export const carnavalCommercial = {
     'Airport reception must be coordinated around each traveller’s confirmed flight arrival time.',
     'Scheduled departure airport transfers are included for the international departure on 14 February 2027.',
   ],
+  assistanceNotice: 'Optional location sharing may be offered solely as a voluntary travel-assistance feature and only with each guest’s consent. Continuous tracking is not promised or required.',
   supplierNotice: 'Hotels, flights, transfers, guides, hospitality areas and all premium experiences remain subject to supplier confirmation and availability. Published itineraries describe the intended programme and do not represent confirmed reservations.',
 }
 
 export const carnavalPackages = [
   {
     id: 'grand-journey', path: '/carnaval/grand-journey', title: 'Grand Carnaval Journey', tier: 'Ultra Premium',
-    dates: '28 January – 14 February 2027', duration: '18 days / 17 nights', price: 'Price on Enquiry', maxTravelers: 12,
+    dates: '28 January – 14 February 2027', duration: '18 days / 17 nights', price: 'Indicative price from AUD $19,900 per person', maxTravelers: 12,
     hero: carnavalImageMap.collectionHero, cardImage: carnavalImageMap.olindaTop.card,
     summary: 'Our most expansive Carnaval collection concept, moving from Brazil’s sophisticated urban gateway to the country’s most distinctive celebrations, cultural capitals and coastline.',
-    destinations: ['São Paulo', 'Recife & Olinda', 'Belo Horizonte & Ouro Preto', 'Rio de Janeiro', 'Salvador & Bahia coast'],
+    destinations: ['São Paulo', 'Recife', 'Olinda', 'Belo Horizonte', 'Ouro Preto', 'Rio de Janeiro', 'Salvador'],
     route: ['São Paulo', 'Recife / Olinda', 'Belo Horizonte / Ouro Preto', 'Rio de Janeiro', 'Salvador', 'São Paulo'],
     arrivalDate: '28 January 2027',
+    includesSalvadorHospitality: true,
     editorialDestinations: ['olinda', 'minas', 'rio', 'salvador'],
     highlights: [
       'A proposed immersion in Pernambuco’s pre-Carnaval atmosphere, frevo traditions and historic streets',
@@ -246,12 +265,13 @@ export const carnavalPackages = [
   },
   {
     id: 'rio-bahia', path: '/carnaval/rio-bahia', title: 'Rio & Bahia Carnaval Escape', tier: 'Premium',
-    dates: '1–14 February 2027', duration: '14 days / 13 nights', price: 'Price on Enquiry', maxTravelers: 8,
+    dates: '1–14 February 2027', duration: '14 days / 13 nights', price: 'Indicative price from AUD $18,900 per person', maxTravelers: 8,
     hero: carnavalImageMap.salvadorTop, cardImage: carnavalImageMap.salvadorTrio.card,
     summary: 'A high-energy pairing of Rio and Bahia, framed by a sophisticated São Paulo arrival and a restorative finish on Brazil’s tropical coast.',
-    destinations: ['São Paulo', 'Salvador & Bahia coast', 'Rio de Janeiro'],
+    destinations: ['São Paulo', 'Salvador', 'Rio de Janeiro'],
     route: ['São Paulo', 'Salvador', 'Rio de Janeiro', 'São Paulo'],
     arrivalDate: '1 February 2027',
+    includesSalvadorHospitality: true,
     editorialDestinations: ['rio', 'salvador'],
     highlights: [
       'A composed São Paulo arrival before the Carnaval programme begins',
@@ -279,12 +299,13 @@ export const carnavalPackages = [
   },
   {
     id: 'rio-minas', path: '/carnaval/rio-minas', title: 'Rio & Minas Carnaval Heritage', tier: 'Premium',
-    dates: '1–14 February 2027', duration: '14 days / 13 nights', price: 'Price on Enquiry', maxTravelers: 8,
+    dates: '1–14 February 2027', duration: '14 days / 13 nights', price: 'Indicative price from AUD $16,990 per person', maxTravelers: 8,
     hero: carnavalImageMap.beloHorizonteTop, cardImage: carnavalImageMap.ouroPretoTop.card,
     summary: 'An expressive journey from Rio’s world-famous Carnaval to the architecture, flavours and living cultural traditions of Minas Gerais.',
-    destinations: ['São Paulo', 'Belo Horizonte & Ouro Preto', 'Rio de Janeiro'],
+    destinations: ['São Paulo', 'Belo Horizonte', 'Ouro Preto', 'Rio de Janeiro'],
     route: ['São Paulo', 'Belo Horizonte / Ouro Preto', 'Rio de Janeiro', 'São Paulo'],
     arrivalDate: '1 February 2027',
+    includesSalvadorHospitality: false,
     editorialDestinations: ['rio', 'minas'],
     highlights: [
       'A refined São Paulo opening with a contemporary Brazilian perspective',

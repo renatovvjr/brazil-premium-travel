@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CalendarDays, Clock3, MapPin, Sparkles, Users } from 'lucide-react'
+import { CalendarDays, Clock3, MapPin, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export const reveal = {
@@ -17,9 +17,7 @@ export function CarnavalNav({ dark = true }) {
     <nav className={`absolute inset-x-0 top-0 z-40 border-b ${dark ? 'border-white/10 text-white' : 'border-[#0a1730]/10 text-[#07152d]'}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8">
         <Link to="/carnaval" className="group flex min-w-0 items-center gap-3" onClick={() => setMenuOpen(false)}>
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d7b866]/45 bg-[#d7b866]/10 text-[#d7b866]">
-            <Sparkles size={18} />
-          </span>
+          <img src="/images/logo-premium.png" alt="Curated Brazil Travel" className="h-11 w-11 shrink-0 rounded-xl border border-[#d7b866]/35 object-cover shadow-[0_8px_24px_rgba(0,0,0,0.24)]" />
           <span className="min-w-0">
             <span className="block text-[0.68rem] font-medium uppercase tracking-[0.32em] opacity-70">Curated Brazil</span>
             <span className="block text-xs font-semibold tracking-[0.08em] sm:text-sm sm:tracking-[0.12em]">Carnaval Collection 2027</span>
@@ -96,24 +94,32 @@ export function JourneyMeta({ item, light = false }) {
 
 export function ConsultationBlock({ compact = false }) {
   return (
-    <section id="consultation" className={`${compact ? 'py-20' : 'py-24 md:py-32'} bg-[#07152d] px-5 text-white md:px-8`}>
+    <section id="consultation" className={`${compact ? 'py-16' : 'py-20 md:py-24'} bg-[#07152d] px-5 text-white md:px-8`}>
       <motion.div {...reveal} className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-[#d7b866]/25 bg-[radial-gradient(circle_at_top_right,rgba(192,38,123,0.24),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.025))] p-7 shadow-[0_30px_100px_rgba(0,0,0,0.28)] md:p-12">
         <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-end">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#e2c97f]">Private consultation</p>
-            <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">Registering interest will open shortly.</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#e2c97f]">Personalised quotation</p>
+            <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">Choose your Carnaval journey.</h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-white/70">
-              The Carnaval Collection is currently in its private planning phase. A dedicated enquiry form will be made available here once the consultation process opens.
+              Each experience has a dedicated enquiry form, with the journey automatically identified for the Curated Brazil Travel team.
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-black/15 p-5 text-sm leading-7 text-white/68">
-            <p className="font-semibold text-white">What happens next</p>
-            <p className="mt-2">Future enquiries will help our team understand your preferred journey, travel party and priorities before any itinerary is proposed.</p>
+            <p className="font-semibold text-white">Your quotation options</p>
+            <p className="mt-2">Select twin-share or single occupancy and choose whether you would like return international flights included.</p>
           </div>
         </div>
-        <p className="mt-8 border-t border-white/10 pt-6 text-sm leading-6 text-white/50">
-          Dates, itinerary order, access arrangements and all experiences remain subject to confirmation and availability. No booking is being accepted through this preview.
-        </p>
+        <div className="mt-8 grid gap-3 border-t border-white/10 pt-7 md:grid-cols-3">
+          {[
+            ['/carnaval/grand-journey', 'Grand Carnaval Journey'],
+            ['/carnaval/rio-bahia', 'Rio & Bahia Escape'],
+            ['/carnaval/rio-minas', 'Rio & Minas Heritage'],
+          ].map(([path, label]) => (
+            <Link key={path} to={path} className="rounded-full border border-[#d7b866]/40 px-5 py-3 text-center text-xs font-semibold uppercase tracking-[0.12em] text-[#e2c97f] transition hover:bg-[#d7b866] hover:text-[#07152d]">
+              {label}
+            </Link>
+          ))}
+        </div>
       </motion.div>
     </section>
   )

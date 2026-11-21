@@ -373,7 +373,14 @@ I would love to receive more information about the experience.`
             Brazil Signature Journey
           </a>
 
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-6 md:flex">
+            <Link
+              to="/carnaval"
+              className="text-sm font-semibold uppercase tracking-[0.16em] text-[#f1d991] outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
+            >
+              Carnaval 2027
+            </Link>
+
             <a
               href="#journey"
               className="text-sm uppercase tracking-[0.18em] text-white/80 outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
@@ -414,6 +421,9 @@ I would love to receive more information about the experience.`
         <div className={`grid overflow-hidden transition-all duration-500 md:hidden ${mobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
           <div className="min-h-0">
             <div className="mx-5 mb-5 rounded-2xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur-2xl">
+              <Link onClick={() => setMobileMenuOpen(false)} to="/carnaval" className="block rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#f1d991] transition hover:bg-white/10 hover:text-white">
+                Carnaval 2027
+              </Link>
               <a onClick={() => setMobileMenuOpen(false)} href="#journey" className="block rounded-xl px-4 py-3 text-sm uppercase tracking-[0.18em] text-white/85 transition hover:bg-white/10 hover:text-white">
                 Journey
               </a>

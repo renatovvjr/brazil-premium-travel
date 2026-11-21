@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowDown, Check, MapPin } from 'lucide-react'
+import { Check, MapPin } from 'lucide-react'
 import { carnavalDestinations } from './carnavalContent'
 import { reveal } from './CarnavalShared'
 
@@ -45,7 +45,7 @@ function DestinationTop({ destination, compact = false }) {
   }
 
   return (
-    <div className={`relative overflow-hidden rounded-[1.8rem] bg-[#07152d] shadow-[0_24px_70px_rgba(7,21,45,0.18)] ${compact ? 'h-[22rem] md:h-[30rem]' : 'h-[28rem] md:h-[38rem]'}`}>
+    <div className={`relative overflow-hidden rounded-[1.8rem] bg-[#07152d] shadow-[0_24px_70px_rgba(7,21,45,0.18)] ${compact ? 'h-[20rem] md:h-[27rem]' : 'h-[25rem] md:h-[34rem]'}`}>
       <ResponsiveCarnavalImage image={destination.topImage} alt={destination.topAlt} className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#050b1b]/60 via-transparent to-transparent" />
     </div>
@@ -54,29 +54,29 @@ function DestinationTop({ destination, compact = false }) {
 
 export function DestinationDiscovery({ destinationIds }) {
   return (
-    <section id="destinations" className="bg-[#f7f5f1] px-5 py-20 md:px-8 md:py-28">
+    <section id="destinations" className="bg-[#f7f5f1] px-5 py-16 md:px-8 md:py-20">
       <div className="mx-auto max-w-7xl">
-        <motion.div {...reveal} className="grid gap-8 md:grid-cols-[0.75fr_1.25fr] md:items-end">
+        <motion.div {...reveal} className="grid gap-5 md:gap-7 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-12">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#a31965]">Discover the destinations</p>
-            <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">Four expressions of one extraordinary season.</h2>
+            <h2 className="mt-4 max-w-4xl text-4xl font-semibold leading-[1.08] text-balance md:text-5xl lg:text-6xl">Four expressions of one extraordinary season.</h2>
           </div>
-          <p className="max-w-2xl text-lg leading-8 text-[#536078] md:justify-self-end">
+          <p className="max-w-[35rem] text-lg leading-8 text-[#536078] lg:justify-self-end">
             From samba and frevo to Minas street culture and Bahia’s blocos afro, every place tells Carnaval through its own music, memory, food and landscape.
           </p>
         </motion.div>
 
-        <div className="mt-16 space-y-20 md:space-y-28">
+        <div className="mt-10 space-y-14 md:mt-12 md:space-y-18">
           {destinationIds.map((id, index) => {
             const destination = carnavalDestinations[id]
             return (
               <motion.article key={id} id={`discover-${id}`} {...reveal} className="scroll-mt-8">
-                <div className="mb-8 grid gap-5 md:grid-cols-[0.9fr_1.1fr] md:items-end">
+                <div className={`mb-6 grid gap-4 md:gap-5 lg:items-center ${id === 'rio' ? 'lg:grid-cols-[1.2fr_0.8fr] lg:gap-12' : 'lg:grid-cols-[1.08fr_0.92fr] lg:gap-10'}`}>
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#a31965]">{destination.eyebrow}</p>
-                    <h3 className="mt-3 text-3xl font-semibold leading-tight md:text-5xl">{destination.title}</h3>
+                    <h3 className="mt-3 max-w-3xl text-3xl font-semibold leading-[1.12] text-balance md:text-5xl">{destination.title}</h3>
                   </div>
-                  <p className="text-lg leading-8 text-[#59657a]">{destination.introduction}</p>
+                  <p className="max-w-[40rem] text-lg leading-8 text-[#59657a] lg:justify-self-end">{destination.introduction}</p>
                 </div>
                 <DestinationTop destination={destination} compact />
                 <div className="mt-5 flex flex-wrap gap-3 text-sm text-[#536078]">
@@ -84,7 +84,7 @@ export function DestinationDiscovery({ destinationIds }) {
                   <span className="rounded-full border border-[#07152d]/10 bg-white px-4 py-2">Why travellers love it</span>
                   <span className="rounded-full border border-[#07152d]/10 bg-white px-4 py-2">Experiences & highlights</span>
                 </div>
-                {index < destinationIds.length - 1 && <div className="mx-auto mt-16 flex h-11 w-11 items-center justify-center rounded-full border border-[#07152d]/10 text-[#a31965]"><ArrowDown size={17} /></div>}
+                {index < destinationIds.length - 1 && <div className="mx-auto mt-10 h-px w-24 bg-gradient-to-r from-transparent via-[#a31965]/45 to-transparent" />}
               </motion.article>
             )
           })}
@@ -96,10 +96,10 @@ export function DestinationDiscovery({ destinationIds }) {
 
 function EditorialGallery({ destination }) {
   return (
-    <div className="mt-10 grid gap-4 md:grid-cols-3">
+    <div className="mt-10 grid gap-4 md:grid-cols-12 md:grid-rows-2">
       {destination.gallery.map((item, index) => (
-        <figure key={item.label} className={`group relative overflow-hidden rounded-[1.5rem] bg-[#07152d] ${index === 1 ? 'md:translate-y-6' : ''}`}>
-          <img src={item.image.chapter} alt={item.alt} className="aspect-[4/3] h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" />
+        <figure key={item.label} className={`group relative min-h-64 overflow-hidden rounded-[1.5rem] bg-[#07152d] ${index === 0 ? 'md:col-span-7 md:row-span-2 md:min-h-[31rem]' : 'md:col-span-5 md:min-h-0'}`}>
+          <img src={item.image.chapter} alt={item.alt} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050b1b]/85 via-transparent to-transparent" />
           <figcaption className="absolute bottom-0 left-0 right-0 p-5 text-sm font-semibold uppercase tracking-[0.18em] text-white">{item.label}</figcaption>
         </figure>
@@ -108,22 +108,48 @@ function EditorialGallery({ destination }) {
   )
 }
 
+function PremiumExperience({ experience, dark }) {
+  if (!experience) return null
+
+  return (
+    <motion.div {...reveal} className={`mt-12 overflow-hidden rounded-[2rem] border ${dark ? 'border-white/12 bg-white/[0.055]' : 'border-[#07152d]/10 bg-white shadow-[0_24px_75px_rgba(7,21,45,0.08)]'}`}>
+      <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
+        <div className="flex flex-col justify-center p-7 md:p-10">
+          <p className={`text-sm font-semibold uppercase tracking-[0.25em] ${dark ? 'text-[#e2c97f]' : 'text-[#a31965]'}`}>{experience.eyebrow}</p>
+          <h3 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">{experience.title}</h3>
+          <p className={`mt-5 text-lg leading-8 ${dark ? 'text-white/68' : 'text-[#536078]'}`}>{experience.copy}</p>
+          <p className={`mt-6 border-t pt-5 text-sm italic leading-6 ${dark ? 'border-white/10 text-white/48' : 'border-[#07152d]/10 text-[#70798a]'}`}>{experience.note}</p>
+        </div>
+        <div className="grid min-h-[28rem] gap-2 bg-[#050b1b] p-2 sm:grid-cols-[1.15fr_0.85fr]">
+          {experience.images.map((item, index) => (
+            <figure key={item.label} className={`group relative min-h-64 overflow-hidden rounded-[1.35rem] ${index === 1 ? 'sm:mt-12 sm:min-h-0' : ''}`}>
+              <img src={item.image.chapter} alt={item.alt} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050b1b]/78 via-transparent to-transparent" />
+              <figcaption className="absolute bottom-0 left-0 right-0 p-5 text-sm font-semibold uppercase tracking-[0.15em] text-white">{item.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 export function DestinationEditorial({ destinationId, index = 0 }) {
   const destination = carnavalDestinations[destinationId]
   const dark = index % 2 === 1
 
   return (
-    <section id={`destination-${destination.id}`} className={`scroll-mt-8 px-5 py-20 md:px-8 md:py-28 ${dark ? 'bg-[#07152d] text-white' : 'bg-[#f7f5f1] text-[#07152d]'}`}>
+    <section id={`destination-${destination.id}`} className={`scroll-mt-8 px-5 py-16 md:px-8 md:py-20 ${dark ? 'bg-[#07152d] text-white' : 'bg-[#f7f5f1] text-[#07152d]'}`}>
       <div className="mx-auto max-w-7xl">
         <motion.div {...reveal} className="max-w-5xl">
           <p className={`text-sm font-semibold uppercase tracking-[0.28em] ${dark ? 'text-[#e2c97f]' : 'text-[#a31965]'}`}>{destination.eyebrow}</p>
-          <h2 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.025em] md:text-6xl">{destination.title}</h2>
-          <p className={`mt-6 max-w-3xl text-lg leading-8 ${dark ? 'text-white/68' : 'text-[#536078]'}`}>{destination.introduction}</p>
+          <h2 className="mt-4 max-w-5xl text-4xl font-semibold leading-[1.08] tracking-[-0.025em] text-balance md:text-6xl">{destination.title}</h2>
+          <p className={`mt-5 max-w-[48rem] text-lg leading-8 ${dark ? 'text-white/68' : 'text-[#536078]'}`}>{destination.introduction}</p>
         </motion.div>
 
-        <motion.div {...reveal} className="mt-12"><DestinationTop destination={destination} /></motion.div>
+        <motion.div {...reveal} className="mt-10"><DestinationTop destination={destination} /></motion.div>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <div className="mt-12 grid gap-9 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <motion.div {...reveal}>
             <p className={`text-sm font-semibold uppercase tracking-[0.25em] ${dark ? 'text-[#e2c97f]' : 'text-[#a31965]'}`}>History, Culture and Lifestyle</p>
             <h3 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">The traditions behind the celebration.</h3>
@@ -141,13 +167,13 @@ export function DestinationEditorial({ destinationId, index = 0 }) {
           </motion.div>
         </div>
 
-        <motion.div {...reveal} className={`mt-16 overflow-hidden rounded-[2rem] border p-7 md:p-11 ${dark ? 'border-[#d7b866]/25 bg-[linear-gradient(135deg,rgba(215,184,102,0.12),rgba(192,38,123,0.13))]' : 'border-[#07152d]/10 bg-white shadow-[0_24px_75px_rgba(7,21,45,0.08)]'}`}>
+        <motion.div {...reveal} className={`mt-12 overflow-hidden rounded-[2rem] border p-7 md:p-10 ${dark ? 'border-[#d7b866]/25 bg-[linear-gradient(135deg,rgba(215,184,102,0.12),rgba(192,38,123,0.13))]' : 'border-[#07152d]/10 bg-white shadow-[0_24px_75px_rgba(7,21,45,0.08)]'}`}>
           <p className={`text-sm font-semibold uppercase tracking-[0.25em] ${dark ? 'text-[#e2c97f]' : 'text-[#a31965]'}`}>Why this Carnaval?</p>
           <h3 className="mt-4 max-w-4xl text-3xl font-semibold leading-tight md:text-4xl">{destination.whyTitle}</h3>
           <p className={`mt-6 max-w-4xl text-lg leading-8 ${dark ? 'text-white/68' : 'text-[#536078]'}`}>{destination.why}</p>
         </motion.div>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <div className="mt-12 grid gap-9 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <motion.div {...reveal}>
             <p className={`text-sm font-semibold uppercase tracking-[0.25em] ${dark ? 'text-[#e2c97f]' : 'text-[#a31965]'}`}>Experiences and Highlights</p>
             <h3 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">Ways to encounter the destination.</h3>
@@ -162,6 +188,7 @@ export function DestinationEditorial({ destinationId, index = 0 }) {
           </motion.div>
         </div>
 
+        <PremiumExperience experience={destination.premiumExperience} dark={dark} />
         <EditorialGallery destination={destination} />
       </div>
     </section>

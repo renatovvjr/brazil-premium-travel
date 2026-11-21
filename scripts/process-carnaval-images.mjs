@@ -134,7 +134,9 @@ async function processImage({ sourcePath, filename, slug, position, outputDirect
       .resize(preset.width, preset.height, {
         fit: 'cover',
         position,
-        withoutEnlargement: false,
+        // Keep supplied photography at its native resolution when it is smaller
+        // than a preset. Responsive variants should optimise, never invent detail.
+        withoutEnlargement: true,
       })
       .webp({ quality, effort: 5, smartSubsample: true })
       .toFile(outputPath)
