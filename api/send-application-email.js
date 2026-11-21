@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 const recipientEmail = 'hello@curatedbraziltravel.com'
 const fromEmail = process.env.RESEND_FROM_EMAIL || 'Curated Brazil <onboarding@resend.dev>'
 
@@ -41,6 +39,10 @@ const parseBody = (body) => {
 }
 
 export default async function handler(req, res) {
+  if (process.env.VERCEL_ENV !== 'production') {
+    return res.status(403).json({ error: 'Email delivery is disabled outside Production' })
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed' })
@@ -50,6 +52,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Email delivery is not configured' })
   }
 
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
   let application
 
   try {
@@ -58,19 +62,41 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid JSON body' })
   }
 
-  const fields = [
-    ['Full Name', formatValue(application.full_name)],
-    ['Email Address', formatValue(application.email)],
-    ['WhatsApp Number', formatValue(application.whatsapp)],
-    ['Number of Travelers', formatValue(application.travelers)],
-    ['Journey Date', 'To be confirmed'],
-    ['Previous Brazil Experience', formatValue(application.visited_brazil)],
-    ['Cities or Regions Visited', formatValue(application.visited_places)],
-    ['Selected Experience Types', formatValue(application.experience_interests, 'To be discussed')],
-    ['Estimated Budget Range', formatValue(application.budget_range)],
-    ['Dream Experience Description', formatValue(application.dream_experience)],
-    ['Submission Timestamp', formatValue(application.submission_timestamp)],
-  ]
+  const isCarnavalEnquiry = application.application_type === 'carnaval_2027_enquiry'
+  const journeyTitle = formatValue(application.journey_title, 'Carnaval Journey')
+  const notificationTitle = isCarnavalEnquiry ? 'New Carnaval 2027 Enquiry' : 'New Luxury Journey Application'
+  const notificationSubject = isCarnavalEnquiry
+    ? `New Carnaval 2027 Enquiry — ${journeyTitle}`
+    : 'New Luxury Journey Application — Curated Brazil'
+  const fields = isCarnavalEnquiry
+    ? [
+        ['Package', formatValue(application.preferred_journey)],
+        ['Dates', formatValue(application.journey_dates)],
+        ['Duration', formatValue(application.journey_duration)],
+        ['Full Name', formatValue(application.full_name)],
+        ['Email Address', formatValue(application.email)],
+        ['Phone / WhatsApp', formatValue(application.whatsapp)],
+        ['Country of Residence', formatValue(application.country_of_residence)],
+        ['Number of Travellers', formatValue(application.travelers)],
+        ['Preferred Accommodation', formatValue(application.preferred_accommodation)],
+        ['International Flights', formatValue(application.international_flights)],
+        ['Departure City / Airport', formatValue(application.departure_city_airport, 'Not applicable — international flights excluded')],
+        ['Additional Requests / Message', formatValue(application.additional_requests, 'None provided')],
+        ['Submission Timestamp', formatValue(application.submission_timestamp)],
+      ]
+    : [
+        ['Full Name', formatValue(application.full_name)],
+        ['Email Address', formatValue(application.email)],
+        ['WhatsApp Number', formatValue(application.whatsapp)],
+        ['Number of Travelers', formatValue(application.travelers)],
+        ['Journey Date', 'To be confirmed'],
+        ['Previous Brazil Experience', formatValue(application.visited_brazil)],
+        ['Cities or Regions Visited', formatValue(application.visited_places)],
+        ['Selected Experience Types', formatValue(application.experience_interests, 'To be discussed')],
+        ['Estimated Budget Range', formatValue(application.budget_range)],
+        ['Dream Experience Description', formatValue(application.dream_experience)],
+        ['Submission Timestamp', formatValue(application.submission_timestamp)],
+      ]
 
   const text = fields.map(([label, value]) => `${label}: ${value}`).join('\n')
   const applicantName = formatValue(application.full_name, 'Guest')
@@ -91,14 +117,14 @@ export default async function handler(req, res) {
       from: fromEmail,
       to: recipientEmail,
       replyTo: application.email,
-      subject: 'New Luxury Journey Application — Curated Brazil',
+      subject: notificationSubject,
       text,
       html: `
         <div style="margin:0;padding:24px;background:#fbfaf7;font-family:Arial,sans-serif;color:#18181b;">
           <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #eadfbe;border-radius:18px;overflow:hidden;">
             <div style="padding:28px 32px;background:#11100d;color:#ffffff;">
               <p style="margin:0 0 10px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#f1d991;">Curated Brazil</p>
-              <h1 style="margin:0;font-size:24px;line-height:1.3;">New Luxury Journey Application</h1>
+              <h1 style="margin:0;font-size:24px;line-height:1.3;">${escapeHtml(notificationTitle)}</h1>
             </div>
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
               <tbody>${htmlRows}</tbody>
@@ -115,7 +141,26 @@ export default async function handler(req, res) {
 
     if (isValidEmail(applicantEmail)) {
       try {
-        const customerText = `Dear ${applicantName},
+        const customerSubject = isCarnavalEnquiry
+          ? `We received your Carnaval 2027 enquiry — ${journeyTitle}`
+          : 'Your Curated Brazil Journey Begins ✨'
+        const customerHeading = isCarnavalEnquiry ? 'Your Carnaval Enquiry' : 'Your Journey Begins'
+        const customerText = isCarnavalEnquiry
+          ? `Dear ${applicantName},
+
+Thank you for your interest in the ${journeyTitle}.
+
+We have received your Carnaval 2027 enquiry for ${formatValue(application.journey_dates)} (${formatValue(application.journey_duration)}). Our team will review your accommodation and international-flight preferences before preparing a personalised quotation.
+
+Published pricing is indicative and based on twin-share accommodation. Final arrangements depend on availability, travel requirements and selected options.
+
+Warm regards,
+
+Curated Brazil Travel
+Luxury Travel Experiences
+hello@curatedbraziltravel.com
+www.curatedbraziltravel.com`
+          : `Dear ${applicantName},
 
 Thank you for your interest in Curated Brazil.
 
@@ -139,7 +184,7 @@ www.curatedbraziltravel.com`
           to: applicantEmail,
           cc: recipientEmail,
           replyTo: recipientEmail,
-          subject: 'Your Curated Brazil Journey Begins ✨',
+          subject: customerSubject,
           text: customerText,
           html: `
             <div style="margin:0;padding:0;background:#fbfaf7;font-family:Arial,Helvetica,sans-serif;color:#18181b;">
@@ -147,22 +192,22 @@ www.curatedbraziltravel.com`
                 <div style="overflow:hidden;border:1px solid #eadfbe;border-radius:20px;background:#ffffff;box-shadow:0 20px 60px rgba(24,24,27,0.08);">
                   <div style="padding:34px 34px 30px;background:#11100d;color:#ffffff;">
                     <p style="margin:0 0 12px;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;color:#f1d991;">Curated Brazil</p>
-                    <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.25;font-weight:400;color:#ffffff;">Your Journey Begins</h1>
+                    <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.25;font-weight:400;color:#ffffff;">${escapeHtml(customerHeading)}</h1>
                     <p style="margin:14px 0 0;font-size:15px;line-height:1.7;color:#eee6cf;">Luxury Travel Experiences across Brazil</p>
                   </div>
 
                   <div style="padding:34px;color:#292524;">
                     <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Dear ${escapeHtml(applicantName)},</p>
 
-                    <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Thank you for your interest in Curated Brazil.</p>
-
-                    <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">We have received your application for our inaugural luxury journey. The departure date is yet to be confirmed.</p>
-
-                    <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Our team is now carefully reviewing your preferences and travel aspirations. Over the next few days, we will contact you to discuss the next steps of your personalized experience.</p>
-
-                    <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">This journey has been designed for a small group of selected guests seeking authenticity, comfort, exclusivity and unforgettable memories across Brazil.</p>
-
-                    <p style="margin:0 0 28px;font-size:16px;line-height:1.8;">You are now one step closer to experiencing Brazil through a private collection of extraordinary destinations, authentic connections and moments you may remember for a lifetime.</p>
+                    ${isCarnavalEnquiry
+                      ? `<p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Thank you for your interest in the ${escapeHtml(journeyTitle)}.</p>
+                         <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">We have received your Carnaval 2027 enquiry for ${escapeHtml(formatValue(application.journey_dates))} (${escapeHtml(formatValue(application.journey_duration))}). Our team will review your accommodation and international-flight preferences before preparing a personalised quotation.</p>
+                         <p style="margin:0 0 28px;font-size:16px;line-height:1.8;">Published pricing is indicative and based on twin-share accommodation. Final arrangements depend on availability, travel requirements and selected options.</p>`
+                      : `<p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Thank you for your interest in Curated Brazil.</p>
+                         <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">We have received your application for our inaugural luxury journey. The departure date is yet to be confirmed.</p>
+                         <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">Our team is now carefully reviewing your preferences and travel aspirations. Over the next few days, we will contact you to discuss the next steps of your personalized experience.</p>
+                         <p style="margin:0 0 18px;font-size:16px;line-height:1.8;">This journey has been designed for a small group of selected guests seeking authenticity, comfort, exclusivity and unforgettable memories across Brazil.</p>
+                         <p style="margin:0 0 28px;font-size:16px;line-height:1.8;">You are now one step closer to experiencing Brazil through a private collection of extraordinary destinations, authentic connections and moments you may remember for a lifetime.</p>`}
 
                     <div style="height:1px;background:#eadfbe;margin:0 0 26px;"></div>
 
