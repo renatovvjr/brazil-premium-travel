@@ -33,21 +33,34 @@ function CarnavalMenuCta({ mobile = false, onClick }) {
       className={`carnaval-menu-cta${mobile ? ' carnaval-menu-cta--mobile' : ''}`}
       aria-label="Explore the Carnaval 2027 collection"
     >
-      <span className="carnaval-menu-cta__shine" aria-hidden="true" />
+      <span className="carnaval-menu-cta__shine-clip" aria-hidden="true">
+        <span className="carnaval-menu-cta__shine" />
+      </span>
 
-      <span className="carnaval-menu-cta__mask carnaval-menu-cta__mask--left" aria-hidden="true">
-        <svg viewBox="0 0 28 22" focusable="false">
-          <path d="M2.5 12.5C7 4.2 20.9 4.2 25.5 12.5c-4.8 4.2-9.2 4.5-11.5.8-2.3 3.7-6.7 3.4-11.5-.8Z" />
-          <path d="M7.1 11.2c1.8-1.1 3.4-.9 4.8.6M20.9 11.2c-1.8-1.1-3.4-.9-4.8.6M14 6V2.5M5.2 7.8 2.8 4.9M22.8 7.8l2.4-2.9" />
+      <span className="carnaval-menu-cta__flag" aria-hidden="true">
+        <svg viewBox="0 0 44 30" focusable="false">
+          <rect x="1" y="1" width="42" height="28" rx="4.5" />
+          <path d="m22 4.6 16.2 10.4L22 25.4 5.8 15 22 4.6Z" />
+          <circle cx="22" cy="15" r="6.6" />
+          <path d="M16.6 13.6c3.8-1.2 8.4-.4 11.2 2.2" />
+          <path d="M18.7 18.2c2.2.8 4.6.8 6.8.1" />
         </svg>
       </span>
 
       <span className="carnaval-menu-cta__label">Carnaval <strong>2027</strong></span>
 
-      <span className="carnaval-menu-cta__mask carnaval-menu-cta__mask--right" aria-hidden="true">
-        <svg viewBox="0 0 28 22" focusable="false">
-          <path d="M2.5 12.5C7 4.2 20.9 4.2 25.5 12.5c-4.8 4.2-9.2 4.5-11.5.8-2.3 3.7-6.7 3.4-11.5-.8Z" />
-          <path d="M7.1 11.2c1.8-1.1 3.4-.9 4.8.6M20.9 11.2c-1.8-1.1-3.4-.9-4.8.6M14 6V2.5M5.2 7.8 2.8 4.9M22.8 7.8l2.4-2.9" />
+      <span className="carnaval-menu-cta__mask" aria-hidden="true">
+        <svg viewBox="0 0 92 72" focusable="false">
+          <path className="carnaval-menu-cta__feather carnaval-menu-cta__feather--green" d="M48 35C39 21 37 7 43 1c8 7 12 20 11 34Z" />
+          <path className="carnaval-menu-cta__feather carnaval-menu-cta__feather--gold" d="M54 34C49 16 53 4 61 0c6 10 4 23-1 36Z" />
+          <path className="carnaval-menu-cta__feather carnaval-menu-cta__feather--blue" d="M60 36C62 16 70 3 78 3c3 12-3 24-12 36Z" />
+          <path className="carnaval-menu-cta__feather carnaval-menu-cta__feather--green" d="M65 38C74 19 84 10 91 13c-2 13-11 23-22 31Z" />
+          <path className="carnaval-menu-cta__feather-line" d="M47 31 43 6M56 31l5-26M64 34 76 8M69 39l17-21" />
+          <path className="carnaval-menu-cta__mask-base" d="M19 40c13-12 39-15 59-4l-4 21c-10 7-18 7-25-1-5 9-14 11-25 5Z" />
+          <path className="carnaval-menu-cta__mask-overlay" d="M22 42c13-8 34-11 53-4l-2 8c-16-5-32-3-50 4Z" />
+          <path className="carnaval-menu-cta__mask-eye" d="M29 47c5-4 11-4 16 0-5 5-11 5-16 0ZM54 45c5-4 11-3 15 1-5 5-10 5-15-1Z" />
+          <path className="carnaval-menu-cta__mask-detail" d="M49 36v19M25 57c8 2 15 1 22-4M51 53c7 5 14 6 22 3" />
+          <circle className="carnaval-menu-cta__mask-gem" cx="49" cy="36" r="3.5" />
         </svg>
       </span>
 
@@ -58,6 +71,8 @@ function CarnavalMenuCta({ mobile = false, onClick }) {
         <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--four" />
         <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--five" />
         <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--six" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--seven" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--eight" />
       </span>
     </Link>
   )
