@@ -21,331 +21,152 @@ input {
   position: relative;
   isolation: isolate;
   display: inline-flex;
-  width: 20rem;
-  min-width: 0;
-  min-height: 4rem;
+  width: 22.5rem;
+  height: 4.25rem;
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   overflow: visible;
-  border: 1px solid rgba(255, 221, 117, 0.92);
   border-radius: 9999px;
-  background:
-    radial-gradient(circle at 28% -25%, rgba(73, 213, 121, 0.58), transparent 43%),
-    linear-gradient(145deg, #00492b 0%, #078348 45%, #005a34 72%, #003d25 100%);
-  box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -8px 18px rgba(0, 40, 23, 0.42),
-    0 0 0 2px rgba(78, 49, 0, 0.62),
-    0 10px 27px rgba(0, 24, 13, 0.38),
-    0 0 24px rgba(241, 190, 54, 0.23);
-  color: #fffdf8;
   outline: none;
   transform-origin: center;
-  animation: carnaval-cta-pulse 7.2s cubic-bezier(0.2, 0.7, 0.25, 1) infinite;
-  transition: border-color 300ms ease, box-shadow 300ms ease, filter 300ms ease, transform 300ms ease;
+  animation: carnaval-image-pulse 7.8s cubic-bezier(0.2, 0.7, 0.25, 1) infinite;
+  transition: filter 300ms ease, transform 300ms ease;
 }
 
-.carnaval-menu-cta::before {
+.carnaval-menu-cta__halo {
+  position: absolute;
+  z-index: 0;
+  inset: 12% -2%;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse, rgba(255, 208, 52, 0.5), rgba(255, 190, 23, 0.12) 48%, transparent 72%);
+  filter: blur(7px);
+  opacity: 0.58;
+  pointer-events: none;
+  animation: carnaval-image-halo 8.6s ease-in-out infinite;
+}
+
+.carnaval-menu-cta__art {
   position: absolute;
   z-index: 1;
-  inset: 3px;
-  border: 1px solid rgba(255, 238, 176, 0.34);
-  border-radius: inherit;
-  content: '';
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: 24.375rem;
+  aspect-ratio: 2172 / 724;
   pointer-events: none;
+  transform: translate(-50%, -50%) translateY(0.3rem);
+  transition: filter 300ms ease;
 }
 
-.carnaval-menu-cta::after {
-  position: absolute;
-  z-index: -1;
-  inset: -0.28rem;
-  border-radius: inherit;
-  background: radial-gradient(ellipse, rgba(244, 194, 56, 0.24), transparent 68%);
-  content: '';
-  opacity: 0.62;
-  pointer-events: none;
-  transition: opacity 300ms ease;
-}
-
-.carnaval-menu-cta:hover {
-  border-color: #ffe596;
-  box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -8px 18px rgba(0, 40, 23, 0.38),
-    0 0 0 2px rgba(86, 53, 0, 0.65),
-    0 12px 31px rgba(0, 24, 13, 0.42),
-    0 0 33px rgba(244, 196, 65, 0.5);
-  filter: saturate(1.09) brightness(1.06);
-  animation-play-state: paused;
-  transform: scale(1.025);
-}
-
-.carnaval-menu-cta:hover::after {
-  opacity: 1;
-}
-
-.carnaval-menu-cta:focus-visible {
-  box-shadow:
-    0 0 0 3px rgba(255, 255, 255, 0.88),
-    0 0 0 6px rgba(212, 175, 55, 0.9),
-    0 10px 28px rgba(0, 32, 18, 0.42);
-}
-
-.carnaval-menu-cta__label {
-  position: relative;
-  z-index: 3;
+.carnaval-menu-cta__art img {
+  display: block;
   width: 100%;
-  padding-inline: 4.15rem 5.45rem;
-  font-size: 0.96rem;
-  font-weight: 760;
-  line-height: 1;
-  letter-spacing: 0.075em;
-  text-transform: uppercase;
-  text-shadow: 0 2px 7px rgba(0, 42, 23, 0.86);
-  white-space: nowrap;
-}
-
-.carnaval-menu-cta__label strong {
-  color: #ffd84d;
-  font-weight: 850;
-  text-shadow: 0 0 9px rgba(255, 205, 47, 0.34);
-}
-
-.carnaval-menu-cta__shine-clip {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  pointer-events: none;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
 }
 
 .carnaval-menu-cta__shine {
   position: absolute;
+  z-index: 2;
+  inset: 0.55rem 1.4rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.carnaval-menu-cta__shine::after {
+  position: absolute;
   top: -45%;
   bottom: -45%;
-  left: -32%;
-  width: 18%;
-  background: linear-gradient(90deg, transparent, rgba(255, 238, 159, 0.85), transparent);
-  filter: blur(0.45px);
+  left: -28%;
+  width: 16%;
+  background: linear-gradient(90deg, transparent, rgba(255, 245, 190, 0.46), transparent);
+  content: '';
   opacity: 0;
-  transform: skewX(-18deg) translateX(-180%);
-  animation: carnaval-cta-shine 8.4s ease-in-out infinite;
+  transform: skewX(-18deg) translateX(-220%);
+  animation: carnaval-image-shine 9.2s ease-in-out infinite;
 }
 
-.carnaval-menu-cta__flag {
-  position: absolute;
-  z-index: 4;
-  left: 1.15rem;
-  top: 50%;
-  width: 2.35rem;
-  height: 1.65rem;
-  pointer-events: none;
-  transform: translateY(-50%);
-  filter: drop-shadow(0 2px 4px rgba(0, 38, 21, 0.7));
+.carnaval-menu-cta:hover {
+  filter: drop-shadow(0 0 11px rgba(255, 214, 77, 0.48));
+  animation-play-state: paused;
+  transform: scale(1.025);
 }
 
-.carnaval-menu-cta__flag svg {
-  display: block;
-  width: 100%;
-  height: 100%;
+.carnaval-menu-cta:hover .carnaval-menu-cta__art {
+  filter: brightness(1.06) saturate(1.05);
 }
 
-.carnaval-menu-cta__flag rect {
-  fill: #079447;
-  stroke: rgba(255, 227, 120, 0.9);
-  stroke-width: 1.2;
+.carnaval-menu-cta:hover .carnaval-menu-cta__halo {
+  opacity: 0.9;
 }
 
-.carnaval-menu-cta__flag path:nth-of-type(1) {
-  fill: #ffdc32;
+.carnaval-menu-cta:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.92),
+    0 0 0 6px rgba(230, 179, 36, 0.92);
 }
-
-.carnaval-menu-cta__flag circle {
-  fill: #17489b;
-  stroke: rgba(255, 255, 255, 0.72);
-  stroke-width: 0.65;
-}
-
-.carnaval-menu-cta__flag path:nth-of-type(n+2) {
-  fill: none;
-  stroke: #fff;
-  stroke-linecap: round;
-  stroke-width: 1.05;
-}
-
-.carnaval-menu-cta__flag path:nth-of-type(3) {
-  stroke: #f7d53b;
-  stroke-width: 0.75;
-}
-
-.carnaval-menu-cta__mask {
-  position: absolute;
-  z-index: 5;
-  top: 50%;
-  right: -1.05rem;
-  width: 5.45rem;
-  height: 4.45rem;
-  pointer-events: none;
-  transform: translateY(-51%) rotate(2deg);
-  filter: drop-shadow(0 4px 5px rgba(0, 28, 16, 0.58)) drop-shadow(0 0 6px rgba(255, 207, 54, 0.25));
-}
-
-.carnaval-menu-cta__mask svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.carnaval-menu-cta__feather {
-  stroke: #d9a91f;
-  stroke-linejoin: round;
-  stroke-width: 1.25;
-}
-
-.carnaval-menu-cta__feather--green { fill: #079b4b; }
-.carnaval-menu-cta__feather--gold { fill: #ffcf35; }
-.carnaval-menu-cta__feather--blue { fill: #1171c9; }
-
-.carnaval-menu-cta__feather-line {
-  fill: none;
-  stroke: rgba(255, 238, 164, 0.72);
-  stroke-linecap: round;
-  stroke-width: 0.9;
-}
-
-.carnaval-menu-cta__mask-base {
-  fill: #f3bd29;
-  stroke: #fff0a9;
-  stroke-linejoin: round;
-  stroke-width: 1.6;
-}
-
-.carnaval-menu-cta__mask-overlay {
-  fill: #07894a;
-  stroke: #a97708;
-  stroke-width: 1.05;
-}
-
-.carnaval-menu-cta__mask-eye { fill: #052f23; }
-
-.carnaval-menu-cta__mask-detail {
-  fill: none;
-  stroke: #b77a00;
-  stroke-linecap: round;
-  stroke-width: 1.2;
-}
-
-.carnaval-menu-cta__mask-gem {
-  fill: #156ac0;
-  stroke: #fff0a9;
-  stroke-width: 1.1;
-}
-
-.carnaval-menu-cta__particles {
-  position: absolute;
-  z-index: 4;
-  inset: -0.25rem -0.4rem;
-  pointer-events: none;
-}
-
-.carnaval-menu-cta__particle {
-  position: absolute;
-  display: block;
-  width: 0.25rem;
-  height: 0.25rem;
-  border-radius: 50%;
-  background: #ffd83f;
-  opacity: 0;
-  box-shadow: 0 0 6px rgba(255, 219, 73, 0.82);
-  animation: carnaval-cta-confetti 9s ease-in-out infinite;
-}
-
-.carnaval-menu-cta__particle--one { left: -1%; top: 13%; background: #1bb76a; animation-delay: -0.6s; }
-.carnaval-menu-cta__particle--two { left: 4%; bottom: 4%; width: 0.2rem; height: 0.72rem; border-radius: 999px; background: #ffd83f; animation-delay: -1.2s; }
-.carnaval-menu-cta__particle--three { left: 10%; top: -1%; width: 0.48rem; height: 0.14rem; border-radius: 999px; background: #2878d4; animation-delay: -1.8s; }
-.carnaval-menu-cta__particle--four { right: -1%; bottom: 12%; background: #ffd83f; animation-delay: -0.85s; }
-.carnaval-menu-cta__particle--five { right: 4%; top: -2%; width: 0.2rem; height: 0.72rem; border-radius: 999px; background: #159e54; animation-delay: -1.45s; }
-.carnaval-menu-cta__particle--six { right: 10%; bottom: -1%; width: 0.48rem; height: 0.14rem; border-radius: 999px; background: #1f72ce; animation-delay: -2.05s; }
-.carnaval-menu-cta__particle--seven { left: -0.35rem; top: 48%; width: 0.72rem; height: 0.18rem; border: 1px solid #ffd83f; border-width: 1px 0; border-radius: 50%; background: transparent; animation-delay: -2.6s; }
-.carnaval-menu-cta__particle--eight { right: -0.35rem; top: 42%; width: 0.72rem; height: 0.18rem; border: 1px solid #1aa65d; border-width: 1px 0; border-radius: 50%; background: transparent; animation-delay: -3.15s; }
 
 .carnaval-menu-cta--mobile {
   width: 100%;
-  min-height: 3.55rem;
-  margin: 0.15rem 0 0.5rem;
+  height: 3.85rem;
+  margin: 0.1rem 0 0.55rem;
 }
 
-.carnaval-menu-cta--mobile .carnaval-menu-cta__label {
-  padding-inline: 3.5rem 4.45rem;
-  font-size: 0.88rem;
-  letter-spacing: 0.09em;
+.carnaval-menu-cta--mobile .carnaval-menu-cta__art {
+  width: calc(100% + 1.45rem);
+  max-width: 21.25rem;
+  transform: translate(-50%, -50%) translateY(0.15rem);
 }
 
-.carnaval-menu-cta--mobile .carnaval-menu-cta__flag {
-  left: 0.85rem;
-  width: 2.15rem;
-  height: 1.5rem;
-}
-
-.carnaval-menu-cta--mobile .carnaval-menu-cta__mask {
-  right: -0.6rem;
-  width: 4.75rem;
-  height: 3.95rem;
+.carnaval-menu-cta--mobile .carnaval-menu-cta__shine {
+  inset: 0.45rem 0.75rem;
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
   .carnaval-menu-cta:not(.carnaval-menu-cta--mobile) {
-    width: 14rem;
-    min-height: 3.25rem;
+    width: 14.5rem;
+    height: 3.35rem;
   }
 
-  .carnaval-menu-cta:not(.carnaval-menu-cta--mobile) .carnaval-menu-cta__label {
-    padding-inline: 3.05rem 3.8rem;
-    font-size: 0.73rem;
-    letter-spacing: 0.055em;
+  .carnaval-menu-cta:not(.carnaval-menu-cta--mobile) .carnaval-menu-cta__art {
+    width: 16rem;
+    transform: translate(-50%, -50%) translateY(0.2rem);
   }
 
-  .carnaval-menu-cta:not(.carnaval-menu-cta--mobile) .carnaval-menu-cta__flag {
-    left: 0.75rem;
-    width: 1.9rem;
-    height: 1.35rem;
-  }
-
-  .carnaval-menu-cta:not(.carnaval-menu-cta--mobile) .carnaval-menu-cta__mask {
-    right: -0.7rem;
-    width: 4rem;
-    height: 3.4rem;
+  .carnaval-menu-cta:not(.carnaval-menu-cta--mobile) .carnaval-menu-cta__shine {
+    inset: 0.42rem 0.75rem;
   }
 }
 
-@keyframes carnaval-cta-pulse {
-  0%, 70%, 100% { transform: scale(1); }
-  77% { transform: scale(1.018); }
-  84% { transform: scale(0.997); }
-  91% { transform: scale(1.009); }
+@keyframes carnaval-image-pulse {
+  0%, 71%, 100% { transform: scale(1); }
+  78% { transform: scale(1.018); }
+  85% { transform: scale(0.997); }
+  92% { transform: scale(1.008); }
 }
 
-@keyframes carnaval-cta-shine {
-  0%, 61% { opacity: 0; transform: skewX(-18deg) translateX(-180%); }
-  65% { opacity: 0.82; }
-  75% { opacity: 0.48; }
-  80%, 100% { opacity: 0; transform: skewX(-18deg) translateX(1040%); }
+@keyframes carnaval-image-halo {
+  0%, 58%, 100% { opacity: 0.5; transform: scale(0.98); }
+  68% { opacity: 0.82; transform: scale(1.02); }
+  79% { opacity: 0.62; transform: scale(1); }
 }
 
-@keyframes carnaval-cta-confetti {
-  0%, 64%, 100% { opacity: 0; transform: translate3d(0, -0.3rem, 0) rotate(0deg); }
-  69% { opacity: 0.95; }
-  77% { opacity: 0.7; transform: translate3d(0.2rem, 0.38rem, 0) rotate(115deg); }
-  85% { opacity: 0; transform: translate3d(-0.14rem, 0.8rem, 0) rotate(230deg); }
+@keyframes carnaval-image-shine {
+  0%, 62% { opacity: 0; transform: skewX(-18deg) translateX(-220%); }
+  66% { opacity: 0.55; }
+  77% { opacity: 0.32; }
+  82%, 100% { opacity: 0; transform: skewX(-18deg) translateX(930%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .carnaval-menu-cta,
-  .carnaval-menu-cta__shine,
-  .carnaval-menu-cta__particle {
+  .carnaval-menu-cta__halo,
+  .carnaval-menu-cta__shine::after {
     animation: none !important;
   }
 
