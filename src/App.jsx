@@ -25,6 +25,44 @@ const getInitialWhatsAppLeadForm = () => ({
   referralSource: '',
 })
 
+function CarnavalMenuCta({ mobile = false, onClick }) {
+  return (
+    <Link
+      to="/carnaval"
+      onClick={onClick}
+      className={`carnaval-menu-cta${mobile ? ' carnaval-menu-cta--mobile' : ''}`}
+      aria-label="Explore the Carnaval 2027 collection"
+    >
+      <span className="carnaval-menu-cta__shine" aria-hidden="true" />
+
+      <span className="carnaval-menu-cta__mask carnaval-menu-cta__mask--left" aria-hidden="true">
+        <svg viewBox="0 0 28 22" focusable="false">
+          <path d="M2.5 12.5C7 4.2 20.9 4.2 25.5 12.5c-4.8 4.2-9.2 4.5-11.5.8-2.3 3.7-6.7 3.4-11.5-.8Z" />
+          <path d="M7.1 11.2c1.8-1.1 3.4-.9 4.8.6M20.9 11.2c-1.8-1.1-3.4-.9-4.8.6M14 6V2.5M5.2 7.8 2.8 4.9M22.8 7.8l2.4-2.9" />
+        </svg>
+      </span>
+
+      <span className="carnaval-menu-cta__label">Carnaval <strong>2027</strong></span>
+
+      <span className="carnaval-menu-cta__mask carnaval-menu-cta__mask--right" aria-hidden="true">
+        <svg viewBox="0 0 28 22" focusable="false">
+          <path d="M2.5 12.5C7 4.2 20.9 4.2 25.5 12.5c-4.8 4.2-9.2 4.5-11.5.8-2.3 3.7-6.7 3.4-11.5-.8Z" />
+          <path d="M7.1 11.2c1.8-1.1 3.4-.9 4.8.6M20.9 11.2c-1.8-1.1-3.4-.9-4.8.6M14 6V2.5M5.2 7.8 2.8 4.9M22.8 7.8l2.4-2.9" />
+        </svg>
+      </span>
+
+      <span className="carnaval-menu-cta__particles" aria-hidden="true">
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--one" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--two" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--three" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--four" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--five" />
+        <i className="carnaval-menu-cta__particle carnaval-menu-cta__particle--six" />
+      </span>
+    </Link>
+  )
+}
+
 export default function App() {
   const [loading, setLoading] = useState(false)
   const [whatsAppLeadLoading, setWhatsAppLeadLoading] = useState(false)
@@ -373,13 +411,8 @@ I would love to receive more information about the experience.`
             Brazil Signature Journey
           </a>
 
-          <div className="hidden items-center gap-6 md:flex">
-            <Link
-              to="/carnaval"
-              className="text-sm font-semibold uppercase tracking-[0.16em] text-[#f1d991] outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
-            >
-              Carnaval 2027
-            </Link>
+          <div className="hidden items-center gap-6 lg:flex">
+            <CarnavalMenuCta />
 
             <a
               href="#journey"
@@ -406,7 +439,7 @@ I would love to receive more information about the experience.`
           <button
             type="button"
             onClick={() => setMobileMenuOpen((open) => !open)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white outline-none backdrop-blur-md transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-[#d4af37]/80 md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white outline-none backdrop-blur-md transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-[#d4af37]/80 lg:hidden"
             aria-label="Menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -418,12 +451,10 @@ I would love to receive more information about the experience.`
           </button>
         </div>
 
-        <div className={`grid overflow-hidden transition-all duration-500 md:hidden ${mobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className={`grid overflow-hidden transition-all duration-500 lg:hidden ${mobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
           <div className="min-h-0">
             <div className="mx-5 mb-5 rounded-2xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur-2xl">
-              <Link onClick={() => setMobileMenuOpen(false)} to="/carnaval" className="block rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#f1d991] transition hover:bg-white/10 hover:text-white">
-                Carnaval 2027
-              </Link>
+              <CarnavalMenuCta mobile onClick={() => setMobileMenuOpen(false)} />
               <a onClick={() => setMobileMenuOpen(false)} href="#journey" className="block rounded-xl px-4 py-3 text-sm uppercase tracking-[0.18em] text-white/85 transition hover:bg-white/10 hover:text-white">
                 Journey
               </a>
