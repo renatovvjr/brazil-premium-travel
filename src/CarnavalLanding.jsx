@@ -7,16 +7,16 @@ import { CarnavalFooter, CarnavalNav, ConsultationBlock, reveal, usePageTop } fr
 
 const faqs = [
   {
-    question: 'Are the 2027 itineraries confirmed?',
-    answer: 'The travel windows and collection concepts are published for early planning. The detailed itinerary, sequence of experiences and all access arrangements remain subject to confirmation and availability.',
+    question: 'Are the 2027 journeys available for commercial enquiries?',
+    answer: 'Yes. Each journey is professionally designed and available for commercial enquiries. Once the group is confirmed, Curated Brazil Travel will coordinate the tickets, hospitality arrangements and travel services included in the selected itinerary, subject to market availability and the agreed booking conditions.',
   },
   {
-    question: 'Are Sambódromo tickets or Salvador viewing areas included?',
-    answer: 'These are proposed highlights within the collection. Specific tickets, hospitality areas, viewing arrangements and suppliers have not yet been confirmed and should not be considered booked or guaranteed.',
+    question: 'How is premium Carnaval hospitality arranged?',
+    answer: carnavalCommercial.hospitalityNotice,
   },
   {
-    question: 'What does the indicative price include?',
-    answer: 'The published price is a planning guide per person based on twin-share accommodation and excludes international flights. All domestic flights in the itinerary remain included. Your final quotation will reflect availability, occupancy, departure city and selected options.',
+    question: 'What does the published from price include?',
+    answer: 'The published from price is per person, twin share, and excludes international flights. All domestic flights in the itinerary remain included. Your final quotation will reflect availability, occupancy, departure city and selected options.',
   },
   {
     question: 'How can I request a quotation?',
@@ -52,7 +52,7 @@ export default function CarnavalLanding() {
               Carnaval, curated beyond the obvious.
             </h1>
             <p className="mt-6 max-w-[40rem] text-lg leading-8 text-white/80 md:text-[1.35rem] md:leading-9">
-              Three considered journeys through Brazil’s most expressive season — created for travellers who want the energy of Carnaval with cultural context, premium pacing and room to breathe.
+              Three carefully curated journeys through Brazil’s most expressive season — created for travellers who want the energy of Carnaval with cultural context, premium comfort and personalised attention.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="#journeys" className="rounded-full bg-[#d7b866] px-7 py-4 text-center text-sm font-semibold uppercase tracking-[0.14em] text-[#07152d] transition hover:bg-[#ead491]">
@@ -157,13 +157,14 @@ export default function CarnavalLanding() {
               </div>
               <div className="flex flex-col justify-center">
                 <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#a31965]">Collection notes</p>
-                <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">Built for thoughtful early planning.</h2>
+                <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">Your Carnaval Experience, Thoughtfully Curated.</h2>
+                <p className="mt-5 leading-7 text-[#536078]">Every journey is carefully designed to deliver an authentic and memorable Brazilian Carnaval experience, combining premium comfort, cultural immersion and personalised coordination.</p>
                 <div className="mt-7 space-y-5 text-[#536078]">
                   {[
                     ['Travel window', 'Late January to mid-February 2027, depending on the selected journey.'],
-                    ['Journey style', 'Small-scale, premium and culturally immersive, with final group format to be confirmed.'],
-                    ['Commercial status', 'Indicative twin-share pricing is published for planning. Final quotations depend on availability and selected options.'],
-                    ['Important', 'Itineraries, experiences, access and inclusions remain subject to confirmation and availability.'],
+                    ['Journey style', 'Boutique groups, premium accommodation, coordinated transport and culturally immersive experiences.'],
+                    ['Coordination', 'Once the group is confirmed, tickets, hospitality arrangements and travel services will be coordinated according to the selected itinerary and market availability.'],
+                    ['Your protection', 'Any material substitution will be disclosed and agreed before booking confirmation, or handled under the applicable booking terms and consumer rights.'],
                   ].map(([label, copy]) => (
                     <div key={label} className="grid gap-1 border-b border-[#0a1730]/10 pb-5 sm:grid-cols-[9rem_1fr]">
                       <p className="font-semibold text-[#07152d]">{label}</p>

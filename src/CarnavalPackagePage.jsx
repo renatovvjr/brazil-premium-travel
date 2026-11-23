@@ -188,7 +188,7 @@ Additional requests: ${form.message || 'None provided'}`
           <button type="submit" disabled={status === 'sending'} className="mt-7 w-full rounded-full bg-[#d7b866] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-[#07152d] transition hover:bg-[#ead491] disabled:cursor-wait disabled:opacity-65">
             {status === 'sending' ? 'Preparing enquiry…' : 'Enquire About This Journey'}
           </button>
-          <p className="mt-4 text-center text-sm leading-6 text-[#6c7689]">Submitting this form requests a quotation only. It does not create a booking or guarantee availability.</p>
+          <p className="mt-4 text-center text-sm leading-6 text-[#6c7689]">Submitting this form begins your tailored quotation process. Final arrangements and availability will be documented in writing before booking confirmation.</p>
         </motion.form>
       </div>
     </section>
@@ -225,10 +225,10 @@ function ItinerarySection({ journey }) {
         <motion.div {...reveal} className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#a31965]">Day-by-day itinerary</p>
-            <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">The intended journey, one chapter at a time.</h2>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">A thoughtfully designed journey, one chapter at a time.</h2>
           </div>
           <p className="max-w-2xl text-lg leading-8 text-[#536078] lg:justify-self-end">
-            The sequence below is the current operating plan. Flight schedules, event access and supplier arrangements remain subject to confirmation and availability.
+            Each day balances authentic cultural encounters, coordinated travel, premium experiences and time to enjoy Brazil at a considered pace.
           </p>
         </motion.div>
 
@@ -288,7 +288,7 @@ function CommercialDetails({ journey }) {
 
           <motion.div {...reveal} className="mt-8 rounded-[1.75rem] border border-white/12 bg-white/[0.04] p-7 md:p-9">
             <h3 className="text-2xl font-semibold">Accommodation and occupancy choices</h3>
-            <p className="mt-3 max-w-3xl leading-7 text-white/62">Carefully selected 4-star hotels, standard rooms and daily breakfast are included. Final hotels and room categories will be specified in the written proposal.</p>
+            <p className="mt-3 max-w-3xl leading-7 text-white/62">Carefully selected premium 4-star hotels, standard rooms and daily breakfast are included. Final hotels and room categories will be specified in the written proposal.</p>
             <div className="mt-7 grid gap-4 md:grid-cols-2">
               {carnavalCommercial.occupancyOptions.map((option) => (
                 <div key={option.label} className="rounded-2xl border border-white/10 bg-black/15 p-5">
@@ -322,6 +322,7 @@ function CommercialDetails({ journey }) {
                   </div>
                 ))}
               </div>
+              <p id="hospitality-conditions" className="mt-7 rounded-2xl border border-[#a31965]/15 bg-[#f8f2f5] p-5 text-base leading-7 text-[#536078]">{carnavalCommercial.hospitalityNotice}</p>
             </motion.article>
 
             <div className="space-y-7">
@@ -341,7 +342,7 @@ function CommercialDetails({ journey }) {
                     {journey.optionalExperiences.map((item) => <p key={item} className="leading-7 text-[#536078]">{item}</p>)}
                   </div>
                 ) : (
-                  <p className="mt-6 leading-7 text-[#536078]">No separate optional add-ons are currently published for this itinerary. Any requested additions will be clearly identified in the final proposal.</p>
+                  <p className="mt-6 leading-7 text-[#536078]">This itinerary is designed as a complete journey. Any tailored additions you request will be clearly identified in the final proposal.</p>
                 )}
               </motion.article>
             </div>
@@ -367,7 +368,7 @@ function CommercialDetails({ journey }) {
 
           <motion.article {...reveal} className="rounded-[2rem] bg-[#07152d] p-7 text-white shadow-[0_24px_75px_rgba(7,21,45,0.16)] md:p-10">
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#d7b866]/14 text-[#e2c97f]"><Info size={20} aria-hidden="true" /></span>
-            <h2 className="mt-6 text-3xl font-semibold md:text-4xl">Important operating notes</h2>
+            <h2 className="mt-6 text-3xl font-semibold md:text-4xl">Booking and journey coordination</h2>
             <div className="mt-7 space-y-4 text-white/70">
               {journey.operationalNotes.map((item) => <p key={item} className="border-b border-white/10 pb-4 leading-7 last:border-0">{item}</p>)}
             </div>
@@ -429,11 +430,11 @@ export default function CarnavalPackagePage({ packageId }) {
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#a31965]">Journey at a glance</p>
               <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">A layered expression of Brazil in celebration.</h2>
               <p className="mt-6 text-lg leading-8 text-[#536078]">
-                This concept combines Carnaval’s intensity with a more measured view of the destinations around it. The final sequence will be shaped as access, operating dates and regional arrangements are confirmed.
+                This carefully curated journey combines Carnaval’s intensity with a more measured view of the destinations around it, bringing together cultural immersion, coordinated travel, premium hospitality and personalised attention.
               </p>
               <div className="mt-8 rounded-[1.75rem] bg-[#07152d] p-6 text-white">
-                <p className="text-sm uppercase tracking-[0.2em] text-[#e2c97f]">Planned route</p>
-                <div className="mt-5 flex flex-wrap items-center gap-2" aria-label={`Planned route: ${journey.route.join(' to ')}`}>
+                <p className="text-sm uppercase tracking-[0.2em] text-[#e2c97f]">Journey route</p>
+                <div className="mt-5 flex flex-wrap items-center gap-2" aria-label={`Journey route: ${journey.route.join(' to ')}`}>
                   {journey.route.map((destination, index) => (
                     <div key={`${destination}-${index}`} className="flex items-center gap-2">
                       <span className="rounded-full border border-white/12 bg-white/[0.07] px-4 py-2 text-sm text-white/75">{destination}</span>
@@ -447,7 +448,7 @@ export default function CarnavalPackagePage({ packageId }) {
             <motion.div {...reveal} className="rounded-[2rem] border border-[#0a1730]/10 bg-white p-7 shadow-[0_24px_75px_rgba(7,21,45,0.08)] md:p-10">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#efe4c0] text-[#8b6a16]"><Sparkles size={19} /></span>
-                <h2 className="text-2xl font-semibold">Proposed highlights</h2>
+                <h2 className="text-2xl font-semibold">Journey highlights</h2>
               </div>
               <div className="mt-7 space-y-5">
                 {journey.highlights.map((highlight) => (
@@ -458,7 +459,7 @@ export default function CarnavalPackagePage({ packageId }) {
                 ))}
               </div>
               <p className="mt-8 rounded-2xl bg-[#f5f1e8] p-5 text-sm leading-6 text-[#665f4d]">
-                These highlights are planning concepts only. Specific tickets, hospitality access, accommodation, transport, suppliers and inclusions are not yet confirmed.
+                Each highlight forms part of the journey design. Final arrangements are documented in your written proposal, with premium Carnaval hospitality subject to the conditions stated on this page.
               </p>
             </motion.div>
           </div>
