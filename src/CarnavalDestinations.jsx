@@ -12,7 +12,7 @@ export function ResponsiveCarnavalImage({ image, alt, className = '', eager = fa
         alt={alt}
         className={className}
         loading={eager ? 'eager' : 'lazy'}
-        fetchPriority={eager ? 'high' : 'auto'}
+        fetchpriority={eager ? 'high' : 'auto'}
       />
     </picture>
   )

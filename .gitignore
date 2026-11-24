@@ -7,9 +7,19 @@ dist
 # environment
 .env
 .env.local
+.env.*.local
 
 # vercel
 .vercel
 
 # misc
 .DS_Store
+.tmp-*
+assets/carnaval-originals/
+
+# local release/staging operators (never ship or commit)
+scripts/collect-production-db-credential.ps1
+scripts/collect-production-service-role.ps1
+scripts/smoke-workspace-browser.mjs
+scripts/start-workspace-staging.mjs
+scripts/validate-workspace-staging.ps1

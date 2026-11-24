@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FaInstagram, FaWhatsapp, FaEnvelope, FaCheck } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
+import { isWorkspaceV2Enabled, submitIntake } from './lib/intakeClient'
 import { Link } from 'react-router-dom'
 
 const getInitialApplicationForm = () => ({
@@ -260,26 +261,33 @@ Luxury Travel Experiences`
     setWhatsAppLeadLoading(true)
 
     try {
-      const { error } = await supabase
-        .from('leads')
-        .insert([
-          {
-            full_name: fullName,
-            email,
-            country_of_residence: countryOfResidence,
-            city: city || null,
-            birth_date: birthDate || null,
-            referral_source: referralSource || null,
-            source: 'whatsapp_consultation',
-            created_at: new Date().toISOString(),
-          },
-        ])
+      if (isWorkspaceV2Enabled()) {
+        await submitIntake('whatsapp_consultation', 'signature-journey', {
+          fullName, email, countryOfResidence, city, birthDate, referralSource,
+        })
+      } else {
+        const { error } = await supabase
+          .from('leads')
+          .insert([
+            {
+              full_name: fullName,
+              email,
+              country_of_residence: countryOfResidence,
+              city: city || null,
+              birth_date: birthDate || null,
+              referral_source: referralSource || null,
+              source: 'whatsapp_consultation',
+              created_at: new Date().toISOString(),
+            },
+          ])
 
-      if (error) {
-        console.error('WhatsApp consultation lead could not be saved:', error)
+        if (error) console.error('WhatsApp consultation lead could not be saved:', error)
       }
     } catch (error) {
       console.error('WhatsApp consultation lead could not be saved:', error)
+      alert('Your details could not be saved. Please try again before opening WhatsApp.')
+      setWhatsAppLeadLoading(false)
+      return
     }
 
     window.open(`https://wa.me/61467652458?text=${encodeURIComponent(whatsAppWelcomeMessage)}`, '_blank', 'noreferrer')
@@ -330,32 +338,41 @@ Luxury Travel Experiences`
     }
 
     try {
-      const { error } = await supabase
-        .from('luxury_applications')
-        .insert([
-          {
-            full_name: fullName,
-            email,
-            whatsapp,
-            travelers,
-            preferred_journey: inauguralJourney,
-            journey_date: 'To be defined',
-            visited_brazil: visitedBrazil,
-            visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
-            experience_interests: interests,
-            budget_range: budget,
-            dream_experience: dreamExperience,
-            submission_timestamp: submissionTimestamp,
-            source: 'private_journey_application',
-            created_at: submissionTimestamp,
-          },
-        ])
+      if (isWorkspaceV2Enabled()) {
+        await submitIntake('signature_application', 'signature-journey', {
+          fullName, email, whatsapp, travellers: travelers, visitedBrazil,
+          visitedPlaces: visitedBrazil === 'Yes' ? visitedPlaces : '',
+          interests, budget, dreamExperience,
+        })
+      } else {
+        const { error } = await supabase
+          .from('luxury_applications')
+          .insert([
+            {
+              full_name: fullName,
+              email,
+              whatsapp,
+              travelers,
+              preferred_journey: inauguralJourney,
+              journey_date: 'To be defined',
+              visited_brazil: visitedBrazil,
+              visited_places: visitedBrazil === 'Yes' ? visitedPlaces : '',
+              experience_interests: interests,
+              budget_range: budget,
+              dream_experience: dreamExperience,
+              submission_timestamp: submissionTimestamp,
+              source: 'private_journey_application',
+              created_at: submissionTimestamp,
+            },
+          ])
 
-      if (error) {
-        console.error('Luxury application could not be saved:', error)
+        if (error) console.error('Luxury application could not be saved:', error)
       }
     } catch (error) {
       console.error('Luxury application could not be saved:', error)
+      alert('Your application could not be stored. Please try again.')
+      setLoading(false)
+      return
     }
 
     const text = `Hello Curated Brazil,
@@ -369,14 +386,16 @@ Experience interests: ${interestsText}
 
 I would love to receive more information about the experience.`
 
-    fetch('/api/send-application-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      keepalive: true,
-      body: JSON.stringify(leadPayload),
-    }).catch((error) => {
-      console.error('Application email notification could not be sent:', error)
-    })
+    if (!isWorkspaceV2Enabled()) {
+      fetch('/api/send-application-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify(leadPayload),
+      }).catch((error) => {
+        console.error('Application email notification could not be sent:', error)
+      })
+    }
 
     setApplicationSuccess(true)
     setLoading(false)

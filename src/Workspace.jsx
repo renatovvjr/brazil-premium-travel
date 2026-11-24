@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaCheck, FaSignOutAlt, FaSearch, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
+import WorkspaceV2 from './WorkspaceV2'
 
 const statusOptions = ['New', 'Contacted', 'Proposal Sent', 'Booked', 'Lost']
 
@@ -41,7 +42,7 @@ const applyListControls = (items, search, statusFilter, sortOrder, includeStatus
       return sortOrder === 'oldest' ? aTime - bTime : bTime - aTime
     })
 
-export default function Workspace() {
+function WorkspaceLegacy() {
   const [authReady, setAuthReady] = useState(false)
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
@@ -429,6 +430,10 @@ export default function Workspace() {
       </div>
     </WorkspaceShell>
   )
+}
+
+export default function Workspace() {
+  return import.meta.env.VITE_WORKSPACE_V2_ENABLED === 'true' ? <WorkspaceV2 /> : <WorkspaceLegacy />
 }
 
 function WorkspaceShell({ children }) {

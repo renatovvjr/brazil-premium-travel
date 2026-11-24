@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:workspace-staging": "node scripts/start-workspace-staging.mjs",
     "build": "vite build",
+    "test:workspace": "node --test tests/workspace.test.mjs",
     "images:carnaval": "node scripts/process-carnaval-images.mjs",
     "preview": "vite preview"
   },

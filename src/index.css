@@ -179,3 +179,20 @@ input {
     transition-duration: 0.01ms !important;
   }
 }
+@layer components {
+  .field {
+    @apply w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15;
+  }
+
+  .gold-button {
+    @apply inline-flex items-center gap-2 rounded-full bg-[#d4af37] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-black transition hover:bg-[#f0d57e] disabled:cursor-wait disabled:opacity-60;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-[#8b6a21];
+  }
+
+  .table-action {
+    @apply text-xs font-semibold uppercase tracking-wider text-[#8b6a21] hover:text-black;
+  }
+}
