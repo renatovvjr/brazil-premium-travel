@@ -138,6 +138,7 @@ test('legacy production paths remain present and Workspace V2 uses isolated cred
     readFile(new URL('../supabase/migrations/20261124092500_workspace_2_booking_commands.sql', import.meta.url), 'utf8'),
   ])
   assert.match(workspace, /VITE_WORKSPACE_V2_ENABLED/)
+  assert.match(app, /isWorkspaceV2IntakeEnabled/)
   assert.match(workspaceV2, /workspaceSupabase/)
   assert.match(app, /from\('luxury_applications'\)/)
   assert.match(app, /from\('leads'\)/)

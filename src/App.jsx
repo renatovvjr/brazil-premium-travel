@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FaInstagram, FaWhatsapp, FaEnvelope, FaCheck } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
-import { isWorkspaceV2Enabled, submitIntake } from './lib/intakeClient'
+import { isWorkspaceV2IntakeEnabled, submitIntake } from './lib/intakeClient'
 import { Link } from 'react-router-dom'
 
 const getInitialApplicationForm = () => ({
@@ -261,7 +261,7 @@ Luxury Travel Experiences`
     setWhatsAppLeadLoading(true)
 
     try {
-      if (isWorkspaceV2Enabled()) {
+      if (isWorkspaceV2IntakeEnabled()) {
         await submitIntake('whatsapp_consultation', 'signature-journey', {
           fullName, email, countryOfResidence, city, birthDate, referralSource,
         })
@@ -338,7 +338,7 @@ Luxury Travel Experiences`
     }
 
     try {
-      if (isWorkspaceV2Enabled()) {
+      if (isWorkspaceV2IntakeEnabled()) {
         await submitIntake('signature_application', 'signature-journey', {
           fullName, email, whatsapp, travellers: travelers, visitedBrazil,
           visitedPlaces: visitedBrazil === 'Yes' ? visitedPlaces : '',
@@ -386,7 +386,7 @@ Experience interests: ${interestsText}
 
 I would love to receive more information about the experience.`
 
-    if (!isWorkspaceV2Enabled()) {
+    if (!isWorkspaceV2IntakeEnabled()) {
       fetch('/api/send-application-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

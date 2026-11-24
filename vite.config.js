@@ -74,6 +74,7 @@ export default defineConfig(({ mode }) => {
     ''
   const visualPreviewRequested = process.env.VITE_CARNAVAL_VISUAL_PREVIEW === 'true'
   const workspaceV2Requested = process.env.VITE_WORKSPACE_V2_ENABLED === 'true'
+  const workspaceV2IntakeRequested = process.env.VITE_WORKSPACE_V2_INTAKE_ENABLED === 'true'
   const isVerifiedVercelPreview = visualPreviewRequested && vercelEnvironment === 'preview'
 
   if (vercelEnvironment === 'preview' && !visualPreviewRequested) {
@@ -88,11 +89,15 @@ export default defineConfig(({ mode }) => {
     )
   }
 
-  if (workspaceV2Requested && vercelEnvironment === 'production' && process.env.WORKSPACE_V2_PRODUCTION_APPROVED !== 'true') {
+  if ((workspaceV2Requested || workspaceV2IntakeRequested) && vercelEnvironment === 'production' && process.env.WORKSPACE_V2_PRODUCTION_APPROVED !== 'true') {
     throw new Error('Workspace 2.0 production builds require WORKSPACE_V2_PRODUCTION_APPROVED=true.')
   }
 
-  if (workspaceV2Requested && visualPreviewRequested) {
+  if (workspaceV2IntakeRequested && !workspaceV2Requested) {
+    throw new Error('Workspace 2.0 intake requires VITE_WORKSPACE_V2_ENABLED=true.')
+  }
+
+  if ((workspaceV2Requested || workspaceV2IntakeRequested) && visualPreviewRequested) {
     throw new Error('Workspace 2.0 cannot use the blocked Carnaval visual Preview environment.')
   }
 

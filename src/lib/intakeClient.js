@@ -1,4 +1,4 @@
-const FEATURE_ENABLED = import.meta.env.VITE_WORKSPACE_V2_ENABLED === 'true'
+const INTAKE_FEATURE_ENABLED = import.meta.env.VITE_WORKSPACE_V2_INTAKE_ENABLED === 'true'
 const keys = new Map()
 
 const getAttribution = () => {
@@ -24,7 +24,7 @@ const getKey = (fingerprint) => {
   return value
 }
 
-export const isWorkspaceV2Enabled = () => FEATURE_ENABLED
+export const isWorkspaceV2IntakeEnabled = () => INTAKE_FEATURE_ENABLED
 
 export async function submitIntake(formType, productCode, data) {
   const fingerprint = `${formType}:${productCode}:${String(data.email || '').trim().toLowerCase()}`

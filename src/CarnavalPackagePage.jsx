@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { carnavalCommercial, getCarnavalPackage } from './carnavalContent'
 import { DestinationEditorial, ResponsiveCarnavalImage } from './CarnavalDestinations'
 import { CarnavalFooter, CarnavalNav, JourneyMeta, reveal, usePageTop } from './CarnavalShared'
-import { isWorkspaceV2Enabled, submitIntake } from './lib/intakeClient'
+import { isWorkspaceV2IntakeEnabled, submitIntake } from './lib/intakeClient'
 
 const getInitialEnquiry = () => ({
   fullName: '',
@@ -86,13 +86,13 @@ Additional requests: ${form.message || 'None provided'}`
       source: 'carnaval_2027_package_enquiry',
     }
 
-    if (import.meta.env.DEV && !isWorkspaceV2Enabled()) {
+    if (import.meta.env.DEV && !isWorkspaceV2IntakeEnabled()) {
       setStatus('preview')
       return
     }
 
     try {
-      if (isWorkspaceV2Enabled()) {
+      if (isWorkspaceV2IntakeEnabled()) {
         await submitIntake('carnaval_enquiry', journey.id, {
           fullName: form.fullName,
           email: form.email,

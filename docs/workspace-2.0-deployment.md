@@ -28,6 +28,7 @@ Keep these gates during migration and the initial deployment:
 
 ```dotenv
 VITE_WORKSPACE_V2_ENABLED=false
+VITE_WORKSPACE_V2_INTAKE_ENABLED=false
 WORKSPACE_V2_PRODUCTION_APPROVED=false
 MARKETING_DISPATCH_ENABLED=false
 EMAIL_DELIVERY_ENABLED=false
@@ -38,7 +39,7 @@ Do not configure a live payment processor or processor webhook. Workspace financ
 
 Production intake fails closed while `INTAKE_REQUIRE_CAPTCHA=true` and `TURNSTILE_SECRET_KEY` is absent. Do not activate Workspace V2 intake until a valid production Turnstile secret is configured, or a separate security decision explicitly approves another anti-abuse control.
 
-The legacy Workspace and legacy public form handlers remain active while `VITE_WORKSPACE_V2_ENABLED=false`. Apply database migrations before changing either Workspace flag. Activation requires a separate approved build and a successful login by an existing production administrator.
+The legacy Workspace remains active while `VITE_WORKSPACE_V2_ENABLED=false`. Public forms remain on their legacy handlers while `VITE_WORKSPACE_V2_INTAKE_ENABLED=false`, even after the internal Workspace V2 is activated. Apply database migrations before changing either flag. Workspace activation requires a separate approved build and a successful login by an existing production administrator. Intake activation requires its own anti-abuse readiness check.
 
 Transactional delivery is independent of bulk marketing. After separate approval and configuration of `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `APPLICATION_TO_EMAIL` and `OUTBOX_WORKER_SECRET`, an authenticated scheduler must `POST /api/process-email-outbox` with `Authorization: Bearer <OUTBOX_WORKER_SECRET>`. Then, and only then, set `EMAIL_DELIVERY_ENABLED=true`; leave `MARKETING_DISPATCH_ENABLED=false`.
 
