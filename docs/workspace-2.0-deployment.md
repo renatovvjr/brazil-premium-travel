@@ -42,4 +42,6 @@ The legacy Workspace and legacy public form handlers remain active while `VITE_W
 
 Transactional delivery is independent of bulk marketing. After separate approval and configuration of `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `APPLICATION_TO_EMAIL` and `OUTBOX_WORKER_SECRET`, an authenticated scheduler must `POST /api/process-email-outbox` with `Authorization: Bearer <OUTBOX_WORKER_SECRET>`. Then, and only then, set `EMAIL_DELIVERY_ENABLED=true`; leave `MARKETING_DISPATCH_ENABLED=false`.
 
+Production uses the Supabase-managed `pg_cron` and `pg_net` extensions. The active job is named `workspace-outbox-every-minute`, runs once per minute, and reads its bearer token dynamically from the Vault secret `workspace_outbox_worker_secret`; the secret must never be embedded in `cron.job` or source control.
+
 The SQL rollback file is destructive and staging-only. Production rollback is: leave/revert the Workspace feature flag to false, keep legacy tables and authentication online, and use a reviewed corrective migration or the verified logical backup. Never run the staging rollback against production.
