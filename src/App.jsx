@@ -4,6 +4,8 @@ import { FaInstagram, FaWhatsapp, FaEnvelope, FaCheck } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
 import { isWorkspaceV2IntakeEnabled, submitIntake } from './lib/intakeClient'
 import { Link } from 'react-router-dom'
+import { LanguageSelector } from './LanguageSelector'
+import { useI18n } from './i18n'
 
 const getInitialApplicationForm = () => ({
   fullName: '',
@@ -50,11 +52,13 @@ function CarnavalMenuCta({ mobile = false, onClick }) {
   )
 }
 export default function App() {
+  const { t } = useI18n()
+  const visualReviewMode = new URLSearchParams(window.location.search).has('visualReview')
   const [loading, setLoading] = useState(false)
   const [whatsAppLeadLoading, setWhatsAppLeadLoading] = useState(false)
   const [whatsAppLeadModalOpen, setWhatsAppLeadModalOpen] = useState(false)
   const [whatsAppLeadForm, setWhatsAppLeadForm] = useState(getInitialWhatsAppLeadForm)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(() => new URLSearchParams(window.location.search).get('visualReview') === 'mobile')
   const [scrolled, setScrolled] = useState(false)
   const [openExperience, setOpenExperience] = useState('signature')
   const [applicationSuccess, setApplicationSuccess] = useState(false)
@@ -401,16 +405,16 @@ I would love to receive more information about the experience.`
     setLoading(false)
   }
   return (
-    <div className="min-h-screen bg-[#fbfaf7] text-zinc-900 antialiased selection:bg-[#d4af37]/25">
+    <div className="min-h-screen bg-[var(--color-paper)] text-zinc-900 antialiased selection:bg-[var(--color-luxury-gold)]/25">
       <nav className={`fixed left-0 top-0 z-50 w-full border-b transition-all duration-500 ${scrolled || mobileMenuOpen
-        ? 'border-[#d4af37]/20 bg-zinc-950/75 shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-2xl'
+        ? 'border-[var(--color-luxury-gold)]/20 bg-[var(--color-deep-forest)]/85 shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-2xl'
         : 'border-white/10 bg-black/20 backdrop-blur-md'
         }`}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-5 py-4 md:px-8">
 
           <a
             href="/"
-            className="text-lg font-semibold tracking-[0.08em] text-white outline-none transition hover:text-[#f6e7bd] focus-visible:ring-2 focus-visible:ring-[#d4af37]/80 md:text-2xl"
+            className="max-w-[11rem] text-sm font-semibold leading-tight tracking-[0.06em] text-white outline-none transition hover:text-[#f6e7bd] focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/80 sm:max-w-none sm:text-lg md:text-2xl"
           >
             Brazil Signature Journey
           </a>
@@ -420,39 +424,43 @@ I would love to receive more information about the experience.`
 
             <a
               href="#journey"
-              className="text-sm uppercase tracking-[0.18em] text-white/80 outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
+              className="text-sm uppercase tracking-[0.18em] text-white/80 outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/80"
             >
-              Journey
+              {t('nav.journey')}
             </a>
 
             <a
               href="#apply"
-              className="text-sm uppercase tracking-[0.18em] text-white/80 outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
+              className="text-sm uppercase tracking-[0.18em] text-white/80 outline-none transition hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/80"
             >
-              Apply
+              {t('nav.apply')}
             </a>
 
             <a
               href="#apply"
-              className="rounded-full border border-[#d4af37]/50 bg-white/10 px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-white shadow-[0_12px_35px_rgba(0,0,0,0.15)] backdrop-blur-md outline-none transition hover:border-[#d4af37] hover:bg-[#d4af37] hover:text-black focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
+              className="rounded-full border border-[var(--color-luxury-gold)]/50 bg-white/10 px-6 py-3 text-sm font-medium uppercase tracking-[0.12em] text-white shadow-[0_12px_35px_rgba(0,0,0,0.15)] backdrop-blur-md outline-none transition hover:border-[var(--color-luxury-gold)] hover:bg-[var(--color-luxury-gold)] hover:text-black focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/80"
             >
-              Start Your Journey
+              {t('nav.start')}
             </a>
+            <LanguageSelector />
           </div>
 
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((open) => !open)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white outline-none backdrop-blur-md transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-[#d4af37]/80 lg:hidden"
-            aria-label="Menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            <span className="relative h-4 w-5">
-              <span className={`absolute left-0 top-0 h-px w-5 bg-current transition ${mobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
-              <span className={`absolute left-0 top-2 h-px w-5 bg-current transition ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-              <span className={`absolute left-0 top-4 h-px w-5 bg-current transition ${mobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
-            </span>
-          </button>
+          <div className="flex shrink-0 items-center gap-2 lg:hidden">
+            <LanguageSelector compact />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white outline-none backdrop-blur-md transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/80"
+              aria-label={t('nav.menu')}
+              aria-expanded={mobileMenuOpen}
+            >
+              <span className="relative h-4 w-5">
+                <span className={`absolute left-0 top-0 h-px w-5 bg-current transition ${mobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+                <span className={`absolute left-0 top-2 h-px w-5 bg-current transition ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                <span className={`absolute left-0 top-4 h-px w-5 bg-current transition ${mobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+              </span>
+            </button>
+          </div>
         </div>
 
         <div className={`grid overflow-hidden transition-all duration-500 lg:hidden ${mobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
@@ -460,13 +468,13 @@ I would love to receive more information about the experience.`
             <div className="mx-5 mb-5 rounded-2xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur-2xl">
               <CarnavalMenuCta mobile onClick={() => setMobileMenuOpen(false)} />
               <a onClick={() => setMobileMenuOpen(false)} href="#journey" className="block rounded-xl px-4 py-3 text-sm uppercase tracking-[0.18em] text-white/85 transition hover:bg-white/10 hover:text-white">
-                Journey
+                {t('nav.journey')}
               </a>
               <a onClick={() => setMobileMenuOpen(false)} href="#apply" className="block rounded-xl px-4 py-3 text-sm uppercase tracking-[0.18em] text-white/85 transition hover:bg-white/10 hover:text-white">
-                Apply
+                {t('nav.apply')}
               </a>
-              <a onClick={() => setMobileMenuOpen(false)} href="#apply" className="mt-2 block rounded-full border border-[#d4af37]/50 bg-[#d4af37] px-5 py-3 text-center text-sm font-medium uppercase tracking-[0.12em] text-black transition hover:bg-[#f0d57e]">
-                Start Your Journey
+              <a onClick={() => setMobileMenuOpen(false)} href="#apply" className="mt-2 block rounded-full border border-[var(--color-luxury-gold)]/50 bg-[var(--color-luxury-gold)] px-5 py-3 text-center text-sm font-medium uppercase tracking-[0.12em] text-black transition hover:bg-[#f0d57e]">
+                {t('nav.start')}
               </a>
             </div>
           </div>
@@ -490,7 +498,7 @@ I would love to receive more information about the experience.`
                 className={`h-full w-full object-cover object-center transition-transform duration-[7000ms] ease-out ${currentHero === index ? 'scale-105' : 'scale-100'}`}
               />
 
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_45%,rgba(255,255,255,0.10),transparent_28%),linear-gradient(90deg,rgba(0,0,0,0.72),rgba(0,0,0,0.28)_48%,rgba(0,0,0,0.62)),linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.76))]" />
+              <div className="home-hero-overlay absolute inset-0" />
             </div>
           ))}
         </div>
@@ -499,39 +507,39 @@ I would love to receive more information about the experience.`
         <div className="absolute inset-0 z-10 flex items-center pt-20">
           <motion.div
             className="mx-auto w-full max-w-7xl px-6"
-            initial={{ opacity: 0, y: 35 }}
+            initial={visualReviewMode ? false : { opacity: 0, y: 35 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, ease: 'easeOut' }}
           >
 
-            <div className="mb-8 h-px w-24 bg-[#d4af37]" />
+            <div className="mb-8 h-px w-24 bg-[var(--color-luxury-gold)]" />
 
-            <h1 className="max-w-3xl text-4xl font-semibold leading-[1.05] text-balance drop-shadow-2xl md:text-6xl">
-              Experience Brazil like few ever will — a private, curated journey
+            <h1 className="max-w-3xl text-4xl font-semibold leading-[1.05] text-balance [text-shadow:0_3px_22px_rgba(0,20,15,0.52)] md:text-6xl">
+              {t('home.hero.title')}
             </h1>
 
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 md:text-xl">
-              A 28-day premium experience designed for comfort, safety and unforgettable moments.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/95 [text-shadow:0_2px_12px_rgba(0,20,15,0.48)] md:text-xl">
+              {t('home.hero.copy')}
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
                 href="#apply"
-                className="rounded-full bg-emerald-600 px-7 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] shadow-[0_18px_45px_rgba(5,150,105,0.28)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-emerald-500 focus-visible:ring-2 focus-visible:ring-white/80"
+                className="rounded-full bg-[var(--color-brazilian-green)] px-7 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] shadow-[0_18px_45px_rgba(5,150,105,0.28)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--color-emerald-forest)] focus-visible:ring-2 focus-visible:ring-white/80"
               >
-                Request Your Private Itinerary
+                {t('home.hero.primary')}
               </a>
 
               <a
                 href="#journey"
                 className="rounded-full border border-white/70 bg-white/5 px-7 py-4 text-center text-sm font-semibold uppercase tracking-[0.12em] backdrop-blur-sm outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-white/80"
               >
-                Discover the Journey
+                {t('home.hero.secondary')}
               </a>
             </div>
 
             <p className="mt-4 text-sm tracking-wide text-white/70">
-              Limited availability — curated for a select group of travellers
+              {t('home.hero.note')}
             </p>
 
           </motion.div>
@@ -544,7 +552,7 @@ I would love to receive more information about the experience.`
               key={index}
               onClick={() => setCurrentHero(index)}
               className={`h-2.5 rounded-full transition-all duration-500 ${currentHero === index
-                ? 'w-8 bg-[#d4af37]'
+                ? 'w-8 bg-[var(--color-luxury-gold)]'
                 : 'w-2.5 bg-white/45 hover:bg-white/75'
                 }`}
               aria-label={`Curated Brazil hero ${index + 1}`}
@@ -565,7 +573,7 @@ I would love to receive more information about the experience.`
         viewport={{ once: true }}
       >
         <h2 className="mb-12 max-w-3xl text-3xl font-semibold leading-tight md:text-5xl">
-          A curated route across Brazil
+          {t('home.route.title')}
         </h2>
 
         <div className="grid gap-6 md:grid-cols-3">
@@ -595,7 +603,7 @@ I would love to receive more information about the experience.`
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent opacity-70 transition duration-700 group-hover:opacity-90" />
-                    <div className="absolute bottom-5 left-5 h-px w-12 origin-left scale-x-75 bg-[#d4af37] transition duration-500 group-hover:scale-x-100" />
+                    <div className="absolute bottom-5 left-5 h-px w-12 origin-left scale-x-75 bg-[var(--color-luxury-gold)] transition duration-500 group-hover:scale-x-100" />
                   </div>
                   <div className="p-6">
                     <h3 className="text-lg font-semibold">{item.title}</h3>
@@ -667,9 +675,9 @@ I would love to receive more information about the experience.`
       </section >
 
       {/* EXPERIENCE PRICING */}
-      <section className="relative overflow-hidden border-y border-[#d4af37]/20 bg-[#11100d] px-6 py-18 text-white md:py-24 lg:py-26">
+      <section className="relative overflow-hidden border-y border-[var(--color-luxury-gold)]/20 bg-[var(--color-deep-forest)] px-6 py-18 text-white md:py-24 lg:py-26">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(212,175,55,0.16),transparent_26%),radial-gradient(circle_at_78%_0%,rgba(255,255,255,0.08),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_38%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-luxury-gold)]/70 to-transparent" />
 
         <motion.div
           className="relative mx-auto max-w-7xl"
@@ -679,13 +687,13 @@ I would love to receive more information about the experience.`
           viewport={{ once: true, margin: '-80px' }}
         >
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#d4af37]">
+            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--color-luxury-gold)]">
               Limited departures • Small curated group • To be defined
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-balance md:text-5xl">
               Choose Your Experience
             </h2>
-            <div className="mx-auto mt-5 h-px w-20 bg-[#d4af37]/80" />
+            <div className="mx-auto mt-5 h-px w-20 bg-[var(--color-luxury-gold)]/80" />
           </div>
 
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
@@ -696,19 +704,19 @@ I would love to receive more information about the experience.`
               return (
                 <motion.article
                   key={experience.id}
-                  className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-xl transition duration-700 hover:-translate-y-2 hover:border-[#d4af37]/55 hover:bg-white/[0.075] hover:shadow-[0_36px_110px_rgba(0,0,0,0.46)] md:p-6 lg:p-7"
+                  className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-xl transition duration-700 hover:-translate-y-2 hover:border-[var(--color-luxury-gold)]/55 hover:bg-white/[0.075] hover:shadow-[0_36px_110px_rgba(0,0,0,0.46)] md:p-6 lg:p-7"
                   initial={{ opacity: 0, y: 34 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: index * 0.1, ease: 'easeOut' }}
                   viewport={{ once: true }}
                 >
-                  <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent opacity-60 transition duration-700 group-hover:opacity-100" />
-                  <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[#d4af37]/10 blur-3xl transition duration-700 group-hover:bg-[#d4af37]/16" />
+                  <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-luxury-gold)]/80 to-transparent opacity-60 transition duration-700 group-hover:opacity-100" />
+                  <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[var(--color-luxury-gold)]/10 blur-3xl transition duration-700 group-hover:bg-[var(--color-luxury-gold)]/16" />
 
                   <div className="relative flex min-h-full flex-col">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="inline-flex rounded-full border border-[#d4af37]/45 bg-[#d4af37]/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-[#f1d991]">
+                        <p className="inline-flex rounded-full border border-[var(--color-luxury-gold)]/45 bg-[var(--color-luxury-gold)]/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-[#f1d991]">
                           {experience.tag}
                         </p>
                         <h3 className="mt-5 text-2xl font-semibold tracking-[-0.01em] md:text-[1.7rem] md:leading-tight">
@@ -716,7 +724,7 @@ I would love to receive more information about the experience.`
                         </h3>
                       </div>
 
-                      <div className="hidden h-14 w-14 shrink-0 rounded-full border border-[#d4af37]/35 bg-black/20 md:block" />
+                      <div className="hidden h-14 w-14 shrink-0 rounded-full border border-[var(--color-luxury-gold)]/35 bg-black/20 md:block" />
                     </div>
 
                     <p className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-[#f8f2df] md:text-[2.8rem]">
@@ -727,7 +735,7 @@ I would love to receive more information about the experience.`
                     </p>
 
                     {experience.highlight && (
-                      <p className="mt-5 rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 px-4 py-3 font-serif text-lg italic leading-7 text-[#f7e8bd]">
+                      <p className="mt-5 rounded-2xl border border-[var(--color-luxury-gold)]/25 bg-[var(--color-luxury-gold)]/10 px-4 py-3 font-serif text-lg italic leading-7 text-[#f7e8bd]">
                         {experience.highlight}
                       </p>
                     )}
@@ -736,12 +744,12 @@ I would love to receive more information about the experience.`
                       <button
                         type="button"
                         onClick={() => setOpenExperience(isOpen ? '' : experience.id)}
-                        className="flex w-full items-center justify-between rounded-full border border-white/15 bg-black/20 px-5 py-3.5 text-left text-sm font-medium uppercase tracking-[0.14em] text-white outline-none transition duration-300 hover:border-[#d4af37]/55 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#d4af37]/80"
+                        className="flex w-full items-center justify-between rounded-full border border-white/15 bg-black/20 px-5 py-3.5 text-left text-sm font-medium uppercase tracking-[0.14em] text-white outline-none transition duration-300 hover:border-[var(--color-luxury-gold)]/55 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/80"
                         aria-expanded={isOpen}
                         aria-controls={detailsId}
                       >
                         <span>Included</span>
-                        <span className={`text-lg leading-none text-[#d4af37] transition duration-300 ${isOpen ? 'rotate-45' : ''}`}>
+                        <span className={`text-lg leading-none text-[var(--color-luxury-gold)] transition duration-300 ${isOpen ? 'rotate-45' : ''}`}>
                           +
                         </span>
                       </button>
@@ -759,7 +767,7 @@ I would love to receive more information about the experience.`
                             <ul className="grid gap-2.5 px-1 pb-1 pt-5 text-sm leading-6 text-white/76 sm:grid-cols-2">
                               {experience.included.map((item) => (
                                 <li key={item} className="flex gap-3">
-                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d4af37]" />
+                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-luxury-gold)]" />
                                   <span>{item}</span>
                                 </li>
                               ))}
@@ -772,7 +780,7 @@ I would love to receive more information about the experience.`
                     <button
                       type="button"
                       onClick={openWhatsAppLeadModal}
-                      className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#d4af37] px-7 py-3.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_20px_55px_rgba(212,175,55,0.22)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-[#f0d57e] hover:shadow-[0_24px_70px_rgba(212,175,55,0.32)] focus-visible:ring-2 focus-visible:ring-[#f6e7bd]"
+                      className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[var(--color-luxury-gold)] px-7 py-3.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_20px_55px_rgba(212,175,55,0.22)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-[#f0d57e] hover:shadow-[0_24px_70px_rgba(212,175,55,0.32)] focus-visible:ring-2 focus-visible:ring-[#f6e7bd]"
                     >
                       Join the Waitlist
                     </button>
@@ -843,7 +851,7 @@ I would love to receive more information about the experience.`
 
       {/* FORM */}
       < section id="apply" className="relative overflow-hidden px-6 py-20 md:py-28" >
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-luxury-gold)]/40 to-transparent" />
 
         <motion.div
           className="mx-auto max-w-6xl"
@@ -859,7 +867,7 @@ I would love to receive more information about the experience.`
             <p className="mt-3 text-lg font-semibold tracking-[0.16em] text-zinc-900">
               To be defined
             </p>
-            <div className="mx-auto mt-5 h-px w-20 bg-[#d4af37]/80" />
+            <div className="mx-auto mt-5 h-px w-20 bg-[var(--color-luxury-gold)]/80" />
             <p className="mt-5 text-sm font-medium uppercase tracking-[0.24em] text-zinc-500">
               Only 8 curated guests
             </p>
@@ -870,9 +878,9 @@ I would love to receive more information about the experience.`
             </p>
           </div>
 
-          <div className="mt-12 overflow-hidden rounded-[2rem] border border-[#d4af37]/20 bg-white shadow-[0_28px_80px_rgba(24,24,27,0.10)]">
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-[var(--color-luxury-gold)]/20 bg-white shadow-[0_28px_80px_rgba(24,24,27,0.10)]">
             <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
-              <div className="relative min-h-[360px] overflow-hidden bg-[#11100d] p-8 text-white md:p-10">
+              <div className="relative min-h-[360px] overflow-hidden bg-[var(--color-deep-forest)] p-8 text-white md:p-10">
                 <img
                   src="/images/rio_de_janeiro1.webp"
                   alt="Curated Brazil private journey"
@@ -904,8 +912,8 @@ I would love to receive more information about the experience.`
                     exit={{ opacity: 0, scale: 0.98, y: 8 }}
                     transition={{ duration: 0.45, ease: 'easeOut' }}
                   >
-                    <div className="w-full rounded-[1.75rem] border border-[#d4af37]/25 bg-[#fbfaf7] px-6 py-8 text-center shadow-[0_22px_60px_rgba(24,24,27,0.08)] md:px-10 md:py-12">
-                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af37]/35 bg-[#d4af37]/10 text-[#9c7a3c] shadow-[0_14px_35px_rgba(212,175,55,0.14)]">
+                    <div className="w-full rounded-[1.75rem] border border-[var(--color-luxury-gold)]/25 bg-[var(--color-paper)] px-6 py-8 text-center shadow-[0_22px_60px_rgba(24,24,27,0.08)] md:px-10 md:py-12">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[var(--color-luxury-gold)]/35 bg-[var(--color-luxury-gold)]/10 text-[#9c7a3c] shadow-[0_14px_35px_rgba(212,175,55,0.14)]">
                         <FaCheck size={18} />
                       </div>
 
@@ -917,7 +925,7 @@ I would love to receive more information about the experience.`
                         Your Journey Begins Here
                       </h3>
 
-                      <div className="mx-auto mt-5 h-px w-16 bg-[#d4af37]/80" />
+                      <div className="mx-auto mt-5 h-px w-16 bg-[var(--color-luxury-gold)]/80" />
 
                       <div className="mx-auto mt-6 max-w-xl space-y-5 text-sm leading-7 text-zinc-600 md:text-base md:leading-8">
                         <p>
@@ -931,14 +939,14 @@ I would love to receive more information about the experience.`
                         </p>
                       </div>
 
-                      <p className="mx-auto mt-7 max-w-xl rounded-2xl border border-[#d4af37]/25 bg-[#d4af37]/10 px-5 py-4 text-sm font-medium leading-7 text-zinc-700">
+                      <p className="mx-auto mt-7 max-w-xl rounded-2xl border border-[var(--color-luxury-gold)]/25 bg-[var(--color-luxury-gold)]/10 px-5 py-4 text-sm font-medium leading-7 text-zinc-700">
                         Selected guests will receive personalised communication by email and WhatsApp regarding availability, planning and journey details.
                       </p>
 
                       <button
                         type="button"
                         onClick={handleApplicationReset}
-                        className="mt-8 w-full rounded-full bg-emerald-600 py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/70"
+                        className="mt-8 w-full rounded-full bg-[var(--color-brazilian-green)] py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-[var(--color-emerald-forest)] focus-visible:ring-2 focus-visible:ring-emerald-500/70"
                       >
                         I Can't Wait to Begin
                       </button>
@@ -963,7 +971,7 @@ I would love to receive more information about the experience.`
                       onChange={handleApplicationChange}
                       required
                       autoComplete="name"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -976,7 +984,7 @@ I would love to receive more information about the experience.`
                       required
                       type="email"
                       autoComplete="email"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -989,7 +997,7 @@ I would love to receive more information about the experience.`
                       required
                       type="tel"
                       autoComplete="tel"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -999,7 +1007,7 @@ I would love to receive more information about the experience.`
                       name="travelers"
                       value={applicationForm.travelers}
                       onChange={handleApplicationChange}
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     >
                       {travelerOptions.map((option) => (
                         <option key={option} value={option}>{option}</option>
@@ -1007,7 +1015,7 @@ I would love to receive more information about the experience.`
                     </select>
                   </label>
 
-                  <div className="rounded-xl border border-[#d4af37]/25 bg-[#d4af37]/10 p-4 text-left">
+                  <div className="rounded-xl border border-[var(--color-luxury-gold)]/25 bg-[var(--color-luxury-gold)]/10 p-4 text-left">
                     <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#9c7a3c]">
                       Inaugural Luxury Journey
                     </p>
@@ -1025,7 +1033,7 @@ I would love to receive more information about the experience.`
                       name="visitedBrazil"
                       value={applicationForm.visitedBrazil}
                       onChange={handleApplicationChange}
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     >
                       {visitedBrazilOptions.map((option) => (
                         <option key={option} value={option}>{option}</option>
@@ -1040,7 +1048,7 @@ I would love to receive more information about the experience.`
                       value={applicationForm.visitedPlaces}
                       onChange={handleApplicationChange}
                       placeholder="If yes, where have you been?"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
                 </div>
@@ -1057,8 +1065,8 @@ I would love to receive more information about the experience.`
                         <label
                           key={interest}
                           className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm transition ${checked
-                            ? 'border-[#d4af37]/70 bg-[#d4af37]/10 text-zinc-900'
-                            : 'border-zinc-200 bg-[#fbfaf7] text-zinc-600 hover:border-[#d4af37]/50'
+                            ? 'border-[var(--color-luxury-gold)]/70 bg-[var(--color-luxury-gold)]/10 text-zinc-900'
+                            : 'border-zinc-200 bg-[var(--color-paper)] text-zinc-600 hover:border-[var(--color-luxury-gold)]/50'
                             }`}
                         >
                           <input
@@ -1080,7 +1088,7 @@ I would love to receive more information about the experience.`
                     name="budget"
                     value={applicationForm.budget}
                     onChange={handleApplicationChange}
-                    className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                   >
                     {budgetOptions.map((option) => (
                       <option key={option} value={option}>{option}</option>
@@ -1097,14 +1105,14 @@ I would love to receive more information about the experience.`
                     value={applicationForm.dreamExperience}
                     onChange={handleApplicationChange}
                     rows="5"
-                    className="mt-2 w-full resize-none rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                    className="mt-2 w-full resize-none rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                   />
                 </label>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="mt-7 w-full rounded-full bg-emerald-600 py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/70 disabled:cursor-wait disabled:opacity-70"
+                  className="mt-7 w-full rounded-full bg-[var(--color-brazilian-green)] py-4 font-medium text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] outline-none transition hover:bg-[var(--color-emerald-forest)] focus-visible:ring-2 focus-visible:ring-emerald-500/70 disabled:cursor-wait disabled:opacity-70"
                 >
                   {loading ? 'Preparing Your Journey...' : 'Request My Journey'}
                 </button>
@@ -1232,23 +1240,23 @@ I would love to receive more information about the experience.`
             aria-labelledby="whatsapp-consultation-title"
           >
             <motion.div
-              className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-[#d4af37]/25 bg-[#fbfaf7] shadow-[0_28px_90px_rgba(0,0,0,0.35)]"
+              className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-[var(--color-luxury-gold)]/25 bg-[var(--color-paper)] shadow-[0_28px_90px_rgba(0,0,0,0.35)]"
               initial={{ opacity: 0, scale: 0.96, y: 18 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: 12 }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
             >
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/80 to-transparent" />
+              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-luxury-gold)]/80 to-transparent" />
               <button
                 type="button"
                 onClick={closeWhatsAppLeadModal}
-                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-[#d4af37]/30 bg-white/70 text-zinc-700 outline-none transition hover:border-[#d4af37] hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-[#d4af37]/70"
+                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-luxury-gold)]/30 bg-white/70 text-zinc-700 outline-none transition hover:border-[var(--color-luxury-gold)] hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/70"
                 aria-label="Close consultation form"
               >
                 ×
               </button>
 
-              <div className="border-b border-[#d4af37]/20 bg-[#11100d] px-6 py-8 text-white md:px-9">
+              <div className="border-b border-[var(--color-luxury-gold)]/20 bg-[var(--color-deep-forest)] px-6 py-8 text-white md:px-9">
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f1d991]">
                   Curated Brazil
                 </p>
@@ -1270,7 +1278,7 @@ I would love to receive more information about the experience.`
                       onChange={handleWhatsAppLeadChange}
                       required
                       autoComplete="name"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -1283,7 +1291,7 @@ I would love to receive more information about the experience.`
                       required
                       type="email"
                       autoComplete="email"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -1295,7 +1303,7 @@ I would love to receive more information about the experience.`
                       onChange={handleWhatsAppLeadChange}
                       required
                       autoComplete="country-name"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -1306,7 +1314,7 @@ I would love to receive more information about the experience.`
                       value={whatsAppLeadForm.city}
                       onChange={handleWhatsAppLeadChange}
                       autoComplete="address-level2"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -1317,7 +1325,7 @@ I would love to receive more information about the experience.`
                       value={whatsAppLeadForm.birthDate}
                       onChange={handleWhatsAppLeadChange}
                       type="date"
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     />
                   </label>
 
@@ -1327,7 +1335,7 @@ I would love to receive more information about the experience.`
                       name="referralSource"
                       value={whatsAppLeadForm.referralSource}
                       onChange={handleWhatsAppLeadChange}
-                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                      className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                     >
                       <option value="">Select an option</option>
                       {referralOptions.map((option) => (
@@ -1340,7 +1348,7 @@ I would love to receive more information about the experience.`
                 <button
                   type="submit"
                   disabled={whatsAppLeadLoading}
-                  className="mt-7 w-full rounded-full bg-[#d4af37] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_18px_45px_rgba(212,175,55,0.24)] outline-none transition hover:bg-[#f0d57e] focus-visible:ring-2 focus-visible:ring-[#d4af37]/70 disabled:cursor-wait disabled:opacity-70"
+                  className="mt-7 w-full rounded-full bg-[var(--color-luxury-gold)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_18px_45px_rgba(212,175,55,0.24)] outline-none transition hover:bg-[#f0d57e] focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/70 disabled:cursor-wait disabled:opacity-70"
                 >
                   {whatsAppLeadLoading ? 'Connecting...' : 'Continue to WhatsApp'}
                 </button>

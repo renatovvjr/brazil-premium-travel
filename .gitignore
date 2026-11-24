@@ -15,6 +15,7 @@ dist
 # misc
 .DS_Store
 .tmp-*
+.artifacts/
 assets/carnaval-originals/
 
 # local release/staging operators (never ship or commit)

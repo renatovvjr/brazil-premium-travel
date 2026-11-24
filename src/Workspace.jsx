@@ -257,9 +257,9 @@ function WorkspaceLegacy() {
         <div className="flex min-h-screen items-center justify-center px-6 py-12">
           <form
             onSubmit={handleLogin}
-            className="w-full max-w-md overflow-hidden rounded-[2rem] border border-[#d4af37]/25 bg-white shadow-[0_28px_80px_rgba(24,24,27,0.12)]"
+            className="w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-luxury-gold)]/25 bg-white shadow-[0_28px_80px_rgba(24,24,27,0.12)]"
           >
-            <div className="bg-[#11100d] px-8 py-9 text-white">
+            <div className="bg-[var(--color-deep-forest)] px-8 py-9 text-white">
               <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f1d991]">Curated Brazil</p>
               <h1 className="mt-4 text-3xl font-semibold leading-tight">Management Portal</h1>
               <p className="mt-4 text-sm leading-7 text-white/72">Private access for authorized travel specialists.</p>
@@ -273,7 +273,7 @@ function WorkspaceLegacy() {
                   required
                   value={loginForm.email}
                   onChange={(event) => setLoginForm((current) => ({ ...current, email: event.target.value }))}
-                  className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                  className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                 />
               </label>
 
@@ -284,7 +284,7 @@ function WorkspaceLegacy() {
                   required
                   value={loginForm.password}
                   onChange={(event) => setLoginForm((current) => ({ ...current, password: event.target.value }))}
-                  className="mt-2 w-full rounded-xl border border-zinc-200 bg-[#fbfaf7] p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                  className="mt-2 w-full rounded-xl border border-zinc-200 bg-[var(--color-paper)] p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                 />
               </label>
 
@@ -293,7 +293,7 @@ function WorkspaceLegacy() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-full bg-[#d4af37] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_18px_45px_rgba(212,175,55,0.24)] outline-none transition hover:bg-[#f0d57e] focus-visible:ring-2 focus-visible:ring-[#d4af37]/70 disabled:cursor-wait disabled:opacity-70"
+                className="w-full rounded-full bg-[var(--color-luxury-gold)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_18px_45px_rgba(212,175,55,0.24)] outline-none transition hover:bg-[#f0d57e] focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/70 disabled:cursor-wait disabled:opacity-70"
               >
                 {loading ? 'Verifying...' : 'Enter Workspace'}
               </button>
@@ -322,14 +322,14 @@ function WorkspaceLegacy() {
     return (
       <WorkspaceShell>
         <div className="flex min-h-screen items-center justify-center px-6 py-12 text-center">
-          <div className="max-w-md rounded-[2rem] border border-[#d4af37]/25 bg-white p-9 shadow-[0_28px_80px_rgba(24,24,27,0.10)]">
+          <div className="max-w-md rounded-[2rem] border border-[var(--color-luxury-gold)]/25 bg-white p-9 shadow-[0_28px_80px_rgba(24,24,27,0.10)]">
             <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#9c7a3c]">Private Workspace</p>
             <h1 className="mt-4 text-3xl font-semibold">Access Denied</h1>
             <p className="mt-4 text-sm leading-7 text-zinc-600">Your account is authenticated but is not authorized for this management portal.</p>
             <button
               type="button"
               onClick={handleLogout}
-              className="mt-7 rounded-full bg-[#11100d] px-7 py-3 text-sm font-medium uppercase tracking-[0.14em] text-white transition hover:bg-zinc-800"
+              className="mt-7 rounded-full bg-[var(--color-deep-forest)] px-7 py-3 text-sm font-medium uppercase tracking-[0.14em] text-white transition hover:bg-zinc-800"
             >
               Logout
             </button>
@@ -342,7 +342,7 @@ function WorkspaceLegacy() {
   return (
     <WorkspaceShell>
       <div className="min-h-screen">
-        <header className="border-b border-[#d4af37]/20 bg-[#11100d] px-6 py-6 text-white">
+        <header className="border-b border-[var(--color-luxury-gold)]/20 bg-[var(--color-deep-forest)] px-6 py-6 text-white">
           <div className="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f1d991]">Curated Brazil</p>
@@ -352,14 +352,14 @@ function WorkspaceLegacy() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 to="/"
-                className="rounded-full border border-white/15 px-5 py-3 text-xs font-medium uppercase tracking-[0.14em] text-white/80 transition hover:border-[#d4af37] hover:text-white"
+                className="rounded-full border border-white/15 px-5 py-3 text-xs font-medium uppercase tracking-[0.14em] text-white/80 transition hover:border-[var(--color-luxury-gold)] hover:text-white"
               >
                 Public Site
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="inline-flex items-center gap-2 rounded-full bg-[#d4af37] px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-black transition hover:bg-[#f0d57e]"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-luxury-gold)] px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-black transition hover:bg-[#f0d57e]"
               >
                 <FaSignOutAlt size={13} />
                 Logout
@@ -381,8 +381,8 @@ function WorkspaceLegacy() {
                 onClick={() => setActiveView(id)}
                 className={`rounded-full px-5 py-3 text-xs font-medium uppercase tracking-[0.14em] transition ${
                   activeView === id
-                    ? 'bg-[#11100d] text-white shadow-[0_14px_35px_rgba(24,24,27,0.16)]'
-                    : 'border border-[#d4af37]/25 bg-white text-zinc-600 hover:border-[#d4af37] hover:text-zinc-950'
+                    ? 'bg-[var(--color-deep-forest)] text-white shadow-[0_14px_35px_rgba(24,24,27,0.16)]'
+                    : 'border border-[var(--color-luxury-gold)]/25 bg-white text-zinc-600 hover:border-[var(--color-luxury-gold)] hover:text-zinc-950'
                 }`}
               >
                 {label}
@@ -437,7 +437,7 @@ export default function Workspace() {
 }
 
 function WorkspaceShell({ children }) {
-  return <div className="min-h-screen bg-[#fbfaf7] text-zinc-900 antialiased selection:bg-[#d4af37]/25">{children}</div>
+  return <div className="min-h-screen bg-[var(--color-paper)] text-zinc-900 antialiased selection:bg-[var(--color-luxury-gold)]/25">{children}</div>
 }
 
 function Dashboard({ kpis, applications, leads, openLeadDetails }) {
@@ -454,7 +454,7 @@ function Dashboard({ kpis, applications, leads, openLeadDetails }) {
     <div className="space-y-8">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {cards.map(([label, value]) => (
-          <div key={label} className="rounded-[1.5rem] border border-[#d4af37]/20 bg-white p-6 shadow-[0_20px_60px_rgba(24,24,27,0.08)]">
+          <div key={label} className="rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white p-6 shadow-[0_20px_60px_rgba(24,24,27,0.08)]">
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#9c7a3c]">{label}</p>
             <p className="mt-4 text-4xl font-semibold">{value}</p>
           </div>
@@ -471,7 +471,7 @@ function Dashboard({ kpis, applications, leads, openLeadDetails }) {
 
 function RecentPanel({ title, items, type, openLeadDetails }) {
   return (
-    <div className="rounded-[1.5rem] border border-[#d4af37]/20 bg-white p-6 shadow-[0_20px_60px_rgba(24,24,27,0.08)]">
+    <div className="rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white p-6 shadow-[0_20px_60px_rgba(24,24,27,0.08)]">
       <h2 className="text-lg font-semibold">{title}</h2>
       <div className="mt-5 space-y-3">
         {items.length === 0 && <p className="text-sm text-zinc-500">No records yet.</p>}
@@ -480,7 +480,7 @@ function RecentPanel({ title, items, type, openLeadDetails }) {
             key={item.id}
             type="button"
             onClick={() => openLeadDetails(item, type)}
-            className="flex w-full items-center justify-between rounded-2xl border border-zinc-100 bg-[#fbfaf7] px-4 py-3 text-left transition hover:border-[#d4af37]/45"
+            className="flex w-full items-center justify-between rounded-2xl border border-zinc-100 bg-[var(--color-paper)] px-4 py-3 text-left transition hover:border-[var(--color-luxury-gold)]/45"
           >
             <span>
               <span className="block font-medium">{item.full_name || item.first_name || '-'}</span>
@@ -496,14 +496,14 @@ function RecentPanel({ title, items, type, openLeadDetails }) {
 
 function Filters({ search, setSearch, statusFilter, setStatusFilter, sortOrder, setSortOrder, showStatus }) {
   return (
-    <div className="mb-6 grid gap-3 rounded-[1.5rem] border border-[#d4af37]/20 bg-white p-4 shadow-[0_18px_55px_rgba(24,24,27,0.06)] md:grid-cols-[1fr_auto_auto]">
+    <div className="mb-6 grid gap-3 rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white p-4 shadow-[0_18px_55px_rgba(24,24,27,0.06)] md:grid-cols-[1fr_auto_auto]">
       <label className="relative block">
         <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={14} />
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search by name or email"
-          className="w-full rounded-full border border-zinc-200 bg-[#fbfaf7] py-3 pl-11 pr-4 text-sm outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+          className="w-full rounded-full border border-zinc-200 bg-[var(--color-paper)] py-3 pl-11 pr-4 text-sm outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
         />
       </label>
 
@@ -511,7 +511,7 @@ function Filters({ search, setSearch, statusFilter, setStatusFilter, sortOrder, 
         <select
           value={statusFilter}
           onChange={(event) => setStatusFilter(event.target.value)}
-          className="rounded-full border border-zinc-200 bg-[#fbfaf7] px-4 py-3 text-sm outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+          className="rounded-full border border-zinc-200 bg-[var(--color-paper)] px-4 py-3 text-sm outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
         >
           <option value="All">All Statuses</option>
           {statusOptions.map((status) => (
@@ -523,7 +523,7 @@ function Filters({ search, setSearch, statusFilter, setStatusFilter, sortOrder, 
       <select
         value={sortOrder}
         onChange={(event) => setSortOrder(event.target.value)}
-        className="rounded-full border border-zinc-200 bg-[#fbfaf7] px-4 py-3 text-sm outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+        className="rounded-full border border-zinc-200 bg-[var(--color-paper)] px-4 py-3 text-sm outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
       >
         <option value="newest">Newest first</option>
         <option value="oldest">Oldest first</option>
@@ -535,7 +535,7 @@ function Filters({ search, setSearch, statusFilter, setStatusFilter, sortOrder, 
 function ApplicationsTable({ applications, openLeadDetails, updateApplication, savingId }) {
   return (
     <TableShell empty={!applications.length}>
-      <thead className="bg-[#11100d] text-left text-xs uppercase tracking-[0.16em] text-[#f1d991]">
+      <thead className="bg-[var(--color-deep-forest)] text-left text-xs uppercase tracking-[0.16em] text-[#f1d991]">
         <tr>
           {['Full Name', 'Email', 'WhatsApp', 'Country', 'Journey Date', 'Budget', 'Preferred Journey', 'Status', 'Created', ''].map((head) => (
             <th key={head} className="px-4 py-4 font-medium">{head}</th>
@@ -557,7 +557,7 @@ function ApplicationsTable({ applications, openLeadDetails, updateApplication, s
                 value={getStatus(item)}
                 onChange={(event) => updateApplication(item.id, { status: event.target.value })}
                 disabled={savingId === item.id}
-                className="rounded-full border border-[#d4af37]/25 bg-[#fbfaf7] px-3 py-2 text-xs outline-none focus:border-[#d4af37]"
+                className="rounded-full border border-[var(--color-luxury-gold)]/25 bg-[var(--color-paper)] px-3 py-2 text-xs outline-none focus:border-[var(--color-luxury-gold)]"
               >
                 {statusOptions.map((status) => (
                   <option key={status} value={status}>{status}</option>
@@ -580,7 +580,7 @@ function ApplicationsTable({ applications, openLeadDetails, updateApplication, s
 function WhatsAppTable({ leads, openLeadDetails }) {
   return (
     <TableShell empty={!leads.length}>
-      <thead className="bg-[#11100d] text-left text-xs uppercase tracking-[0.16em] text-[#f1d991]">
+      <thead className="bg-[var(--color-deep-forest)] text-left text-xs uppercase tracking-[0.16em] text-[#f1d991]">
         <tr>
           {['Full Name', 'Email', 'Country', 'City', 'Referral Source', 'Created', ''].map((head) => (
             <th key={head} className="px-4 py-4 font-medium">{head}</th>
@@ -610,7 +610,7 @@ function WhatsAppTable({ leads, openLeadDetails }) {
 
 function TableShell({ children, empty }) {
   return (
-    <div className="overflow-hidden rounded-[1.5rem] border border-[#d4af37]/20 bg-white shadow-[0_20px_60px_rgba(24,24,27,0.08)]">
+    <div className="overflow-hidden rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white shadow-[0_20px_60px_rgba(24,24,27,0.08)]">
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse">{children}</table>
       </div>
@@ -630,8 +630,8 @@ function LeadDetails({ lead, type, onClose, onSaveNotes, saving }) {
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm">
-      <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-[#d4af37]/25 bg-[#fbfaf7] shadow-[0_28px_90px_rgba(0,0,0,0.35)]">
-        <div className="bg-[#11100d] px-6 py-7 text-white md:px-8">
+      <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-[var(--color-luxury-gold)]/25 bg-[var(--color-paper)] shadow-[0_28px_90px_rgba(0,0,0,0.35)]">
+        <div className="bg-[var(--color-deep-forest)] px-6 py-7 text-white md:px-8">
           <div className="flex items-start justify-between gap-5">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#f1d991]">{type === 'application' ? 'Luxury Application' : 'WhatsApp Lead'}</p>
@@ -641,7 +641,7 @@ function LeadDetails({ lead, type, onClose, onSaveNotes, saving }) {
                 {lead.whatsapp && <span className="inline-flex items-center gap-2"><FaWhatsapp size={13} />{lead.whatsapp}</span>}
               </div>
             </div>
-            <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:border-[#d4af37] hover:text-white">
+            <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:border-[var(--color-luxury-gold)] hover:text-white">
               x
             </button>
           </div>
@@ -656,7 +656,7 @@ function LeadDetails({ lead, type, onClose, onSaveNotes, saving }) {
                   value={getStatus(lead)}
                   onChange={(event) => onSaveNotes(lead.id, { status: event.target.value, notes })}
                   disabled={saving}
-                  className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-3 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+                  className="mt-2 w-full rounded-xl border border-zinc-200 bg-white p-3 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
                 >
                   {statusOptions.map((status) => (
                     <option key={status} value={status}>{status}</option>
@@ -672,7 +672,7 @@ function LeadDetails({ lead, type, onClose, onSaveNotes, saving }) {
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               rows="5"
-              className="mt-2 w-full resize-none rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[#d4af37] focus:ring-4 focus:ring-[#d4af37]/15"
+              className="mt-2 w-full resize-none rounded-xl border border-zinc-200 bg-white p-4 outline-none transition focus:border-[var(--color-luxury-gold)] focus:ring-4 focus:ring-[var(--color-luxury-gold)]/15"
             />
           </label>
 
@@ -680,17 +680,17 @@ function LeadDetails({ lead, type, onClose, onSaveNotes, saving }) {
             type="button"
             onClick={() => onSaveNotes(lead.id, type === 'application' ? { notes } : notes)}
             disabled={saving}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#d4af37] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black transition hover:bg-[#f0d57e] disabled:cursor-wait disabled:opacity-70 md:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--color-luxury-gold)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-black transition hover:bg-[#f0d57e] disabled:cursor-wait disabled:opacity-70 md:w-auto"
           >
             <FaCheck size={13} />
             {saving ? 'Saving...' : 'Save Notes'}
           </button>
 
-          <div className="rounded-[1.5rem] border border-[#d4af37]/20 bg-white p-5">
+          <div className="rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white p-5">
             <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[#9c7a3c]">All Information</h3>
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               {detailRows.map(([key, value]) => (
-                <div key={key} className="rounded-2xl bg-[#fbfaf7] p-4">
+                <div key={key} className="rounded-2xl bg-[var(--color-paper)] p-4">
                   <p className="text-xs uppercase tracking-[0.16em] text-zinc-400">{key.replace(/_/g, ' ')}</p>
                   <p className="mt-2 break-words text-sm leading-6 text-zinc-700">{Array.isArray(value) ? value.join(', ') : String(value)}</p>
                 </div>

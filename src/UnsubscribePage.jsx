@@ -23,9 +23,9 @@ export default function UnsubscribePage() {
     }
   }
 
-  return <main className="flex min-h-screen items-center justify-center bg-[#f7f5ef] px-6 py-12 text-[#11100d]">
-    <section className="w-full max-w-xl overflow-hidden rounded-[2rem] border border-[#d4af37]/25 bg-white shadow-[0_28px_80px_rgba(24,24,27,.12)]">
-      <div className="bg-[#11100d] px-8 py-9 text-white"><p className="eyebrow text-[#f1d991]">Curated Brazil</p><h1 className="mt-4 text-3xl font-semibold">Marketing preferences</h1></div>
+  return <main className="flex min-h-screen items-center justify-center bg-[#f7f5ef] px-6 py-12 text-[var(--color-deep-forest)]">
+    <section className="w-full max-w-xl overflow-hidden rounded-[2rem] border border-[var(--color-luxury-gold)]/25 bg-white shadow-[0_28px_80px_rgba(24,24,27,.12)]">
+      <div className="bg-[var(--color-deep-forest)] px-8 py-9 text-white"><p className="eyebrow text-[#f1d991]">Curated Brazil</p><h1 className="mt-4 text-3xl font-semibold">Marketing preferences</h1></div>
       <div className="p-8">
         {state === 'idle' && <><p className="leading-7 text-zinc-600">Confirm that you no longer wish to receive marketing messages through this channel. Essential booking and service communications are unaffected.</p><button disabled={!token} onClick={unsubscribe} className="gold-button mt-7">Confirm unsubscribe</button></>}
         {state === 'loading' && <p>Updating your preference…</p>}

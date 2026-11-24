@@ -7,6 +7,9 @@
     "dev": "vite",
     "dev:workspace-staging": "node scripts/start-workspace-staging.mjs",
     "build": "vite build",
+    "check:i18n": "node scripts/check-i18n-coverage.mjs",
+    "check:locale": "node scripts/check-locale-detection.mjs",
+    "i18n:extract": "node scripts/i18n/extract-source-manifest.mjs",
     "test:workspace": "node --test tests/workspace.test.mjs",
     "images:carnaval": "node scripts/process-carnaval-images.mjs",
     "preview": "vite preview"

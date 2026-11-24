@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useParams, Link } from 'react-router-dom'
+import { useI18n } from './i18n'
 
 const data = {
   'sao-paulo': {
@@ -269,6 +270,7 @@ const data = {
 }
 
 export default function DestinationPage() {
+  const { t } = useI18n()
   const { name } = useParams()
   const destination = data[name]
   const [selectedImage, setSelectedImage] = useState(null)
@@ -301,15 +303,15 @@ export default function DestinationPage() {
 
   if (!destination) {
     return (
-      <div className="min-h-screen bg-[#fbfaf7] px-6 py-16 text-zinc-900">
+      <div className="min-h-screen bg-[var(--color-paper)] px-6 py-16 text-zinc-900">
         <div className="mx-auto max-w-5xl">
-          <h1 className="text-3xl font-semibold">Destination not found</h1>
+          <h1 className="text-3xl font-semibold">{t('destination.notFound')}</h1>
           <div className="mt-8">
             <Link
               to="/"
-              className="inline-block rounded-full bg-emerald-600 px-6 py-3 text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] transition hover:-translate-y-0.5 hover:bg-emerald-500"
+              className="inline-block rounded-full bg-[var(--color-brazilian-green)] px-6 py-3 text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] transition hover:-translate-y-0.5 hover:bg-[var(--color-emerald-forest)]"
             >
-              Back to journey
+              {t('destination.back')}
             </Link>
           </div>
         </div>
@@ -318,13 +320,13 @@ export default function DestinationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] px-5 py-8 text-zinc-900 md:px-6 md:py-12">
+    <div className="min-h-screen bg-[var(--color-paper)] px-5 py-8 text-zinc-900 md:px-6 md:py-12">
       <div className="mx-auto max-w-6xl">
         <Link
           to="/"
-          className="mb-5 inline-flex rounded-full border border-black/10 bg-white px-5 py-3 text-sm font-medium text-zinc-700 shadow-sm outline-none transition hover:-translate-y-0.5 hover:border-[#d4af37]/60 hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-[#d4af37]/60"
+          className="mb-5 inline-flex rounded-full border border-black/10 bg-white px-5 py-3 text-sm font-medium text-zinc-700 shadow-sm outline-none transition hover:-translate-y-0.5 hover:border-[var(--color-luxury-gold)]/60 hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/60"
         >
-          Back to journey
+          {t('destination.back')}
         </Link>
 
         <motion.div
@@ -342,7 +344,7 @@ export default function DestinationPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(255,255,255,0.12),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.72)),linear-gradient(90deg,rgba(0,0,0,0.58),rgba(0,0,0,0.14),rgba(0,0,0,0.58))]" />
 
           <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-            <div className="mb-8 h-px w-20 bg-[#d4af37]" />
+            <div className="mb-8 h-px w-20 bg-[var(--color-luxury-gold)]" />
 
             <h1 className="text-4xl font-semibold leading-none drop-shadow-2xl md:text-7xl">
               {destination.title}
@@ -356,7 +358,7 @@ export default function DestinationPage() {
               href="#experiences"
               className="mt-8 rounded-full bg-white px-8 py-3 text-sm font-semibold text-zinc-900 shadow-[0_18px_45px_rgba(0,0,0,0.22)] outline-none transition hover:-translate-y-0.5 hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-white/80"
             >
-              Explore Experiences
+              {t('destination.explore')}
             </a>
           </div>
         </motion.div>
@@ -367,7 +369,7 @@ export default function DestinationPage() {
               type="button"
               key={i}
               onClick={() => setSelectedImage(i)}
-              className="group cursor-pointer overflow-hidden rounded-2xl border border-black/5 bg-white p-0 text-left shadow-[0_18px_55px_rgba(24,24,27,0.08)] outline-none transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(24,24,27,0.16)] focus-visible:ring-2 focus-visible:ring-[#d4af37]/70"
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-black/5 bg-white p-0 text-left shadow-[0_18px_55px_rgba(24,24,27,0.08)] outline-none transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(24,24,27,0.16)] focus-visible:ring-2 focus-visible:ring-[var(--color-luxury-gold)]/70"
               aria-label={`${destination.title} ${i + 1}`}
             >
               <img
@@ -404,9 +406,9 @@ export default function DestinationPage() {
         <div className="mt-12">
           <Link
             to="/"
-            className="inline-block rounded-full bg-emerald-600 px-6 py-3 text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] transition hover:-translate-y-0.5 hover:bg-emerald-500"
+            className="inline-block rounded-full bg-[var(--color-brazilian-green)] px-6 py-3 text-white shadow-[0_18px_45px_rgba(5,150,105,0.22)] transition hover:-translate-y-0.5 hover:bg-[var(--color-emerald-forest)]"
           >
-            Back to journey
+            {t('destination.back')}
           </Link>
         </div>
       </div>
@@ -417,7 +419,7 @@ export default function DestinationPage() {
             type="button"
             onClick={() => setSelectedImage(null)}
             className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-4xl text-white outline-none backdrop-blur-md transition hover:bg-white hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-white/80 md:right-8 md:top-8"
-            aria-label="Close"
+            aria-label={t('common.close')}
           >
             ×
           </button>
