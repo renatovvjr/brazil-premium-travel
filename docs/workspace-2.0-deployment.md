@@ -7,8 +7,8 @@ Development is local-only. Do not use the InvoicXEasy VM/EC2, Docker, a remote d
 ## Staging sequence
 
 1. Create or identify an isolated Supabase project; never reuse the production project reference.
-2. Export and verify a logical backup before any production migration is considered.
-3. Apply every migration in timestamp order. The `084500` compatibility migration must run before the original ten-migration chain, and the `110000` legacy CRM import must run last.
+2. Verify a recoverable production backup before any production migration.
+3. Compare remote history with the local migration files and apply only pending migrations in timestamp order. Run `084500` before the original chain on a database with legacy profiles. Run `110000` only where both legacy CRM tables exist. The newer completion and private-grant migrations also work on isolated staging without the legacy CRM tables.
 4. Run `supabase/tests/001_workspace_2_security.test.sql` against staging.
 5. Configure staging-only `SUPABASE_SERVICE_ROLE_KEY`, `INTAKE_HASH_SECRET`, `INTAKE_ALLOWED_ORIGINS`, `OUTBOX_WORKER_SECRET` and Resend test credentials.
 6. Configure the isolated public client variables `VITE_WORKSPACE_V2_SUPABASE_URL` and `VITE_WORKSPACE_V2_SUPABASE_ANON_KEY`.
@@ -37,7 +37,7 @@ INTAKE_REQUIRE_CAPTCHA=true
 
 Do not configure a live payment processor or processor webhook. Workspace financial entries remain manual records only; no payment-card data is accepted or stored.
 
-Production intake fails closed while `INTAKE_REQUIRE_CAPTCHA=true` and `TURNSTILE_SECRET_KEY` is absent. Do not activate Workspace V2 intake until a valid production Turnstile secret is configured, or a separate security decision explicitly approves another anti-abuse control.
+Production intake requires `VITE_TURNSTILE_SITE_KEY` and a matching server-only `TURNSTILE_SECRET_KEY` for the Curated Brazil Travel hostnames. Verify the widget and a persisted synthetic enquiry before retiring the legacy public intake path.
 
 The legacy Workspace remains active while `VITE_WORKSPACE_V2_ENABLED=false`. Public forms remain on their legacy handlers while `VITE_WORKSPACE_V2_INTAKE_ENABLED=false`, even after the internal Workspace V2 is activated. Apply database migrations before changing either flag. Workspace activation requires a separate approved build and a successful login by an existing production administrator. Intake activation requires its own anti-abuse readiness check.
 

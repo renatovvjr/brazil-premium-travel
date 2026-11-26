@@ -8,6 +8,13 @@ const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (character
 const render = (event) => {
   const data = event.payload || {}
   const name = escapeHtml(data.fullName || 'Traveller')
+  if (event.template_key === 'booking_confirmation') {
+    return {
+      to: data.email,
+      subject: 'Your Curated Brazil booking is confirmed',
+      html: `<p>Dear ${name},</p><p>We have confirmed your booking <strong>${escapeHtml(data.reference)}</strong>. Our team will be in touch with your travel details.</p>`,
+    }
+  }
   const product = escapeHtml(event.template_key.replaceAll('_', ' '))
   if (event.recipient_kind === 'customer') {
     return {
@@ -49,10 +56,14 @@ export default async function handler(req, res) {
         ...message,
       }, { idempotencyKey: `workspace-outbox-${event.event_id}` })
       if (result.error) throw new Error(result.error.name || 'resend_error')
-      await supabase.rpc('workspace_complete_outbox', { p_event_id: event.event_id, p_provider_message_id: result.data?.id || null })
+      if (!result.data?.id) throw new Error('missing_provider_message_id')
+      const { error: completionError } = await supabase.rpc('workspace_complete_outbox', {
+        p_event_id: event.event_id, p_provider_message_id: result.data.id,
+      })
+      if (completionError) throw new Error('outbox_completion_failed')
       sent += 1
     } catch (sendError) {
-      await supabase.rpc('workspace_fail_outbox', { p_event_id: event.event_id, p_error_code: sendError.name || 'delivery_error' })
+      await supabase.rpc('workspace_fail_outbox', { p_event_id: event.event_id, p_error_code: sendError.message || 'delivery_error' })
     }
   }
   return res.status(200).json({ ok: true, claimed: events?.length || 0, sent })

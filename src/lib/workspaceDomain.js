@@ -1,5 +1,6 @@
 export const WORKSPACE_PRODUCT_CODES = Object.freeze([
   'signature-journey',
+  'all-inclusive',
   'grand-journey',
   'rio-bahia',
   'rio-minas',
@@ -82,10 +83,13 @@ export function validateIntake(input) {
   const productCode = cleanText(input.productCode, 80, true)
   if (!PRODUCT_CODES.has(productCode)) throw new IntakeValidationError('Unknown product.', 'productCode')
 
-  if (formType !== 'carnaval_enquiry' && productCode !== 'signature-journey') {
+  if (formType === 'signature_application' && productCode !== 'signature-journey') {
     throw new IntakeValidationError('The selected product is not valid for this form.', 'productCode')
   }
-  if (formType === 'carnaval_enquiry' && productCode === 'signature-journey') {
+  if (formType === 'whatsapp_consultation' && !['signature-journey', 'all-inclusive'].includes(productCode)) {
+    throw new IntakeValidationError('The selected product is not valid for this form.', 'productCode')
+  }
+  if (formType === 'carnaval_enquiry' && !Object.hasOwn(PRODUCT_CAPACITY, productCode)) {
     throw new IntakeValidationError('A Carnaval package is required.', 'productCode')
   }
 
@@ -141,7 +145,9 @@ export function validateIntake(input) {
   }
 
   if (formType === 'whatsapp_consultation') {
-    normalized.birthDate = cleanText(data.birthDate, 10)
+    if (!normalized.countryOfResidence) {
+      throw new IntakeValidationError('Country of residence is required.', 'countryOfResidence')
+    }
     normalized.referralSource = cleanText(data.referralSource, 120)
   }
 
@@ -149,6 +155,7 @@ export function validateIntake(input) {
 }
 
 export function sanitizeAttribution(value = {}) {
+  value = value || {}
   const allowed = ['source', 'medium', 'campaign', 'term', 'content', 'referrer', 'landingPath', 'agency']
   return Object.fromEntries(
     allowed.map((key) => [key, cleanText(value[key], key === 'referrer' ? 500 : 200)]).filter(([, item]) => item),

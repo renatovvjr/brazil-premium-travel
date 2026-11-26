@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { FaInstagram, FaWhatsapp, FaEnvelope, FaCheck } from 'react-icons/fa'
 import { supabase } from './lib/supabase'
 import { isWorkspaceV2IntakeEnabled, submitIntake } from './lib/intakeClient'
+import IntakeVerification from './IntakeVerification'
 import { Link } from 'react-router-dom'
 import { LanguageSelector } from './LanguageSelector'
 import { useI18n } from './i18n'
@@ -58,6 +59,7 @@ export default function App() {
   const [whatsAppLeadLoading, setWhatsAppLeadLoading] = useState(false)
   const [whatsAppLeadModalOpen, setWhatsAppLeadModalOpen] = useState(false)
   const [whatsAppLeadForm, setWhatsAppLeadForm] = useState(getInitialWhatsAppLeadForm)
+  const [whatsAppInterest, setWhatsAppInterest] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(() => new URLSearchParams(window.location.search).get('visualReview') === 'mobile')
   const [scrolled, setScrolled] = useState(false)
   const [openExperience, setOpenExperience] = useState('signature')
@@ -234,7 +236,8 @@ Luxury Travel Experiences`
     }))
   }
 
-  const openWhatsAppLeadModal = () => {
+  const openWhatsAppLeadModal = (experience = null) => {
+    setWhatsAppInterest(experience)
     setMobileMenuOpen(false)
     setWhatsAppLeadModalOpen(true)
   }
@@ -266,9 +269,10 @@ Luxury Travel Experiences`
 
     try {
       if (isWorkspaceV2IntakeEnabled()) {
-        await submitIntake('whatsapp_consultation', 'signature-journey', {
-          fullName, email, countryOfResidence, city, birthDate, referralSource,
-        })
+        const product = whatsAppInterest?.id === 'all-inclusive' ? 'all-inclusive' : 'signature-journey'
+        await submitIntake('whatsapp_consultation', product, {
+          fullName, email, countryOfResidence, city, referralSource,
+        }, event.currentTarget)
       } else {
         const { error } = await supabase
           .from('leads')
@@ -285,7 +289,7 @@ Luxury Travel Experiences`
             },
           ])
 
-        if (error) console.error('WhatsApp consultation lead could not be saved:', error)
+        if (error) throw error
       }
     } catch (error) {
       console.error('WhatsApp consultation lead could not be saved:', error)
@@ -294,7 +298,8 @@ Luxury Travel Experiences`
       return
     }
 
-    window.open(`https://wa.me/61467652458?text=${encodeURIComponent(whatsAppWelcomeMessage)}`, '_blank', 'noreferrer')
+    const message = isWorkspaceV2IntakeEnabled() ? whatsAppInterest?.whatsappMessage || whatsAppWelcomeMessage : whatsAppWelcomeMessage
+    window.open(`https://wa.me/61467652458?text=${encodeURIComponent(message)}`, '_blank', 'noreferrer')
     setWhatsAppLeadLoading(false)
     setWhatsAppLeadModalOpen(false)
     setWhatsAppLeadForm(getInitialWhatsAppLeadForm())
@@ -347,7 +352,7 @@ Luxury Travel Experiences`
           fullName, email, whatsapp, travellers: travelers, visitedBrazil,
           visitedPlaces: visitedBrazil === 'Yes' ? visitedPlaces : '',
           interests, budget, dreamExperience,
-        })
+        }, event.currentTarget)
       } else {
         const { error } = await supabase
           .from('luxury_applications')
@@ -370,7 +375,7 @@ Luxury Travel Experiences`
             },
           ])
 
-        if (error) console.error('Luxury application could not be saved:', error)
+        if (error) throw error
       }
     } catch (error) {
       console.error('Luxury application could not be saved:', error)
@@ -779,7 +784,7 @@ I would love to receive more information about the experience.`
 
                     <button
                       type="button"
-                      onClick={openWhatsAppLeadModal}
+                      onClick={() => openWhatsAppLeadModal(experience)}
                       className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[var(--color-luxury-gold)] px-7 py-3.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-black shadow-[0_20px_55px_rgba(212,175,55,0.22)] outline-none transition duration-300 hover:-translate-y-0.5 hover:bg-[#f0d57e] hover:shadow-[0_24px_70px_rgba(212,175,55,0.32)] focus-visible:ring-2 focus-visible:ring-[#f6e7bd]"
                     >
                       Join the Waitlist
@@ -1117,6 +1122,7 @@ I would love to receive more information about the experience.`
                   {loading ? 'Preparing Your Journey...' : 'Request My Journey'}
                 </button>
 
+                  <IntakeVerification />
                   </motion.form>
                 )}
               </AnimatePresence>
@@ -1202,7 +1208,7 @@ I would love to receive more information about the experience.`
 
                 <button
                   type="button"
-                  onClick={openWhatsAppLeadModal}
+                  onClick={() => openWhatsAppLeadModal()}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a46b]/60 text-[#9c7a3c] transition hover:bg-[#c8a46b] hover:text-white"
                   aria-label="Open WhatsApp consultation"
                 >
@@ -1352,6 +1358,7 @@ I would love to receive more information about the experience.`
                 >
                   {whatsAppLeadLoading ? 'Connecting...' : 'Continue to WhatsApp'}
                 </button>
+                <IntakeVerification />
               </form>
             </motion.div>
           </motion.div>
@@ -1360,7 +1367,7 @@ I would love to receive more information about the experience.`
       {/* FLOATING WHATSAPP */}
       <button
         type="button"
-        onClick={openWhatsAppLeadModal}
+        onClick={() => openWhatsAppLeadModal()}
         className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-[#25D366] px-5 py-4 text-white shadow-[0_10px_35px_rgba(37,211,102,0.35)] transition duration-300 hover:scale-105 hover:shadow-[0_15px_45px_rgba(37,211,102,0.45)]"
         aria-label="Open WhatsApp consultation"
       >

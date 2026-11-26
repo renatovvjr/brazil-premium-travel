@@ -97,6 +97,10 @@ export default defineConfig(({ mode }) => {
     throw new Error('Workspace 2.0 intake requires VITE_WORKSPACE_V2_ENABLED=true.')
   }
 
+  if (workspaceV2IntakeRequested && vercelEnvironment === 'production' && !process.env.VITE_TURNSTILE_SITE_KEY) {
+    throw new Error('Production Workspace intake requires VITE_TURNSTILE_SITE_KEY.')
+  }
+
   if ((workspaceV2Requested || workspaceV2IntakeRequested) && visualPreviewRequested) {
     throw new Error('Workspace 2.0 cannot use the blocked Carnaval visual Preview environment.')
   }

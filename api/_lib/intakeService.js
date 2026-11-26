@@ -27,6 +27,7 @@ export async function processIntake({ body, idempotencyKey, requestContext = {},
     requestHash,
     requestContext,
   })
+  if (!result?.submissionReference) throw new Error('The enquiry could not be stored.')
   return {
     status: result.replayed ? 200 : 201,
     body: {

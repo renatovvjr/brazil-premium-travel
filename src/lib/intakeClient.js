@@ -26,17 +26,31 @@ const getKey = (fingerprint) => {
 
 export const isWorkspaceV2IntakeEnabled = () => INTAKE_FEATURE_ENABLED
 
-export async function submitIntake(formType, productCode, data) {
-  const fingerprint = `${formType}:${productCode}:${String(data.email || '').trim().toLowerCase()}`
-  const response = await fetch('/api/intake', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Idempotency-Key': getKey(fingerprint),
-    },
-    body: JSON.stringify({ formType, productCode, data, attribution: getAttribution() }),
-  })
-  const result = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(result.error || 'Your enquiry could not be submitted.')
-  return result
+export async function submitIntake(formType, productCode, data, form) {
+  const widget = form.querySelector('[data-intake-widget]')?.dataset.intakeWidget
+  const captchaToken = new FormData(form).get('cf-turnstile-response')
+  const payload = { formType, productCode, data, attribution: getAttribution() }
+  if (import.meta.env.VITE_TURNSTILE_SITE_KEY && !captchaToken) {
+    throw new Error('Human verification is required.')
+  }
+
+  for (const [key, entry] of keys) {
+    if (Date.now() - entry.createdAt >= 10 * 60 * 1000) keys.delete(key)
+  }
+  const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(payload)))
+  const fingerprint = [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, '0')).join('')
+  try {
+    const response = await fetch('/api/intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Idempotency-Key': getKey(fingerprint) },
+      body: JSON.stringify({ ...payload, captchaToken }),
+    })
+    const result = await response.json().catch(() => ({}))
+    if (!response.ok || !result.submissionReference) {
+      throw new Error(result.error || 'Your enquiry could not be submitted.')
+    }
+    return result
+  } finally {
+    if (widget && form.isConnected) window.turnstile?.reset(widget)
+  }
 }

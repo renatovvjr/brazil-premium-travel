@@ -48,6 +48,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
+  if (process.env.VITE_WORKSPACE_V2_INTAKE_ENABLED === 'true') {
+    return res.status(410).json({ error: 'Enquiries are handled by Workspace intake.' })
+  }
+
   if (!process.env.RESEND_API_KEY) {
     return res.status(500).json({ error: 'Email delivery is not configured' })
   }

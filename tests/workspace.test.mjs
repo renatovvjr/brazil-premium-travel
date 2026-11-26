@@ -164,6 +164,8 @@ test('migration chain is complete, ordered and denies client-side role assignmen
     '20261124094000_workspace_2_commercial_extensions.sql',
     '20261124094500_workspace_2_intake_pgcrypto_fix.sql',
     '20261124110000_workspace_2_legacy_crm_import.sql',
+    '20261126120000_workspace_2_release_completion.sql',
+    '20261126121000_workspace_2_private_grants.sql',
   ])
   const [profileCompatibility, prerequisites, extensions, legacyImport] = await Promise.all([
     readFile(new URL('../supabase/migrations/20261124084500_workspace_2_legacy_profile_compatibility.sql', import.meta.url), 'utf8'),

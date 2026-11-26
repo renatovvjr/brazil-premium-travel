@@ -6,6 +6,7 @@ import { carnavalCommercial, getCarnavalPackage } from './carnavalContent'
 import { DestinationEditorial, ResponsiveCarnavalImage } from './CarnavalDestinations'
 import { CarnavalFooter, CarnavalNav, JourneyMeta, reveal, usePageTop } from './CarnavalShared'
 import { isWorkspaceV2IntakeEnabled, submitIntake } from './lib/intakeClient'
+import IntakeVerification from './IntakeVerification'
 import { useI18n } from './i18n'
 
 const getInitialEnquiry = () => ({
@@ -105,7 +106,7 @@ Additional requests: ${form.message || 'None provided'}`
           accommodation: form.accommodation,
           internationalFlights: form.internationalFlights,
           message: form.message,
-        })
+        }, event.currentTarget)
         setStatus('sent')
         return
       }
@@ -211,6 +212,7 @@ Additional requests: ${form.message || 'None provided'}`
             {status === 'sending' ? t('form.sending') : t('form.submit')}
           </button>
           <p className="mt-4 text-center text-sm leading-6 text-[#61756f]">Submitting this form begins your tailored quotation process. Final arrangements and availability will be documented in writing before booking confirmation.</p>
+          <IntakeVerification />
         </motion.form>
       </div>
     </section>

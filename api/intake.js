@@ -20,19 +20,27 @@ const getIpHash = (req) => {
 
 const verifyCaptcha = async (token, ip) => {
   const secret = process.env.TURNSTILE_SECRET_KEY
-  if (!secret) return process.env.INTAKE_REQUIRE_CAPTCHA !== 'true'
+  if (!secret) return process.env.VERCEL_ENV !== 'production' && process.env.INTAKE_REQUIRE_CAPTCHA !== 'true'
   if (!token) return false
   const form = new FormData()
   form.set('secret', secret)
   form.set('response', token)
   if (ip) form.set('remoteip', ip)
-  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form })
+  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST', body: form, signal: AbortSignal.timeout(5000),
+  })
   const result = await response.json()
-  return result.success === true
+  return result.success === true && (
+    process.env.VERCEL_ENV !== 'production' ||
+    (new Set(['www.curatedbraziltravel.com', 'curatedbraziltravel.com']).has(result.hostname) && result.action === 'enquiry')
+  )
 }
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed.' })
+  if (process.env.VERCEL_ENV === 'production' && (
+    process.env.VITE_WORKSPACE_V2_INTAKE_ENABLED !== 'true' || process.env.WORKSPACE_V2_PRODUCTION_APPROVED !== 'true'
+  )) return res.status(503).json({ error: 'Workspace intake is disabled.' })
 
   const contentLength = Number(req.headers['content-length'] || 0)
   if (contentLength > MAX_BODY_BYTES) return res.status(413).json({ error: 'Request body is too large.' })
@@ -47,17 +55,13 @@ export default async function handler(req, res) {
   }
 
   const forwardedIp = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim()
-  if (!(await verifyCaptcha(req.body?.captchaToken, forwardedIp))) {
-    return res.status(422).json({ error: 'Human verification failed.' })
-  }
-
   const supabase = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   })
 
   const repository = {
     persist: async (command) => {
-      const { data, error } = await supabase.rpc('workspace_intake_submit', {
+      const { data, error } = await supabase.rpc('workspace_submit_enquiry', {
         p_form_type: command.formType,
         p_product_code: command.productCode,
         p_payload: command.data,
@@ -70,7 +74,12 @@ export default async function handler(req, res) {
       })
       if (error) {
         const wrapped = new Error(error.message)
-        wrapped.status = error.message?.includes('idempotency_conflict') ? 409 : 500
+        if (error.message === 'rate_limit_exceeded') {
+          wrapped.status = 429
+          wrapped.message = 'Too many enquiries. Please try again shortly.'
+        } else {
+          wrapped.status = error.message?.includes('idempotency_conflict') ? 409 : 500
+        }
         throw wrapped
       }
       return data
@@ -78,6 +87,9 @@ export default async function handler(req, res) {
   }
 
   try {
+    if (!(await verifyCaptcha(req.body?.captchaToken, forwardedIp))) {
+      return res.status(422).json({ error: 'Human verification failed.' })
+    }
     const result = await processIntake({
       body: req.body,
       idempotencyKey: req.headers['idempotency-key'],
