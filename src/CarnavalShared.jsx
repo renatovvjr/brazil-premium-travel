@@ -17,7 +17,7 @@ export function CarnavalNav({ dark = true }) {
   const { t } = useI18n()
 
   return (
-    <nav className={`absolute inset-x-0 top-0 z-40 border-b ${dark ? 'border-white/10 text-white' : 'border-[var(--color-brazilian-green)]/10 text-[var(--color-deep-forest)]'}`}>
+    <nav className={`carnaval-nav absolute inset-x-0 top-0 z-40 border-b ${dark ? 'carnaval-nav--dark border-white/10 text-white' : 'border-[var(--color-brazilian-green)]/10 text-[var(--color-deep-forest)]'}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-5 py-5 md:px-8">
         <Link to="/carnaval" className="group flex min-w-0 items-center gap-3" onClick={() => setMenuOpen(false)}>
           <img src="/images/logo-premium.png" alt="Curated Brazil Travel" className="h-11 w-11 shrink-0 rounded-xl border border-[var(--color-luxury-gold)]/35 object-cover shadow-[0_8px_24px_rgba(0,0,0,0.24)]" />

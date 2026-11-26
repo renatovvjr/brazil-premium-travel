@@ -8,14 +8,23 @@ const defaults = {
   source: path.join(projectRoot, 'assets', 'carnaval-originals'),
   output: path.join(projectRoot, 'public', 'images', 'carnaval'),
   quality: 82,
+  files: [],
 }
 
 const presets = [
-  { suffix: 'hero-desktop', width: 2560, height: 1440 },
-  { suffix: 'hero-mobile', width: 1200, height: 1600 },
+  { suffix: 'hero-mobile', width: 768, height: 1024 },
+  { suffix: 'hero-tablet', width: 1280, height: 720 },
+  { suffix: 'hero-desktop', width: 1920, height: 1080 },
   { suffix: 'card', width: 1600, height: 1200 },
   { suffix: 'chapter', width: 1800, height: 1200 },
 ]
+
+const heroSourceNames = new Set([
+  'sambodromo_hero.png',
+  'frevo_hero.png',
+  'carnaval_minas_hero.png',
+  'camarote_premium_hero.png',
+])
 
 const supportedExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff', '.avif'])
 const supportedPositions = new Set([
@@ -39,6 +48,7 @@ function printHelp() {
 Usage:
   npm run images:carnaval
   npm run images:carnaval -- --source <directory> --output <directory> --quality <1-100>
+  npm run images:carnaval -- --files image-one.jpg,image-two.jpg
 
 Defaults:
   source   assets/carnaval-originals
@@ -59,7 +69,7 @@ function readArguments(args) {
       process.exit(0)
     }
 
-    if (!['--source', '--output', '--quality'].includes(argument)) {
+    if (!['--source', '--output', '--quality', '--files'].includes(argument)) {
       throw new Error(`Unknown argument: ${argument}`)
     }
 
@@ -70,6 +80,7 @@ function readArguments(args) {
     if (argument === '--source') options.source = path.resolve(value)
     if (argument === '--output') options.output = path.resolve(value)
     if (argument === '--quality') options.quality = Number(value)
+    if (argument === '--files') options.files = value.split(',').map((item) => item.trim()).filter(Boolean)
   }
 
   if (!Number.isInteger(options.quality) || options.quality < 1 || options.quality > 100) {
@@ -125,7 +136,11 @@ async function processImage({ sourcePath, filename, slug, position, outputDirect
 
   console.log(`\n${filename} (${metadata.width}×${metadata.height}, focus: ${position})`)
 
-  for (const preset of presets) {
+  const selectedPresets = heroSourceNames.has(filename)
+    ? presets.filter((preset) => preset.suffix.startsWith('hero-'))
+    : presets.filter((preset) => preset.suffix !== 'hero-tablet')
+
+  for (const preset of selectedPresets) {
     const outputName = `${slug}--${preset.suffix}.webp`
     const outputPath = path.join(outputDirectory, outputName)
 
@@ -134,15 +149,20 @@ async function processImage({ sourcePath, filename, slug, position, outputDirect
       .resize(preset.width, preset.height, {
         fit: 'cover',
         position,
-        // Keep supplied photography at its native resolution when it is smaller
+        background: { r: 0, g: 39, b: 30, alpha: 1 },
+        // Keep supplied source imagery at its native resolution when it is smaller
         // than a preset. Responsive variants should optimise, never invent detail.
         withoutEnlargement: true,
       })
+      .linear(1.02, -1)
+      .modulate({ saturation: 1.025 })
+      .sharpen({ sigma: 0.55, m1: 0.35, m2: 1.2 })
       .webp({ quality, effort: 5, smartSubsample: true })
       .toFile(outputPath)
 
     const outputStats = await stat(outputPath)
-    console.log(`  ${outputName}  ${preset.width}×${preset.height}  ${(outputStats.size / 1024).toFixed(1)} KiB`)
+    const outputMetadata = await sharp(outputPath).metadata()
+    console.log(`  ${outputName}  ${outputMetadata.width}x${outputMetadata.height}  ${(outputStats.size / 1024).toFixed(1)} KiB`)
   }
 }
 
@@ -155,10 +175,17 @@ async function main() {
   await mkdir(outputDirectory, { recursive: true })
 
   const entries = await readdir(sourceDirectory, { withFileTypes: true })
-  const imageFiles = entries
+  let imageFiles = entries
     .filter((entry) => entry.isFile() && supportedExtensions.has(path.extname(entry.name).toLowerCase()))
     .map((entry) => entry.name)
     .sort((first, second) => first.localeCompare(second))
+
+  if (options.files.length) {
+    const requested = new Set(options.files)
+    imageFiles = imageFiles.filter((filename) => requested.has(filename))
+    const missing = options.files.filter((filename) => !imageFiles.includes(filename))
+    if (missing.length) throw new Error(`Requested source image(s) not found: ${missing.join(', ')}`)
+  }
 
   if (!imageFiles.length) {
     console.log(`No source images found in ${sourceDirectory}`)
@@ -193,7 +220,8 @@ async function main() {
     })
   }
 
-  console.log(`\nDone. Generated ${imageFiles.length * presets.length} optimized image(s).`)
+  const generatedCount = imageFiles.reduce((total, filename) => total + (heroSourceNames.has(filename) ? 3 : 4), 0)
+  console.log(`\nDone. Generated ${generatedCount} optimized image(s).`)
   console.log('Original files were not modified.')
 }
 

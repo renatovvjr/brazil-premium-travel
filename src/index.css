@@ -29,6 +29,40 @@ body {
   background: var(--color-deep-forest);
 }
 
+.translation-disclosure {
+  border-top: 1px solid rgba(212, 175, 55, 0.28);
+  background: var(--color-deep-forest-strong);
+  padding: 0.85rem 1.25rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.carnaval-nav {
+  isolation: isolate;
+}
+
+.carnaval-nav--dark::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 -2.75rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 31, 24, 0.9) 0%,
+    rgba(0, 39, 30, 0.84) 42%,
+    rgba(0, 39, 30, 0.48) 72%,
+    rgba(0, 39, 30, 0) 100%
+  );
+  content: '';
+  pointer-events: none;
+}
+
+.carnaval-nav > * {
+  position: relative;
+  z-index: 1;
+}
+
 .home-hero-overlay {
   background: linear-gradient(
     to right,
@@ -51,6 +85,84 @@ body {
   );
 }
 
+.carnaval-hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.8s ease-out;
+  pointer-events: none;
+}
+
+.carnaval-hero-slide.is-active {
+  opacity: 1;
+}
+
+.carnaval-hero-slide__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 7s ease-out;
+}
+
+.carnaval-hero-slide.is-active .carnaval-hero-slide__image {
+  transform: scale(1.035);
+}
+
+.carnaval-hero-slide__image--principal {
+  filter: brightness(1.06) saturate(1.12);
+  opacity: 0.95;
+}
+
+.carnaval-hero-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(0, 39, 30, 0.5) 0%,
+    rgba(0, 39, 30, 0.3) 30%,
+    rgba(0, 39, 30, 0.12) 60%,
+    rgba(0, 39, 30, 0.03) 85%,
+    rgba(0, 39, 30, 0) 100%
+  );
+}
+
+[dir="rtl"] .carnaval-hero-overlay {
+  background: linear-gradient(
+    to left,
+    rgba(0, 39, 30, 0.5) 0%,
+    rgba(0, 39, 30, 0.3) 30%,
+    rgba(0, 39, 30, 0.12) 60%,
+    rgba(0, 39, 30, 0.03) 85%,
+    rgba(0, 39, 30, 0) 100%
+  );
+}
+
+.carnaval-carousel-control {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.carnaval-carousel-control:hover,
+.carnaval-carousel-control:focus-visible {
+  border-color: var(--color-luxury-gold);
+  background: rgba(212, 175, 55, 0.2);
+  outline: none;
+}
+
+[dir="rtl"] .carnaval-hero-content {
+  margin-right: 3vw;
+  margin-left: 0;
+  text-align: right;
+}
+
 @media (max-width: 639px) {
   .home-hero-overlay {
     background: linear-gradient(
@@ -63,6 +175,26 @@ body {
   }
 
   [dir="rtl"] .home-hero-overlay {
+    background: linear-gradient(
+      to left,
+      rgba(0, 39, 30, 0.54) 0%,
+      rgba(0, 39, 30, 0.36) 48%,
+      rgba(0, 39, 30, 0.12) 82%,
+      rgba(0, 39, 30, 0.04) 100%
+    );
+  }
+
+  .carnaval-hero-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(0, 39, 30, 0.54) 0%,
+      rgba(0, 39, 30, 0.36) 48%,
+      rgba(0, 39, 30, 0.12) 82%,
+      rgba(0, 39, 30, 0.04) 100%
+    );
+  }
+
+  [dir="rtl"] .carnaval-hero-overlay {
     background: linear-gradient(
       to left,
       rgba(0, 39, 30, 0.54) 0%,
@@ -444,6 +576,15 @@ input {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .carnaval-hero-slide,
+  .carnaval-hero-slide__image {
+    transition: none !important;
+  }
+
+  .carnaval-hero-slide.is-active .carnaval-hero-slide__image {
+    transform: none;
+  }
+
   .carnaval-menu-cta,
   .carnaval-menu-cta__halo,
   .carnaval-menu-cta__shine::after {

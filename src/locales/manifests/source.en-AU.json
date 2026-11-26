@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "sourceLocale": "en-AU",
   "translationVersion": "2026-11-24.1",
-  "sourceHash": "533e1c6ac61f502dde41473113af278f21f589ee157711ccc3e4ad59c7bc3372",
-  "stringCount": 504,
-  "characterCount": 37255,
+  "sourceHash": "74af6a419bcabeb8ea0b4d47cc2eaaf81a76aeb33b424b64253ed96de85ffe63",
+  "stringCount": 530,
+  "characterCount": 38431,
   "entries": [
     {
       "id": "text.002acd6cef7f95fa",
@@ -451,6 +451,20 @@
       ]
     },
     {
+      "id": "text.0e66769bfd7b5f76",
+      "sourceHash": "0e66769bfd7b5f76fc4831a65e961031307d2eeaacaed334f19700c87ba7c513",
+      "template": "A trio elétrico moving through the Salvador Carnaval crowd",
+      "lockedTokens": [],
+      "source": "A trio elétrico moving through the Salvador Carnaval crowd",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 166,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.4a97cd11f7d60642",
       "sourceHash": "4a97cd11f7d60642014d6b2ad6cf7e42ea90f582ce424f544591121bf847f171",
       "template": "A truly unique itinerary",
@@ -559,6 +573,20 @@
           "file": "src/DestinationPage.jsx",
           "line": 121,
           "context": "property:subtitle"
+        }
+      ]
+    },
+    {
+      "id": "text.09c654e377a0cd94",
+      "sourceHash": "09c654e377a0cd941456d26b4beb2ba63df63729dd461da22a04908ebfecb707",
+      "template": "Afro-Brazilian drum procession in Salvador",
+      "lockedTokens": [],
+      "source": "Afro-Brazilian drum procession in Salvador",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 167,
+          "context": "property:alt"
         }
       ]
     },
@@ -838,7 +866,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 169,
+          "line": 325,
           "context": "array-option"
         }
       ]
@@ -913,7 +941,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 11,
+          "line": 12,
           "context": "property:question"
         }
       ]
@@ -1083,7 +1111,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 89,
+          "line": 245,
           "context": "array-option"
         }
       ]
@@ -1439,7 +1467,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 167,
+          "line": 323,
           "context": "array-option"
         }
       ]
@@ -1515,6 +1543,34 @@
       ]
     },
     {
+      "id": "text.ac862af7b0f62295",
+      "sourceHash": "ac862af7b0f622953c2d3b2b7d2da0c20b60f3bc3ec0419867bd7f18d06ca782",
+      "template": "Carnaval beside Ouro Preto heritage architecture",
+      "lockedTokens": [],
+      "source": "Carnaval beside Ouro Preto heritage architecture",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 137,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
+      "id": "text.9a73cdf4f2891fae",
+      "sourceHash": "9a73cdf4f2891fae11c6ba0f6a87d0cd69db8d0ca51dff37691a61d90412734a",
+      "template": "Carnaval celebration with Sugarloaf Mountain in Rio",
+      "lockedTokens": [],
+      "source": "Carnaval celebration with Sugarloaf Mountain in Rio",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 73,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.e4335cf44aab7583",
       "sourceHash": "e4335cf44aab7583c7548cd0b2e49652cf9c2b3e2f1a77a2b275b1bc05aecf0b",
       "template": "Carnaval Collection",
@@ -1529,6 +1585,34 @@
       ]
     },
     {
+      "id": "text.fd850ae38c73218d",
+      "sourceHash": "fd850ae38c73218d0424d6d59217108f82e59c64ce499bb124159a4d00e1bd80",
+      "template": "Carnaval Collection 2027 image carousel",
+      "lockedTokens": [],
+      "source": "Carnaval Collection 2027 image carousel",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
+        }
+      ]
+    },
+    {
+      "id": "text.cf60ca374ab53096",
+      "sourceHash": "cf60ca374ab53096b14880b5193c444da63f8753aef6a2a5a50a7aec1ecf67fc",
+      "template": "Carnaval crowd and trio elétrico near the coastal lighthouse in Salvador",
+      "lockedTokens": [],
+      "source": "Carnaval crowd and trio elétrico near the coastal lighthouse in Salvador",
+      "locations": [
+        {
+          "file": "src/CarnavalLanding.jsx",
+          "line": 62,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.d2c329878c26d5b1",
       "sourceHash": "d2c329878c26d5b104743f14acabfdbe2e7a9d68c565504a21af1f5a9ecaf96a",
       "template": "Carnaval culture",
@@ -1539,6 +1623,20 @@
           "file": "src/carnavalContent.js",
           "line": 250,
           "context": "property:title"
+        }
+      ]
+    },
+    {
+      "id": "text.c39e343677e3458d",
+      "sourceHash": "c39e343677e3458da8fb10e2d738db649bc7480276c91ba191a8cc2d8a4cb231",
+      "template": "Carnaval in the colonial streets of Ouro Preto",
+      "lockedTokens": [],
+      "source": "Carnaval in the colonial streets of Ouro Preto",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 115,
+          "context": "property:alt"
         }
       ]
     },
@@ -1565,8 +1663,36 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 80,
+          "line": 236,
           "context": "jsx-text"
+        }
+      ]
+    },
+    {
+      "id": "text.53ed1efca720df4f",
+      "sourceHash": "53ed1efca720df4f971b8526f21a82b8dc370c6e674ee80f227dd06b992ec49a",
+      "template": "Carnaval parade in the Sambódromo",
+      "lockedTokens": [],
+      "source": "Carnaval parade in the Sambódromo",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 75,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
+      "id": "text.40415235c623bec0",
+      "sourceHash": "40415235c623bec0241df3232317929d01c6dd22431038a985245a7a3494049a",
+      "template": "Carnaval procession through Ouro Preto",
+      "lockedTokens": [],
+      "source": "Carnaval procession through Ouro Preto",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 136,
+          "context": "property:alt"
         }
       ]
     },
@@ -1831,7 +1957,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 161,
+          "line": 317,
           "context": "jsx-text"
         }
       ]
@@ -1851,6 +1977,62 @@
       ]
     },
     {
+      "id": "text.b1de7aab31085905",
+      "sourceHash": "b1de7aab3108590536fec8e780ab8804f6cd659ecda507ae87234c55f9a9d2fc",
+      "template": "Colonial church by the coast in Olinda",
+      "lockedTokens": [],
+      "source": "Colonial church by the coast in Olinda",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 105,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
+      "id": "text.4ffead5cac2d12d1",
+      "sourceHash": "4ffead5cac2d12d1de3b2b417701f716a11fb1067b8c1225018741a0aa7888af",
+      "template": "Colourful historic architecture in Salvador",
+      "lockedTokens": [],
+      "source": "Colourful historic architecture in Salvador",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 165,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
+      "id": "text.2b8f8555e6ad38b9",
+      "sourceHash": "2b8f8555e6ad38b964d620819d92917eaacd5c948b789f74bbcdfbb17be87e09",
+      "template": "Colourful miniature frevo umbrellas",
+      "lockedTokens": [],
+      "source": "Colourful miniature frevo umbrellas",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 104,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
+      "id": "text.57bd95109b126fa0",
+      "sourceHash": "57bd95109b126fa0d116df15ed6ab79d1ba2631fc5f29cad9d80df8888a1a39d",
+      "template": "Colourful street Carnaval celebration in Minas Gerais",
+      "lockedTokens": [],
+      "source": "Colourful street Carnaval celebration in Minas Gerais",
+      "locations": [
+        {
+          "file": "src/CarnavalLanding.jsx",
+          "line": 79,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.803061ee04c6dc08",
       "sourceHash": "803061ee04c6dc0857d57a956c49c02e83eb1ba27174c6146c1fe79edf3ed14a",
       "template": "Compare the journeys",
@@ -1861,6 +2043,20 @@
           "file": "src/i18n.jsx",
           "line": 1,
           "context": "i18n-key"
+        }
+      ]
+    },
+    {
+      "id": "text.7e76aaed091e1301",
+      "sourceHash": "7e76aaed091e130101d7a51fa3c5b2407c879067b83c016b6d05d8bcda614e62",
+      "template": "Confetti-filled street Carnaval in Belo Horizonte",
+      "lockedTokens": [],
+      "source": "Confetti-filled street Carnaval in Belo Horizonte",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 135,
+          "context": "property:alt"
         }
       ]
     },
@@ -1901,7 +2097,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 168,
+          "line": 324,
           "context": "array-option"
         }
       ]
@@ -1990,7 +2186,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 153,
+          "line": 309,
           "context": "attribute:alt"
         }
       ]
@@ -2289,7 +2485,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 157,
+          "line": 313,
           "context": "jsx-text"
         }
       ]
@@ -2561,7 +2757,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 163,
+          "line": 319,
           "context": "jsx-text"
         }
       ]
@@ -2896,7 +3092,7 @@
         },
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 186,
+          "line": 342,
           "context": "jsx-text"
         }
       ]
@@ -2912,6 +3108,20 @@
           "file": "src/carnavalContent.js",
           "line": 104,
           "context": "property:label"
+        }
+      ]
+    },
+    {
+      "id": "text.ef3aff7ff2166b0b",
+      "sourceHash": "ef3aff7ff2166b0b74f94c700fefb6a05c70122b40303394472d04088f2beb65",
+      "template": "Frevo dancers with colourful umbrellas beside historic architecture",
+      "lockedTokens": [],
+      "source": "Frevo dancers with colourful umbrellas beside historic architecture",
+      "locations": [
+        {
+          "file": "src/CarnavalLanding.jsx",
+          "line": 54,
+          "context": "property:alt"
         }
       ]
     },
@@ -2954,6 +3164,20 @@
           "file": "src/App.jsx",
           "line": 176,
           "context": "array-option"
+        }
+      ]
+    },
+    {
+      "id": "text.d70657b699aebce1",
+      "sourceHash": "d70657b699aebce1c8fe6fa0bd59374cd487e67580f1ccfca98807a35fa09235",
+      "template": "Friends celebrating at the Sambódromo",
+      "lockedTokens": [],
+      "source": "Friends celebrating at the Sambódromo",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 74,
+          "context": "property:alt"
         }
       ]
     },
@@ -3052,6 +3276,20 @@
       ]
     },
     {
+      "id": "text.4426ecf28729bbad",
+      "sourceHash": "4426ecf28729bbad327dfa90ce652debc9345ae6be78bc195d68b682825b24f3",
+      "template": "Giant Carnaval puppets in Olinda",
+      "lockedTokens": [],
+      "source": "Giant Carnaval puppets in Olinda",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 103,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.1748e99344a8b7e7",
       "sourceHash": "1748e99344a8b7e73f01bf98fe87362001c04b6ac88ce8fdbc34d1dff7dc55cb",
       "template": "Giant puppets",
@@ -3062,6 +3300,20 @@
           "file": "src/carnavalContent.js",
           "line": 103,
           "context": "property:label"
+        }
+      ]
+    },
+    {
+      "id": "text.3e0618fd00a1ff24",
+      "sourceHash": "3e0618fd00a1ff24faacc7b6777e06457592bbaea62ed1359cd5e30400337de6",
+      "template": "Giant puppets and revellers in the colourful historic streets of Olinda",
+      "lockedTokens": [],
+      "source": "Giant puppets and revellers in the colourful historic streets of Olinda",
+      "locations": [
+        {
+          "file": "src/CarnavalLanding.jsx",
+          "line": 71,
+          "context": "property:alt"
         }
       ]
     },
@@ -3118,6 +3370,20 @@
           "file": "src/i18n.jsx",
           "line": 1,
           "context": "i18n-key"
+        }
+      ]
+    },
+    {
+      "id": "text.69938092fb92dab8",
+      "sourceHash": "69938092fb92dab80bf973333701502ef67a03f9f9a749ef1d4cf1e902a1014a",
+      "template": "Guests watching a samba parade from an elevated hospitality area",
+      "lockedTokens": [],
+      "source": "Guests watching a samba parade from an elevated hospitality area",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 69,
+          "context": "property:alt"
         }
       ]
     },
@@ -3324,7 +3590,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 23,
+          "line": 24,
           "context": "property:question"
         }
       ]
@@ -3352,7 +3618,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 15,
+          "line": 16,
           "context": "property:question"
         }
       ]
@@ -3476,6 +3742,20 @@
           "file": "src/DestinationPage.jsx",
           "line": 227,
           "context": "property:text"
+        }
+      ]
+    },
+    {
+      "id": "text.f4fd9ba382ee2635",
+      "sourceHash": "f4fd9ba382ee26358c951ec790f300e0cd3fc8b58206062547ab99a8aa2ccb57",
+      "template": "Illustrative premium Carnaval hospitality scene with guests overlooking festivities",
+      "lockedTokens": [],
+      "source": "Illustrative premium Carnaval hospitality scene with guests overlooking festivities",
+      "locations": [
+        {
+          "file": "src/CarnavalLanding.jsx",
+          "line": 87,
+          "context": "property:alt"
         }
       ]
     },
@@ -3840,7 +4120,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 167,
+          "line": 323,
           "context": "array-option"
         }
       ]
@@ -3882,7 +4162,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 166,
+          "line": 322,
           "context": "array-option"
         }
       ]
@@ -3938,7 +4218,7 @@
       "locations": [
         {
           "file": "src/i18n.jsx",
-          "line": 340,
+          "line": 457,
           "context": "attribute:aria-label"
         }
       ]
@@ -4010,6 +4290,20 @@
           "file": "src/DestinationPage.jsx",
           "line": 186,
           "context": "property:subtitle"
+        }
+      ]
+    },
+    {
+      "id": "text.5e3e0bc0aa0f38f5",
+      "sourceHash": "5e3e0bc0aa0f38f5309b97f3c03bb02de6312553759f54e8434fd2b69ad69cdd",
+      "template": "Machine translation is provided for information only. English remains authoritative for legal and contractual terms.",
+      "lockedTokens": [],
+      "source": "Machine translation is provided for information only. English remains authoritative for legal and contractual terms.",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
         }
       ]
     },
@@ -4234,6 +4528,20 @@
       ]
     },
     {
+      "id": "text.cdc93d1c8fe9a2af",
+      "sourceHash": "cdc93d1c8fe9a2af342a761d7407ebb397693534dadaa4cdca8b3788ef64805a",
+      "template": "Next slide",
+      "lockedTokens": [],
+      "source": "Next slide",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
+        }
+      ]
+    },
+    {
       "id": "text.1ea442a134b2a184",
       "sourceHash": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
       "template": "No",
@@ -4345,7 +4653,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 168,
+          "line": 324,
           "context": "array-option"
         }
       ]
@@ -4373,7 +4681,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 156,
+          "line": 312,
           "context": "jsx-text"
         }
       ]
@@ -4467,7 +4775,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 24,
+          "line": 25,
           "context": "property:answer"
         }
       ]
@@ -4609,6 +4917,20 @@
       ]
     },
     {
+      "id": "text.484fee44ee3f3920",
+      "sourceHash": "484fee44ee3f392029d45afea9c17f445aa528fd08afe447c25356d57e807547",
+      "template": "Panoramic night parade in a Brazilian Sambódromo",
+      "lockedTokens": [],
+      "source": "Panoramic night parade in a Brazilian Sambódromo",
+      "locations": [
+        {
+          "file": "src/CarnavalLanding.jsx",
+          "line": 46,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.eca839902f399e2e",
       "sourceHash": "eca839902f399e2e9e2adbc13160863157f6728c9da453f7408f248cd152a0f7",
       "template": "Pantanal",
@@ -4624,6 +4946,20 @@
           "file": "src/DestinationPage.jsx",
           "line": 64,
           "context": "property:title"
+        }
+      ]
+    },
+    {
+      "id": "text.6547eb1547ebc3f3",
+      "sourceHash": "6547eb1547ebc3f32d839eba8554f8f6a792d7a72283a1c6c071d872dcfa998b",
+      "template": "Pause carousel",
+      "lockedTokens": [],
+      "source": "Pause carousel",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
         }
       ]
     },
@@ -4734,27 +5070,8 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 185,
+          "line": 341,
           "context": "jsx-text"
-        }
-      ]
-    },
-    {
-      "id": "text.b2f246872501b96e",
-      "sourceHash": "b2f246872501b96e0e7108ceac093c244dd767158173a61f2a54d3f8ef40a863",
-      "template": "Please fill in your details",
-      "lockedTokens": [],
-      "source": "Please fill in your details",
-      "locations": [
-        {
-          "file": "src/App.jsx",
-          "line": 261,
-          "context": "alert"
-        },
-        {
-          "file": "src/App.jsx",
-          "line": 319,
-          "context": "alert"
         }
       ]
     },
@@ -4853,6 +5170,20 @@
       ]
     },
     {
+      "id": "text.aa5bce843f52b6ea",
+      "sourceHash": "aa5bce843f52b6ea923b4772fcc4193738cedbe4ab2aff70a36ab80465259e74",
+      "template": "Premium hospitality overlooking a Sambódromo parade",
+      "lockedTokens": [],
+      "source": "Premium hospitality overlooking a Sambódromo parade",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 68,
+          "context": "property:alt"
+        }
+      ]
+    },
+    {
       "id": "text.e2b94909754f41f9",
       "sourceHash": "e2b94909754f41f9f6136252af0e3920cfd00bd12bb4e1804c4e14ed7fa1bbf6",
       "template": "Premium hospitality, intimate groups and thoughtful coordination designed around comfort and confidence.",
@@ -4861,7 +5192,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 88,
+          "line": 244,
           "context": "array-option"
         }
       ]
@@ -4924,6 +5255,20 @@
           "file": "src/DestinationPage.jsx",
           "line": 437,
           "context": "attribute:aria-label"
+        }
+      ]
+    },
+    {
+      "id": "text.bfb549220c60fc91",
+      "sourceHash": "bfb549220c60fc914ee07504fb05a09a509aa9311c718224b68fae34252a97e8",
+      "template": "Previous slide",
+      "lockedTokens": [],
+      "source": "Previous slide",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
         }
       ]
     },
@@ -5243,6 +5588,20 @@
           "file": "src/carnavalContent.js",
           "line": 253,
           "context": "property:title"
+        }
+      ]
+    },
+    {
+      "id": "text.bf92868f9292dbe9",
+      "sourceHash": "bf92868f9292dbe933359ac9408aac708b09f76ee2626e80d4654bbb32cc210c",
+      "template": "Resume carousel",
+      "lockedTokens": [],
+      "source": "Resume carousel",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
         }
       ]
     },
@@ -5710,8 +6069,8 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 38,
-          "context": "attribute:alt"
+          "line": 37,
+          "context": "property:alt"
         }
       ]
     },
@@ -6161,6 +6520,20 @@
       ]
     },
     {
+      "id": "text.e78b7201051bfa23",
+      "sourceHash": "e78b7201051bfa233caefc80be52f973412e718038a4d824dab26dd2593d50fa",
+      "template": "Slide {current} of {total}",
+      "lockedTokens": [],
+      "source": "Slide {current} of {total}",
+      "locations": [
+        {
+          "file": "src/i18n.jsx",
+          "line": 1,
+          "context": "i18n-key"
+        }
+      ]
+    },
+    {
       "id": "text.d989181c3d4514b9",
       "sourceHash": "d989181c3d4514b9095045ed055640921400c3fd6616a900884af474e324ee2d",
       "template": "Small premium group experience",
@@ -6251,6 +6624,20 @@
           "file": "src/App.jsx",
           "line": 896,
           "context": "jsx-text"
+        }
+      ]
+    },
+    {
+      "id": "text.fe0d69ebca0ef0ef",
+      "sourceHash": "fe0d69ebca0ef0ef5c61da2b850433c4cea8df2734fe583d3e2164a89b753b25",
+      "template": "Street Carnaval bloco in Belo Horizonte",
+      "lockedTokens": [],
+      "source": "Street Carnaval bloco in Belo Horizonte",
+      "locations": [
+        {
+          "file": "src/carnavalContent.js",
+          "line": 114,
+          "context": "property:alt"
         }
       ]
     },
@@ -6417,7 +6804,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 89,
+          "line": 245,
           "context": "array-option"
         }
       ]
@@ -6445,7 +6832,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 87,
+          "line": 243,
           "context": "array-option"
         }
       ]
@@ -6473,7 +6860,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 88,
+          "line": 244,
           "context": "array-option"
         }
       ]
@@ -6524,7 +6911,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 20,
+          "line": 21,
           "context": "property:answer"
         }
       ]
@@ -6908,7 +7295,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 166,
+          "line": 322,
           "context": "array-option"
         }
       ]
@@ -7104,7 +7491,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 87,
+          "line": 243,
           "context": "array-option"
         }
       ]
@@ -7188,7 +7575,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 19,
+          "line": 20,
           "context": "property:question"
         }
       ]
@@ -7515,7 +7902,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 12,
+          "line": 13,
           "context": "property:answer"
         }
       ]
@@ -7563,20 +7950,6 @@
       ]
     },
     {
-      "id": "text.e3888d2d53e1832a",
-      "sourceHash": "e3888d2d53e1832a073a2269736dabed241df3d15302e4535ba86bcb47c7688b",
-      "template": "Your application could not be stored. Please try again.",
-      "lockedTokens": [],
-      "source": "Your application could not be stored. Please try again.",
-      "locations": [
-        {
-          "file": "src/App.jsx",
-          "line": 377,
-          "context": "alert"
-        }
-      ]
-    },
-    {
       "id": "text.648c380980dbabf5",
       "sourceHash": "648c380980dbabf5318c665f09fe282fa1d30f3107b53e190173f0686eec18e0",
       "template": "Your Carnaval Experience, Thoughtfully Curated.",
@@ -7585,22 +7958,8 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 162,
+          "line": 318,
           "context": "jsx-text"
-        }
-      ]
-    },
-    {
-      "id": "text.68cd41eea11dc724",
-      "sourceHash": "68cd41eea11dc7246b0e9426ccd7682e51b23e12ad879c662b7f5c60ed2930aa",
-      "template": "Your details could not be saved. Please try again before opening WhatsApp.",
-      "lockedTokens": [],
-      "source": "Your details could not be saved. Please try again before opening WhatsApp.",
-      "locations": [
-        {
-          "file": "src/App.jsx",
-          "line": 292,
-          "context": "alert"
         }
       ]
     },
@@ -7627,7 +7986,7 @@
       "locations": [
         {
           "file": "src/CarnavalLanding.jsx",
-          "line": 169,
+          "line": 325,
           "context": "array-option"
         }
       ]

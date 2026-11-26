@@ -7,7 +7,7 @@ import CarnavalLanding from './CarnavalLanding.jsx'
 import CarnavalPackagePage from './CarnavalPackagePage.jsx'
 import UnsubscribePage from './UnsubscribePage.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { I18nProvider } from './i18n.jsx'
+import { I18nProvider, TranslationDisclosure } from './i18n.jsx'
 import { RouteLanguageControl } from './LanguageSelector.jsx'
 import './index.css' // 👈 ESSA LINHA É O SEGREDO
 
@@ -26,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/carnaval/rio-minas" element={<CarnavalPackagePage packageId="rio-minas" />} />
           <Route path="/unsubscribe" element={<UnsubscribePage />} />
         </Routes>
+        <TranslationDisclosure />
       </BrowserRouter>
     </I18nProvider>
   </React.StrictMode>

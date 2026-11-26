@@ -52,7 +52,7 @@ function CarnavalMenuCta({ mobile = false, onClick }) {
   )
 }
 export default function App() {
-  const { t } = useI18n()
+  const { t, translateSource } = useI18n()
   const visualReviewMode = new URLSearchParams(window.location.search).has('visualReview')
   const [loading, setLoading] = useState(false)
   const [whatsAppLeadLoading, setWhatsAppLeadLoading] = useState(false)
@@ -258,7 +258,7 @@ Luxury Travel Experiences`
     } = whatsAppLeadForm
 
     if (!fullName || !email || !countryOfResidence) {
-      alert('Please fill in your details')
+      alert(translateSource('Please fill in your details'))
       return
     }
 
@@ -289,7 +289,7 @@ Luxury Travel Experiences`
       }
     } catch (error) {
       console.error('WhatsApp consultation lead could not be saved:', error)
-      alert('Your details could not be saved. Please try again before opening WhatsApp.')
+      alert(translateSource('Your details could not be saved. Please try again before opening WhatsApp.'))
       setWhatsAppLeadLoading(false)
       return
     }
@@ -316,7 +316,7 @@ Luxury Travel Experiences`
     } = applicationForm
 
     if (!fullName || !email || !whatsapp) {
-      alert('Please fill in your details')
+      alert(translateSource('Please fill in your details'))
       return
     }
 
@@ -374,7 +374,7 @@ Luxury Travel Experiences`
       }
     } catch (error) {
       console.error('Luxury application could not be saved:', error)
-      alert('Your application could not be stored. Please try again.')
+      alert(translateSource('Your application could not be stored. Please try again.'))
       setLoading(false)
       return
     }

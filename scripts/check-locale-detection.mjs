@@ -5,11 +5,11 @@ import { resolveLocale } from '../src/locales/detection.js'
 const cases = [
   [{ browserLanguages: ['en-AU'], country: 'AU' }, 'en-AU'],
   [{ browserLanguages: ['en'], country: 'NZ' }, 'en-NZ'],
-  [{ browserLanguages: ['zh-CN', 'en-AU'], country: 'AU' }, 'en-AU'],
+  [{ browserLanguages: ['zh-CN', 'en-AU'], country: 'AU' }, 'zh-Hans'],
   [{ browserLanguages: ['vi-VN', 'en-AU'], country: 'AU' }, 'en-AU'],
-  [{ browserLanguages: ['pt-BR', 'en'], country: 'BR' }, 'en-AU'],
-  [{ browserLanguages: ['en'], country: 'BR', saved: 'es' }, 'en-AU'],
-  [{ browserLanguages: ['ar-SA'], country: 'AU' }, 'en-AU'],
+  [{ browserLanguages: ['pt-BR', 'en'], country: 'BR' }, 'pt-BR'],
+  [{ browserLanguages: ['en'], country: 'BR', saved: 'es' }, 'es'],
+  [{ browserLanguages: ['ar-SA'], country: 'AU' }, 'ar'],
   [{ browserLanguages: ['fa-IR'], country: 'NZ' }, 'en-NZ'],
 ]
 

@@ -9,5 +9,10 @@ npm run images:carnaval
 Do not place original photographs here and do not edit generated variants manually. Approved originals belong in `assets/carnaval-originals/`.
 
 The Carnaval Collection pages use these generated variants through the explicit
-mapping in `src/carnavalContent.js`. Review all responsive crops whenever an
-approved source image or focal point changes.
+mapping in `src/carnavalContent.js` and the hero carousel in
+`src/CarnavalLanding.jsx`. Review all responsive crops whenever an approved
+source image or focal point changes.
+
+Provenance for the four owner-supplied ChatGPT-generated hero images is recorded
+in `docs/CARNAVAL_IMAGE_PROVENANCE.md`. Treat those scenes as illustrative, not
+as documentary photographs or confirmed suppliers.

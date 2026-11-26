@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { localeByCode, localeCatalog, rtlLocales } from './locales/catalog'
 import { normaliseLocale, resolveLocale } from './locales/detection'
 
@@ -16,6 +17,14 @@ const copy = {
     'language.selected': 'Selected language',
     'language.search': 'Search languages',
     'language.noResults': 'No languages found',
+    'translation.notice': 'Machine translation is provided for information only. English remains authoritative for legal and contractual terms.',
+    'carousel.region': 'Carnaval Collection 2027 image carousel',
+    'carousel.pause': 'Pause carousel',
+    'carousel.resume': 'Resume carousel',
+    'carousel.previous': 'Previous slide',
+    'carousel.next': 'Next slide',
+    'carousel.slide': 'Slide {current} of {total}',
+    'image.aiDisclosure': 'Illustrative imagery generated with ChatGPT for Curated Brazil Travel; scenes are not documentary photographs or confirmed suppliers.',
     'nav.journey': 'Journey',
     'nav.apply': 'Apply',
     'nav.start': 'Start Your Journey',
@@ -87,6 +96,14 @@ const copy = {
     'language.selected': 'Idioma selecionado',
     'language.search': 'Buscar idiomas',
     'language.noResults': 'Nenhum idioma encontrado',
+    'translation.notice': 'A tradução automática é fornecida apenas para fins informativos. O inglês continua sendo a versão oficial para termos jurídicos e contratuais.',
+    'carousel.region': 'Carrossel de imagens da Carnaval Collection 2027',
+    'carousel.pause': 'Pausar carrossel',
+    'carousel.resume': 'Retomar carrossel',
+    'carousel.previous': 'Slide anterior',
+    'carousel.next': 'Próximo slide',
+    'carousel.slide': 'Slide {current} de {total}',
+    'image.aiDisclosure': 'Imagens ilustrativas geradas com o ChatGPT para a Curated Brazil Travel; as cenas não são fotografias documentais nem fornecedores confirmados.',
     'nav.journey': 'Jornada',
     'nav.apply': 'Inscreva-se',
     'nav.start': 'Comece sua jornada',
@@ -158,6 +175,14 @@ const copy = {
     'language.selected': 'Idioma seleccionado',
     'language.search': 'Buscar idiomas',
     'language.noResults': 'No se encontraron idiomas',
+    'translation.notice': 'La traducción automática se proporciona solo con fines informativos. El inglés sigue siendo la versión oficial para los términos legales y contractuales.',
+    'carousel.region': 'Carrusel de imágenes de Carnaval Collection 2027',
+    'carousel.pause': 'Pausar carrusel',
+    'carousel.resume': 'Reanudar carrusel',
+    'carousel.previous': 'Diapositiva anterior',
+    'carousel.next': 'Diapositiva siguiente',
+    'carousel.slide': 'Diapositiva {current} de {total}',
+    'image.aiDisclosure': 'Imágenes ilustrativas generadas con ChatGPT para Curated Brazil Travel; las escenas no son fotografías documentales ni proveedores confirmados.',
     'nav.journey': 'Viaje',
     'nav.apply': 'Solicitud',
     'nav.start': 'Comienza tu viaje',
@@ -225,9 +250,18 @@ const copy = {
 
 export const translationResources = { ...copy }
 
+const generatedLocaleLoaders = import.meta.glob('./locales/generated/*.json', { import: 'default' })
+
 async function loadLocaleResource(locale) {
-  const { reviewResources } = await import('./locales/reviewResources')
-  return reviewResources[locale] || null
+  const loader = generatedLocaleLoaders[`./locales/generated/${locale}.json`]
+  if (!loader) return null
+  const payload = await loader()
+  if (!payload?.complete) return null
+  return {
+    ...payload.interface,
+    __complete: true,
+    __sourceTranslations: payload.sourceTranslations || {},
+  }
 }
 
 const I18nContext = createContext(null)
@@ -306,7 +340,7 @@ export function I18nProvider({ children }) {
   useEffect(() => {
     if (!locale) return undefined
     const contentLocale = localeByCode[locale]?.contentLocale || locale
-    if (resources[contentLocale]) return undefined
+    if (contentLocale === 'en-AU' || resources[contentLocale]?.__complete) return undefined
 
     let active = true
     loadLocaleResource(contentLocale).then((resource) => {
@@ -314,6 +348,87 @@ export function I18nProvider({ children }) {
     })
     return () => { active = false }
   }, [locale, resources])
+
+  const contentLocale = localeByCode[locale]?.contentLocale || locale
+  const activeResource = resources[contentLocale] || resources[locale] || {}
+  const sourceTranslations = activeResource.__sourceTranslations || {}
+
+  useEffect(() => {
+    if (!locale || contentLocale === 'en-AU' || window.location.pathname.startsWith('/workspace')) return undefined
+    if (!Object.keys(sourceTranslations).length) return undefined
+
+    const textRecords = new Map()
+    const attributeRecords = new Map()
+    const translatableAttributes = ['alt', 'aria-label', 'placeholder', 'title']
+    const normalise = (value) => value.replace(/\s+/g, ' ').trim()
+    const isExcluded = (node) => node.parentElement?.closest('script, style, [data-no-public-i18n]')
+
+    const translateTextNode = (node) => {
+      if (!node?.nodeValue || isExcluded(node)) return
+      const source = normalise(node.nodeValue)
+      const translated = sourceTranslations[source]
+      if (!translated || translated === source) return
+      if (!textRecords.has(node)) textRecords.set(node, node.nodeValue)
+      const leading = node.nodeValue.match(/^\s*/u)?.[0] || ''
+      const trailing = node.nodeValue.match(/\s*$/u)?.[0] || ''
+      node.nodeValue = `${leading}${translated}${trailing}`
+    }
+
+    const translateAttributes = (element) => {
+      if (!(element instanceof Element) || element.closest('script, style, [data-no-public-i18n]')) return
+      for (const attribute of translatableAttributes) {
+        const value = element.getAttribute(attribute)
+        const translated = value && sourceTranslations[normalise(value)]
+        if (!translated || translated === value) continue
+        const key = `${attribute}`
+        if (!attributeRecords.has(element)) attributeRecords.set(element, new Map())
+        const records = attributeRecords.get(element)
+        if (!records.has(key)) records.set(key, value)
+        element.setAttribute(attribute, translated)
+      }
+    }
+
+    const translateTree = (root) => {
+      if (root.nodeType === Node.TEXT_NODE) {
+        translateTextNode(root)
+        return
+      }
+      if (!(root instanceof Element)) return
+      translateAttributes(root)
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT)
+      let node = walker.nextNode()
+      while (node) {
+        if (node.nodeType === Node.TEXT_NODE) translateTextNode(node)
+        else translateAttributes(node)
+        node = walker.nextNode()
+      }
+    }
+
+    translateTree(document.body)
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'characterData') translateTextNode(mutation.target)
+        if (mutation.type === 'attributes') translateAttributes(mutation.target)
+        for (const node of mutation.addedNodes) translateTree(node)
+      }
+    })
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: translatableAttributes,
+    })
+
+    return () => {
+      observer.disconnect()
+      for (const [node, value] of textRecords) if (node.isConnected) node.nodeValue = value
+      for (const [element, records] of attributeRecords) {
+        if (!element.isConnected) continue
+        for (const [attribute, value] of records) element.setAttribute(attribute, value)
+      }
+    }
+  }, [contentLocale, locale, sourceTranslations])
 
   useEffect(() => {
     if (!locale) return
@@ -334,8 +449,13 @@ export function I18nProvider({ children }) {
     )
   }, [locale, resources])
 
+  const translateSource = useCallback((source) => sourceTranslations[source] || source, [sourceTranslations])
+
   const localeMeta = localeByCode[locale] || localeCatalog[0]
-  const value = useMemo(() => ({ locale, localeMeta, setLocale, t, supportedLocales }), [locale, localeMeta, setLocale, t])
+  const value = useMemo(
+    () => ({ locale, localeMeta, setLocale, t, translateSource, supportedLocales }),
+    [locale, localeMeta, setLocale, t, translateSource],
+  )
 
   if (!locale) return <div className="i18n-boot" aria-busy="true" aria-label="Loading language preferences" />
 
@@ -350,4 +470,15 @@ export function useI18n() {
   const value = useContext(I18nContext)
   if (!value) throw new Error('useI18n must be used inside I18nProvider')
   return value
+}
+
+export function TranslationDisclosure() {
+  const { pathname } = useLocation()
+  const { locale, t } = useI18n()
+  if (locale.startsWith('en-') || pathname.startsWith('/workspace')) return null
+  return (
+    <aside className="translation-disclosure" role="note">
+      {t('translation.notice')}
+    </aside>
+  )
 }

@@ -12,7 +12,7 @@ const sourceRoot = path.join(root, 'src')
 const outputPath = path.join(sourceRoot, 'locales', 'manifests', 'source.en-AU.json')
 
 const contentPropertyNames = new Set([
-  'answer', 'copy', 'description', 'eyebrow', 'heading', 'highlight', 'introduction',
+  'alt', 'answer', 'copy', 'description', 'eyebrow', 'heading', 'highlight', 'introduction',
   'label', 'message', 'name', 'note', 'question', 'subtitle', 'summary', 'tag', 'text', 'title',
 ])
 const translatableAttributes = new Set(['alt', 'aria-label', 'placeholder', 'title'])

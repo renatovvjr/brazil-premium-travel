@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Compass, Music2, ShieldCheck } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Compass, Music2, Pause, Play, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { carnavalCommercial, carnavalDestinationOrder, carnavalImageMap, carnavalPackages } from './carnavalContent'
-import { DestinationDiscovery, ResponsiveCarnavalImage } from './CarnavalDestinations'
+import { DestinationDiscovery } from './CarnavalDestinations'
 import { CarnavalFooter, CarnavalNav, ConsultationBlock, reveal, usePageTop } from './CarnavalShared'
 import { useI18n } from './i18n'
 
@@ -25,6 +26,157 @@ const faqs = [
   },
 ]
 
+const heroPath = (slug, size) => `/images/carnaval/${slug}--hero-${size}.webp`
+
+const carnavalHeroSlides = [
+  {
+    id: 'principal',
+    mobile: carnavalImageMap.collectionHero.mobile,
+    tablet: carnavalImageMap.collectionHero.desktop,
+    desktop: carnavalImageMap.collectionHero.desktop,
+    alt: 'Samba school performers in the Rio de Janeiro Sambódromo',
+    position: '62% center',
+    principal: true,
+  },
+  {
+    id: 'sambodromo',
+    mobile: heroPath('sambodromo-hero', 'mobile'),
+    tablet: heroPath('sambodromo-hero', 'tablet'),
+    desktop: heroPath('sambodromo-hero', 'desktop'),
+    alt: 'Panoramic night parade in a Brazilian Sambódromo',
+    position: 'center',
+  },
+  {
+    id: 'frevo',
+    mobile: heroPath('frevo-hero', 'mobile'),
+    tablet: heroPath('frevo-hero', 'tablet'),
+    desktop: heroPath('frevo-hero', 'desktop'),
+    alt: 'Frevo dancers with colourful umbrellas beside historic architecture',
+    position: 'center',
+  },
+  {
+    id: 'minas',
+    mobile: heroPath('carnaval-minas-hero', 'mobile'),
+    tablet: heroPath('carnaval-minas-hero', 'tablet'),
+    desktop: heroPath('carnaval-minas-hero', 'desktop'),
+    alt: 'Colourful street Carnaval celebration in Minas Gerais',
+    position: 'center',
+  },
+  {
+    id: 'hospitality',
+    mobile: heroPath('camarote-premium-hero', 'mobile'),
+    tablet: heroPath('camarote-premium-hero', 'tablet'),
+    desktop: heroPath('camarote-premium-hero', 'desktop'),
+    alt: 'Illustrative premium Carnaval hospitality scene with guests overlooking festivities',
+    position: 'center',
+  },
+]
+
+function CarnavalHeroCarousel() {
+  const { t } = useI18n()
+  const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
+  const [requested, setRequested] = useState(() => new Set([0, 1]))
+  const total = carnavalHeroSlides.length
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(media.matches)
+    update()
+    media.addEventListener?.('change', update)
+    return () => media.removeEventListener?.('change', update)
+  }, [])
+
+  useEffect(() => {
+    setRequested((existing) => new Set([...existing, current, (current + 1) % total]))
+  }, [current, total])
+
+  useEffect(() => {
+    if (paused || reducedMotion) return undefined
+    const timer = window.setInterval(() => setCurrent((index) => (index + 1) % total), 6000)
+    return () => window.clearInterval(timer)
+  }, [paused, reducedMotion, total])
+
+  const select = (index) => setCurrent((index + total) % total)
+  const previous = () => select(current - 1)
+  const next = () => select(current + 1)
+
+  return (
+    <div
+      className="absolute inset-0"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={t('carousel.region')}
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === 'ArrowLeft') previous()
+        if (event.key === 'ArrowRight') next()
+        if (event.key === 'Home') select(0)
+        if (event.key === 'End') select(total - 1)
+      }}
+    >
+      <div className="absolute inset-0 bg-[var(--color-deep-forest-strong)]">
+        {carnavalHeroSlides.map((slide, index) => requested.has(index) && (
+          <picture
+            key={slide.id}
+            className={`carnaval-hero-slide ${current === index ? 'is-active' : ''}`}
+            aria-hidden={current !== index}
+          >
+            <source media="(max-width: 767px)" srcSet={slide.mobile} />
+            <source media="(max-width: 1279px)" srcSet={slide.tablet} />
+            <img
+              src={slide.desktop}
+              alt={current === index ? slide.alt : ''}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchPriority={index === 0 ? 'high' : 'auto'}
+              className={`carnaval-hero-slide__image ${slide.principal ? 'carnaval-hero-slide__image--principal' : ''}`}
+              style={{ objectPosition: slide.position }}
+            />
+          </picture>
+        ))}
+      </div>
+      <div className="carnaval-hero-overlay absolute inset-0" />
+
+      {current > 0 && (
+        <p className="absolute left-4 right-4 top-20 z-20 mx-auto max-w-[22rem] rounded-full bg-[var(--color-deep-forest)]/55 px-3 py-1 text-center text-[10px] leading-4 text-white/80 shadow-lg backdrop-blur-sm [text-shadow:0_1px_8px_rgba(0,0,0,0.8)] md:bottom-2 md:top-auto md:max-w-none md:bg-transparent md:px-0 md:py-0 md:text-xs md:leading-5 md:shadow-none md:backdrop-blur-none" role="note">
+          {t('image.aiDisclosure')}
+        </p>
+      )}
+
+      <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/25 px-3 py-2.5 backdrop-blur-md md:bottom-8">
+        <button type="button" className="carnaval-carousel-control" onClick={previous} aria-label={t('carousel.previous')}>
+          <ChevronLeft size={16} aria-hidden="true" />
+        </button>
+        <div className="flex items-center gap-2" role="group" aria-label={t('carousel.region')}>
+          {carnavalHeroSlides.map((slide, index) => (
+            <button
+              key={slide.id}
+              type="button"
+              onClick={() => select(index)}
+              className={`h-2 rounded-full transition-all duration-500 ${current === index ? 'w-7 bg-[var(--color-luxury-gold)]' : 'w-2 bg-white/50 hover:bg-white/80'}`}
+              aria-label={t('carousel.slide', { current: index + 1, total })}
+              aria-current={current === index ? 'true' : undefined}
+            />
+          ))}
+        </div>
+        <button type="button" className="carnaval-carousel-control" onClick={next} aria-label={t('carousel.next')}>
+          <ChevronRight size={16} aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="carnaval-carousel-control"
+          onClick={() => setPaused((value) => !value)}
+          aria-label={t(paused ? 'carousel.resume' : 'carousel.pause')}
+          aria-pressed={paused}
+        >
+          {paused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function CarnavalLanding() {
   usePageTop()
   const { t } = useI18n()
@@ -33,21 +185,14 @@ export default function CarnavalLanding() {
     <div className="min-h-screen bg-[var(--color-warm-ivory)] text-[var(--color-deep-forest)]">
       <header className="relative min-h-[92vh] overflow-hidden bg-[var(--color-deep-forest-strong)] text-white">
         <CarnavalNav />
-        <ResponsiveCarnavalImage
-          image={carnavalImageMap.collectionHero}
-          alt="Samba school performers in the Rio de Janeiro Sambódromo"
-          className="absolute inset-0 h-full w-full object-cover object-[62%_center] opacity-95 brightness-[1.06] saturate-[1.12] md:object-center"
-          eager
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,39,30,0.94)_0%,rgba(0,39,30,0.72)_38%,rgba(0,56,43,0.20)_72%,rgba(0,56,43,0.05)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,39,30,0.20)_0%,transparent_48%,rgba(0,31,24,0.62)_100%),radial-gradient(circle_at_78%_22%,rgba(192,38,123,0.18),transparent_28%),radial-gradient(circle_at_68%_74%,rgba(215,184,102,0.13),transparent_30%)]" />
+        <CarnavalHeroCarousel />
 
         <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-7xl items-center px-5 pb-14 pt-28 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-[52rem] [text-shadow:0_3px_22px_rgba(0,0,0,0.42)] md:ml-[3vw] lg:ml-[4vw]"
+            className="carnaval-hero-content w-full max-w-[52rem] [text-shadow:0_3px_22px_rgba(0,0,0,0.42)] md:ml-[3vw] lg:ml-[4vw]"
           >
             <p className="text-sm font-semibold uppercase tracking-[0.32em] text-[var(--color-luxury-gold-soft)]">{t('carnaval.hero.eyebrow')}</p>
             <h1 className="mt-6 max-w-[50rem] text-5xl font-semibold leading-[1.02] tracking-[-0.04em] text-balance md:text-7xl lg:text-[5.5rem]">
