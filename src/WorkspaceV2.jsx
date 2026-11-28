@@ -4,6 +4,7 @@ import { BarChart3, BookOpen, Building2, CalendarRange, LogOut, Megaphone, Messa
 import { workspaceSupabase as supabase } from './lib/workspaceSupabase'
 import { WORKSPACE_LEAD_STATUSES, canConfirmBooking, isWorkspaceAdmin, normalizePhone, normalizeSegmentTag } from './lib/workspaceDomain'
 import Drawer, { DrawerActions, useDrawerAction, useDrawerDraft, useWorkspaceDialogCopy } from './WorkspaceDrawer'
+import { EnquiryDetails, EnquirySummary, enquiryFormTypes, useEnquiryPresentation } from './WorkspaceEnquiries'
 
 const money = (minor = 0, currency = 'AUD') => new Intl.NumberFormat('en-AU', { style: 'currency', currency }).format(Number(minor) / 100)
 const date = (value) => value ? new Intl.DateTimeFormat('en-AU', {
@@ -12,7 +13,7 @@ const date = (value) => value ? new Intl.DateTimeFormat('en-AU', {
 const title = (value) => String(value || '').replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
 
 const emptyData = {
-  products: [], departures: [], offers: [], customers: [], contacts: [], leads: [], interactions: [], proposals: [],
+  products: [], departures: [], offers: [], customers: [], contacts: [], leads: [], enquiries: [], interactions: [], proposals: [],
   bookings: [], passengers: [], finances: [], payments: [], refunds: [], priceSnapshots: [], agencies: [], commissions: [],
   consent: [], tags: [], marketingEligibility: [], campaigns: [], suppressions: [],
 }
@@ -75,7 +76,8 @@ export default function WorkspaceV2() {
       ['offers', 'workspace_offers', 'id, departure_id, code, currency, price_minor, pricing_basis, valid_from, valid_until, status'],
       ['customers', 'crm_customers', 'id, display_name, country_of_residence, city, lifecycle_status, created_at'],
       ['contacts', 'crm_customer_contact_points', 'id, customer_id, kind, value, is_primary, active'],
-      ['leads', 'crm_leads', 'id, customer_id, product_id, departure_id, agency_partner_id, marketing_campaign_id, source, campaign, status, assigned_admin_id, follow_up_at, utm_source, utm_medium, utm_term, utm_content, referrer, created_at'],
+      ['leads', 'crm_leads', 'id, customer_id, product_id, submission_id, departure_id, agency_partner_id, marketing_campaign_id, source, campaign, status, assigned_admin_id, follow_up_at, utm_source, utm_medium, utm_term, utm_content, referrer, created_at'],
+      ['enquiries', 'workspace_form_submissions', 'id, reference, form_type, customer_id, product_id, received_at, submitted_name:payload->>fullName, submitted_email:payload->>email'],
       ['interactions', 'crm_interactions', 'id, customer_id, lead_id, interaction_type, occurred_at, summary, created_at'],
       ['proposals', 'workspace_proposals', 'id, reference, lead_id, product_id, departure_id, offer_id, status, currency, quoted_price_minor, passenger_count, valid_until, notes, sent_at, accepted_at, created_at'],
       ['bookings', 'workspace_bookings', 'id, reference, customer_id, lead_id, product_id, departure_id, agency_partner_id, accepted_proposal_id, status, currency, agreed_price_minor, passenger_count, booked_at, cancelled_at, cancellation_reason, created_at'],
@@ -132,7 +134,7 @@ export default function WorkspaceV2() {
     <div className="mx-auto max-w-[1500px] px-6 py-7">
       <nav className="mb-7 flex flex-wrap gap-2">{tabs.map(([id, label, Icon]) => <button key={id} onClick={() => setTab(id)} className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-wider ${tab === id ? 'bg-[var(--color-deep-forest)] text-white' : 'border border-[var(--color-luxury-gold)]/30 bg-white text-zinc-600'}`}><Icon size={15}/>{label}</button>)}</nav>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        {tab !== 'dashboard' && <label className="relative min-w-72"><Search className="absolute left-4 top-3.5 text-zinc-400" size={16}/><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search records" className="field pl-11"/></label>}
+        {tab !== 'dashboard' && <label className="relative w-full sm:w-auto sm:min-w-72"><Search className="absolute start-4 top-3.5 text-zinc-400" size={16}/><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search records" className="field ps-11"/></label>}
         <button onClick={load} disabled={loading} className="ml-auto inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#8b6a21]"><RefreshCw size={14}/>{loading ? 'Loading…' : 'Refresh'}</button>
       </div>
       {error && <div className="mb-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">Workspace data is unavailable: {error}</div>}
@@ -214,12 +216,24 @@ function Dashboard({ data }) {
 function Leads({ data, search, open }) {
   const [stage, setStage] = useState('')
   const [product, setProduct] = useState('')
-  const rows = data.leads.filter((lead) => {
-    const contacts = data.contacts.filter((contact) => contact.active && contact.customer_id === lead.customer_id)
-    return (!stage || stage === lead.status) && (!product || product === lead.product_id) &&
-      includes(search, byId(data.customers, lead.customer_id)?.display_name, byId(data.products, lead.product_id)?.name,
-        lead.source, lead.campaign, ...contacts.map((contact) => contact.value))
-  }).sort((a, b) => b.created_at.localeCompare(a.created_at))
+  const [formType, setFormType] = useState('')
+  const presentation = useEnquiryPresentation()
+  const { copy } = presentation
+  const enquiries = new Map(data.enquiries.map((item) => [item.id, item]))
+  const rows = data.leads.map((lead) => ({
+    lead, enquiry: enquiries.get(lead.submission_id),
+    customerName: byId(data.customers, lead.customer_id)?.display_name,
+    productName: byId(data.products, lead.product_id)?.name,
+  })).filter(({ lead, enquiry, customerName, productName }) => (
+    (!stage || stage === lead.status) && (!product || product === lead.product_id) &&
+    (!formType || formType === enquiry?.form_type) &&
+    (includes(search, customerName, productName, lead.source, lead.campaign,
+      enquiry?.reference, enquiry?.submitted_name, enquiry?.submitted_email) ||
+      data.contacts.some((contact) => contact.active && contact.customer_id === lead.customer_id && includes(search, contact.value)))
+  )).sort((a, b) => newestFirst(a.enquiry?.received_at || a.lead.created_at, b.enquiry?.received_at || b.lead.created_at))
+  const header = 'px-4 py-3 text-start text-xs font-semibold uppercase tracking-wider'
+  const cell = 'min-w-0 lg:px-4 lg:py-4'
+
   return <div className="space-y-4">
     <div className="flex flex-wrap gap-3">
       <select className="field !w-auto" aria-label="Lead stage" value={stage} onChange={(e) => setStage(e.target.value)}>
@@ -228,8 +242,41 @@ function Leads({ data, search, open }) {
       <select className="field !w-auto" aria-label="Lead product" value={product} onChange={(e) => setProduct(e.target.value)}>
         <option value="">All products</option>{data.products.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
       </select>
+      <select className="field !w-auto max-w-full" aria-label={copy.formType} value={formType} onChange={(e) => setFormType(e.target.value)}>
+        <option value="">{copy.allFormTypes}</option>
+        {enquiryFormTypes.map((type) => <option key={type} value={type}>{copy[type]}</option>)}
+      </select>
     </div>
-    <Table heads={['Customer', 'Product', 'Source / campaign', 'Stage', 'Follow-up', '']} rows={rows.map((lead) => [byId(data.customers, lead.customer_id)?.display_name, byId(data.products, lead.product_id)?.name, [lead.source, lead.campaign].filter(Boolean).join(' / ') || '—', title(lead.status), date(lead.follow_up_at), <button onClick={() => open(lead.id)} className="table-action">Open</button>])}/>
+    <div className="overflow-hidden rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white">
+      <table className="block w-full text-sm lg:table">
+        <thead className="sr-only bg-[var(--color-deep-forest)] text-[#f1d991] lg:not-sr-only lg:table-header-group">
+          <tr>{[copy.customer, copy.enquiry, copy.productAndSource, copy.stage, copy.openLead].map((label, index) =>
+            <th key={label} scope="col" className={header}>{index === 4 ? <span className="sr-only">{label}</span> : label}</th>)}</tr>
+        </thead>
+        <tbody className="block divide-y divide-zinc-100 lg:table-row-group">
+          {rows.map(({ lead, enquiry, customerName, productName }) => <tr key={lead.id}
+            className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-2 p-4 align-top lg:table-row">
+            <td className={cell}><bdi className="break-words font-semibold">{customerName || '—'}</bdi></td>
+            <td className={`${cell} col-span-2`}>{enquiry
+              ? <EnquirySummary enquiry={enquiry} canonicalName={customerName} presentation={presentation}/>
+              : <span className="text-zinc-500">—</span>}</td>
+            <td className={`${cell} col-span-2`}>
+              <p className="break-words font-medium"><bdi>{productName || '—'}</bdi></p>
+              {leadOrigin(lead) && <p className="mt-0.5 break-words text-xs text-zinc-600"><bdi>{leadOrigin(lead)}</bdi></p>}
+            </td>
+            <td className={`${cell} col-span-2`}>
+              <span className="inline-block rounded-full bg-[#f7f5ef] px-2.5 py-0.5 text-xs font-semibold">{title(lead.status)}</span>
+              <p className="mt-1 text-xs text-zinc-600">{copy.followUp} <span className="ms-1">{date(lead.follow_up_at)}</span></p>
+            </td>
+            <td className={`${cell} col-start-2 row-start-1 text-end max-lg:max-w-32`}>
+              <button type="button" onClick={() => open(lead.id)} className="table-action min-h-9"
+                aria-label={enquiry ? `${copy.openLead} ${enquiry.reference}` : undefined}>{copy.openLead}</button>
+            </td>
+          </tr>)}
+        </tbody>
+      </table>
+      {!rows.length && <p className="p-6 text-zinc-500">{copy.noRecords}</p>}
+    </div>
   </div>
 }
 
@@ -277,9 +324,29 @@ function Customers({ data, search, reload }) {
 }
 
 function CustomerPanel({ customer, data, reload, close }) {
+  const presentation = useEnquiryPresentation()
+  const { copy } = presentation
   const contacts = data.contacts.filter((contact) => contact.customer_id === customer.id && contact.active)
   const bookings = data.bookings.filter((booking) => booking.customer_id === customer.id)
-  const history = data.interactions.filter((item) => item.customer_id === customer.id).sort((a, b) => b.occurred_at.localeCompare(a.occurred_at))
+  const enquiries = data.enquiries.filter((item) => item.customer_id === customer.id)
+  const enquiryById = new Map(enquiries.map((item) => [item.id, item]))
+  const associated = data.leads.filter((lead) => lead.customer_id === customer.id)
+    .map((lead) => ({ lead, enquiry: enquiryById.get(lead.submission_id) }))
+    .sort((a, b) => newestFirst(a.enquiry?.received_at || a.lead.created_at, b.enquiry?.received_at || b.lead.created_at))
+  const history = [
+    ...data.interactions.filter((item) => item.customer_id === customer.id).map((item) => ({
+      at: item.occurred_at,
+      content: <span key={item.id}>{title(item.interaction_type)} · {date(item.occurred_at)} · {item.summary}</span>,
+    })),
+    ...enquiries.map((enquiry) => ({
+      at: enquiry.received_at,
+      content: <div key={enquiry.id} className="space-y-1">
+        <EnquirySummary enquiry={enquiry} canonicalName={customer.display_name} presentation={presentation}/>
+        <p className="font-medium"><bdi>{byId(data.products, enquiry.product_id)?.name || '—'}</bdi></p>
+        <EnquiryDetails enquiryId={enquiry.id} copy={copy}/>
+      </div>,
+    })),
+  ].sort((a, b) => newestFirst(a.at, b.at))
   const bookingIds = new Set(bookings.map((booking) => booking.id))
   return <Drawer title={customer.display_name} subtitle="Customer profile" close={close}>
     <RecordEditor record={customer} table="crm_customers" fields={[
@@ -294,14 +361,25 @@ function CustomerPanel({ customer, data, reload, close }) {
       if (!normalized || (record.kind === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized))) throw new Error('Enter a valid contact.')
       return { ...record, customer_id: customer.id, normalized_value: normalized, is_primary: !contacts.some((contact) => contact.kind === record.kind) }
     }}/>
-    <History title="Associated leads" rows={data.leads.filter((lead) => lead.customer_id === customer.id).map((lead) => `${byId(data.products, lead.product_id)?.name} · ${title(lead.status)} · ${date(lead.created_at)}`)}/>
+    <History title={copy.associatedLeads} empty={copy.noRecords} rows={associated.map(({ lead, enquiry }) =>
+      <div key={lead.id} className="space-y-1">
+        <p className="font-semibold"><bdi>{byId(data.products, lead.product_id)?.name || '—'}</bdi></p>
+        {enquiry
+          ? <EnquirySummary enquiry={enquiry} canonicalName={customer.display_name} presentation={presentation}/>
+          : <p className="text-xs text-zinc-600">{date(lead.created_at)}</p>}
+        <p className="text-xs text-zinc-600">
+          <bdi>{[title(lead.status), leadOrigin(lead)].filter(Boolean).join(' · ')}</bdi>
+          <span className="ms-2">{copy.followUp} <span className="ms-1">{date(lead.follow_up_at)}</span></span>
+        </p>
+        {enquiry && <EnquiryDetails enquiryId={enquiry.id} copy={copy}/>}
+      </div>)}/>
     <History title="Bookings" rows={bookings.map((booking) => `${booking.reference} · ${title(booking.status)} · ${money(booking.agreed_price_minor, booking.currency)}`)}/>
     <History title="Payments and refunds" rows={[
       ...data.payments.filter((item) => bookingIds.has(item.booking_id)).map((item) => `${item.reference} · ${money(item.amount_minor, item.currency)} · ${title(item.status)} · ${date(item.received_at || item.due_on || item.created_at)}`),
       ...data.refunds.filter((item) => bookingIds.has(item.booking_id)).map((item) => `Refund ${item.reference} · ${money(item.amount_minor, item.currency)} · ${title(item.status)}`),
     ]}/>
     <History title="Marketing consent" rows={data.consent.filter((event) => event.customer_id === customer.id).sort((a, b) => b.occurred_at.localeCompare(a.occurred_at)).map((event) => `${title(event.channel)} · ${title(event.action)} · ${date(event.occurred_at)}`)}/>
-    <History title="Communication history and internal notes" rows={history.map((item) => `${title(item.interaction_type)} · ${date(item.occurred_at)} · ${item.summary}`)}/>
+    <History title={copy.history} empty={copy.noRecords} rows={history.map((item) => item.content)}/>
     <RecordEditor table="crm_interactions" fields={[
       ['interaction_type', 'Interaction type', ['note', 'email', 'phone', 'whatsapp', 'meeting']], ['summary', 'Details', 'long'],
     ]} defaults={{ interaction_type: 'note' }} reload={reload} saveLabel="Log interaction" transform={(record) => {
@@ -311,11 +389,11 @@ function CustomerPanel({ customer, data, reload, close }) {
   </Drawer>
 }
 
-function History({ title: heading, rows }) {
+function History({ title: heading, rows, empty = 'No records.' }) {
   return <section className="mt-6">
     <h3 className="font-semibold">{heading}</h3>
-    {rows.length ? <ul className="mt-2 space-y-2">{rows.map((row, index) => <li key={index} className="whitespace-pre-wrap break-words rounded-xl bg-[#f7f5ef] p-3 text-sm">{row}</li>)}</ul>
-      : <p className="mt-2 text-sm text-zinc-500">No records.</p>}
+    {rows.length ? <ul className="mt-2 space-y-2">{rows.map((row, index) => <li key={row?.key ?? index} className="whitespace-pre-wrap break-words rounded-xl bg-[#f7f5ef] p-3 text-sm">{row}</li>)}</ul>
+      : <p className="mt-2 text-sm text-zinc-500">{empty}</p>}
   </section>
 }
 
@@ -582,7 +660,15 @@ function Marketing({ data, search, reload }) {
 
 function LeadPanel({ lead, data, close, ...props }) {
   const customer = byId(data.customers, lead.customer_id)
+  const enquiry = byId(data.enquiries, lead.submission_id)
+  const presentation = useEnquiryPresentation()
+  const { copy } = presentation
   return <Drawer title={customer?.display_name} subtitle={byId(data.products,lead.product_id)?.name} close={close}>
+    {enquiry && <section className="rounded-2xl border border-[var(--color-luxury-gold)]/30 bg-[#f7f5ef] p-4 text-sm">
+      <h3 className="mb-2 font-semibold">{copy.enquiry}</h3>
+      <EnquirySummary enquiry={enquiry} canonicalName={customer?.display_name} presentation={presentation}/>
+      <EnquiryDetails enquiryId={enquiry.id} copy={copy}/>
+    </section>}
     <LeadPanelContent lead={lead} data={data} {...props}/>
   </Drawer>
 }
@@ -723,6 +809,8 @@ function BookingPanelContent({ booking, data, reload }) {
 
 const byId=(items,id)=>items.find((item)=>item.id===id)
 const includes=(term,...values)=>!term||values.some((value)=>String(value||'').toLowerCase().includes(term.toLowerCase()))
+const leadOrigin = (lead) => [lead.source, lead.campaign].filter(Boolean).join(' / ')
+const newestFirst = (a, b) => Date.parse(b) - Date.parse(a)
 const Card=({children})=><div className="rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white p-6 shadow-[0_18px_55px_rgba(24,24,27,.06)]">{children}</div>
 const Metric=({label,value})=><div className="rounded-2xl bg-[#f7f5ef] p-4"><p className="eyebrow">{label}</p><p className="mt-2 text-xl font-semibold">{value}</p></div>
 function Table({heads,rows}){return <div className="overflow-hidden rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white"><div className="overflow-x-auto"><table className="min-w-full text-sm"><thead className="bg-[var(--color-deep-forest)] text-left text-xs uppercase tracking-wider text-[#f1d991]"><tr>{heads.map((head)=><th key={head} className="px-5 py-4">{head}</th>)}</tr></thead><tbody className="divide-y divide-zinc-100">{rows.map((cells,index)=><tr key={index}>{cells.map((cell,i)=><td key={i} className="px-5 py-4">{cell??'—'}</td>)}</tr>)}</tbody></table></div>{!rows.length&&<p className="p-6 text-zinc-500">No matching records.</p>}</div>}
