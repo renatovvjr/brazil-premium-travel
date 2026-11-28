@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto'
 import { sanitizeAttribution, validateIntake } from '../../src/lib/workspaceDomain.js'
+import { localeByCode } from '../../src/locales/catalog.js'
 
 const stable = (value) => {
   if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`
@@ -19,10 +20,11 @@ export async function processIntake({ body, idempotencyKey, requestContext = {},
   }
   const validated = validateIntake(body)
   const attribution = sanitizeAttribution(body.attribution)
+  const locale = typeof body.locale === 'string' && Object.hasOwn(localeByCode, body.locale) && localeByCode[body.locale].selectable ? body.locale : null
   const requestHash = hashRequest({ ...validated, attribution })
   const result = await repository.persist({
     ...validated,
-    attribution,
+    attribution: locale ? { ...attribution, locale } : attribution,
     idempotencyKey,
     requestHash,
     requestContext,

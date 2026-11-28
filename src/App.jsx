@@ -93,6 +93,13 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    const anchor = window.location.hash.slice(1)
+    if (anchor !== 'signature' && anchor !== 'all-inclusive') return
+    const frame = window.requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView())
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
+
   const destinations = [
     { title: 'São Paulo', text: 'Luxury arrival and green spaces.', image: '/images/sao_paulo.webp' },
     { title: 'Amazon', text: 'Rainforest immersion.', image: '/images/amazonia.webp' },
@@ -709,6 +716,7 @@ I would love to receive more information about the experience.`
               return (
                 <motion.article
                   key={experience.id}
+                  id={experience.id}
                   className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-xl transition duration-700 hover:-translate-y-2 hover:border-[var(--color-luxury-gold)]/55 hover:bg-white/[0.075] hover:shadow-[0_36px_110px_rgba(0,0,0,0.46)] md:p-6 lg:p-7"
                   initial={{ opacity: 0, y: 34 }}
                   whileInView={{ opacity: 1, y: 0 }}

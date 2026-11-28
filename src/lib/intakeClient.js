@@ -43,7 +43,7 @@ export async function submitIntake(formType, productCode, data, form) {
     const response = await fetch('/api/intake', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Idempotency-Key': getKey(fingerprint) },
-      body: JSON.stringify({ ...payload, captchaToken }),
+      body: JSON.stringify({ ...payload, locale: document.documentElement.lang, captchaToken }),
     })
     const result = await response.json().catch(() => ({}))
     if (!response.ok || !result.submissionReference) {

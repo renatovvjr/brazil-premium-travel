@@ -1,33 +1,30 @@
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
+import { CONTACT, escapeHtml, renderEnquiryEmail } from './_lib/transactionalEmail.js'
 
-const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
-})[character])
-
-const render = (event) => {
+const renderBooking = (event) => {
   const data = event.payload || {}
   const name = escapeHtml(data.fullName || 'Traveller')
-  if (event.template_key === 'booking_confirmation') {
-    return {
-      to: data.email,
-      subject: 'Your Curated Brazil booking is confirmed',
-      html: `<p>Dear ${name},</p><p>We have confirmed your booking <strong>${escapeHtml(data.reference)}</strong>. Our team will be in touch with your travel details.</p>`,
-    }
-  }
-  const product = escapeHtml(event.template_key.replaceAll('_', ' '))
-  if (event.recipient_kind === 'customer') {
-    return {
-      to: data.email,
-      subject: 'We received your Curated Brazil enquiry',
-      html: `<p>Dear ${name},</p><p>Thank you for contacting Curated Brazil Travel. Your ${product} enquiry has been securely received and our team will be in touch.</p>`,
-    }
-  }
   return {
-    to: process.env.APPLICATION_TO_EMAIL || 'hello@curatedbraziltravel.com',
-    subject: `New ${product} enquiry`,
-    html: `<p>A new product-linked enquiry has been stored.</p><p><strong>Name:</strong> ${name}<br><strong>Email:</strong> ${escapeHtml(data.email)}<br><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>`,
+    to: data.email,
+    subject: 'Your Curated Brazil booking is confirmed',
+    html: `<p>Dear ${name},</p><p>We have confirmed your booking <strong>${escapeHtml(data.reference)}</strong>. Our team will be in touch with your travel details.</p>`,
   }
+}
+
+async function loadEnquiryMetadata(supabase, events) {
+  const ids = [...new Set(events.filter((event) => event.template_key !== 'booking_confirmation')
+    .map((event) => event.submission_id).filter(Boolean))]
+  if (!ids.length) return new Map()
+  try {
+    const { data, error } = await supabase.from('workspace_form_submissions')
+      .select('id,reference,form_type,received_at,attribution,product:workspace_products(code,name),departure:workspace_departures(code,starts_on,ends_on)')
+      .in('id', ids)
+    if (!error) return new Map((data || []).map((submission) => [submission.id, submission]))
+  } catch {
+    // The normal outbox failure path retries each enquiry. Booking emails can still be sent.
+  }
+  return new Map()
 }
 
 export default async function handler(req, res) {
@@ -47,10 +44,12 @@ export default async function handler(req, res) {
   const { data: events, error } = await supabase.rpc('workspace_claim_outbox', { p_limit: 10 })
   if (error) return res.status(500).json({ error: 'Outbox claim failed.' })
 
+  const submissions = await loadEnquiryMetadata(supabase, events || [])
   let sent = 0
   for (const event of events || []) {
     try {
-      const message = render(event)
+      const message = event.template_key === 'booking_confirmation' ? renderBooking(event)
+        : renderEnquiryEmail(event, submissions.get(event.submission_id), process.env.APPLICATION_TO_EMAIL || CONTACT)
       const result = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL || 'Curated Brazil <applications@curatedbraziltravel.com>',
         ...message,
