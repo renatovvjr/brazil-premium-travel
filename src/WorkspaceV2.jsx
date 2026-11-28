@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { BarChart3, BookOpen, Building2, CalendarRange, LogOut, Megaphone, MessageSquare, RefreshCw, Search, Users } from 'lucide-react'
 import { workspaceSupabase as supabase } from './lib/workspaceSupabase'
 import { WORKSPACE_LEAD_STATUSES, canConfirmBooking, isWorkspaceAdmin, normalizePhone, normalizeSegmentTag } from './lib/workspaceDomain'
+import Drawer, { DrawerActions, useDrawerAction, useDrawerDraft, useWorkspaceDialogCopy } from './WorkspaceDrawer'
 
 const money = (minor = 0, currency = 'AUD') => new Intl.NumberFormat('en-AU', { style: 'currency', currency }).format(Number(minor) / 100)
 const date = (value) => value ? new Intl.DateTimeFormat('en-AU', {
@@ -235,13 +236,15 @@ function Leads({ data, search, open }) {
 function Customers({ data, search, reload }) {
   const [selected, setSelected] = useState(null)
   const [segment, setSegment] = useState('')
+  const [dialog, setDialog] = useState(null)
+  const copy = useWorkspaceDialogCopy()
   const rows = data.customers.filter((customer) => {
     const contacts = data.contacts.filter((contact) => contact.active && contact.customer_id === customer.id)
     return (!segment || data.tags.some((tag) => tag.active && tag.customer_id === customer.id && tag.tag === segment)) &&
       includes(search, customer.display_name, customer.country_of_residence, customer.city, ...contacts.map((contact) => contact.value))
   })
-  const recordConsent = async (customer, action) => { const { error } = await supabase.from('crm_marketing_consent_events').insert({ customer_id: customer.id, channel: 'email', action, source: 'admin_workspace' }); if (error) alert(error.message); else reload() }
-  const addTag = async (customer) => { const value=window.prompt('Segment tag (letters, numbers and hyphens)'); if(!value)return; const tag=normalizeSegmentTag(value); if(!tag)return; const {error}=await supabase.from('crm_customer_tags').insert({customer_id:customer.id,tag}); if(error)alert(error.message); else reload() }
+  const recordConsent = (customer, action) => supabase.from('crm_marketing_consent_events').insert({ customer_id: customer.id, channel: 'email', action, source: 'admin_workspace' })
+  const closeDialog = () => setDialog(null)
   const customer = byId(data.customers, selected)
   return <div className="space-y-4">
     <select className="field !w-auto" aria-label="Customer segment" value={segment} onChange={(e) => setSegment(e.target.value)}>
@@ -251,11 +254,25 @@ function Customers({ data, search, reload }) {
     const email = data.contacts.find((item) => item.customer_id === customer.id && item.kind === 'email' && item.active)
     const eligibility = data.marketingEligibility.find((item)=>item.customer_id===customer.id&&item.contact_kind==='email')
     const tags = data.tags.filter((item)=>item.customer_id===customer.id&&item.active).map((item)=>item.tag)
-    return [customer.display_name, email?.value || '—', [customer.city, customer.country_of_residence].filter(Boolean).join(', ') || '—', title(customer.lifecycle_status), <button onClick={()=>addTag(customer)} className="table-action">{tags.length?`${tags.join(', ')} · add`:'Add segment'}</button>, <button disabled={!email || eligibility?.suppressed} onClick={() => {
-      if (eligibility?.eligible || window.confirm('Has this customer explicitly consented to marketing email?')) recordConsent(customer, eligibility?.eligible ? 'withdrawn' : 'granted')
+    return [customer.display_name, email?.value || '—', [customer.city, customer.country_of_residence].filter(Boolean).join(', ') || '—', title(customer.lifecycle_status), <button onClick={() => setDialog({ customer, kind: 'tag' })} className="table-action">{tags.length?`${tags.join(', ')} · add`:copy.addSegment}</button>, <button disabled={!email || eligibility?.suppressed} onClick={async () => {
+      if (!eligibility?.eligible) {
+        setDialog({ customer, kind: 'consent' })
+        return
+      }
+      const { error } = await recordConsent(customer, 'withdrawn')
+      if (error) alert(error.message); else reload()
     }} className="table-action disabled:cursor-not-allowed disabled:text-zinc-400">{eligibility?.suppressed ? 'Suppressed' : eligibility?.eligible ? 'Eligible · withdraw' : 'Not eligible · grant'}</button>, <button className="table-action" onClick={() => setSelected(customer.id)}>Profile</button>]
   })}/>
     {customer && <CustomerPanel key={customer.id} customer={customer} data={data} reload={reload} close={() => setSelected(null)}/>}
+    {dialog?.kind === 'tag' && <Drawer modal title={copy.addSegment} subtitle={dialog.customer.display_name} close={closeDialog}>
+      <DrawerActionForm actionLabel={copy.addSegment} fieldLabel={copy.segmentTag} hint={copy.segmentHint}
+        validate={normalizeSegmentTag} reload={reload} close={closeDialog}
+        action={(tag) => supabase.from('crm_customer_tags').insert({ customer_id: dialog.customer.id, tag })}/>
+    </Drawer>}
+    {dialog?.kind === 'consent' && <Drawer modal title={copy.consentTitle} subtitle={dialog.customer.display_name} close={closeDialog}>
+      <DrawerActionForm actionLabel={copy.grantConsent} hint={copy.consentDescription} reload={reload} close={closeDialog}
+        action={() => recordConsent(dialog.customer, 'granted')}/>
+    </Drawer>}
   </div>
 }
 
@@ -302,30 +319,66 @@ function History({ title: heading, rows }) {
   </section>
 }
 
-function RecordEditor({ fields, record, table, reload, defaults = {}, transform = (values) => values, saveLabel = 'Save changes' }) {
+function DrawerActionForm({ actionLabel, fieldLabel, hint, validate, action, reload, close }) {
+  const [value, setValue] = useState('')
+  const runAction = useDrawerAction()
+  useDrawerDraft(value !== '')
+
+  function submit(event) {
+    event.preventDefault()
+    const validated = validate ? validate(value) : value
+    if (fieldLabel && !validated) return
+    return runAction(async () => {
+      const { error } = await action(validated)
+      if (error) {
+        alert(error.message)
+        return
+      }
+      await reload()
+      close()
+    })
+  }
+
+  return <form onSubmit={submit} className="space-y-4">
+    {fieldLabel && <label className="block">{fieldLabel}
+      <input required className="field mt-1" value={value} onChange={(event) => setValue(event.target.value)}/>
+    </label>}
+    {hint && <p className="text-sm text-zinc-600">{hint}</p>}
+    <DrawerActions><button type="submit" className="gold-button justify-center">{actionLabel}</button></DrawerActions>
+  </form>
+}
+
+function RecordEditor({ fields, record, table, reload, defaults = {}, transform = (values) => values, saveLabel }) {
   const initialValues = () => Object.fromEntries(fields.map(([field]) => [field, record?.[field] ?? defaults[field] ?? '']))
   const [values, setValues] = useState(initialValues)
+  const [savedValues, setSavedValues] = useState(values)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const runAction = useDrawerAction()
+  const copy = useWorkspaceDialogCopy()
+  useDrawerDraft(Object.keys(values).some((field) => String(values[field]) !== String(savedValues[field])))
 
-  async function save(event) {
+  function save(event) {
     event.preventDefault()
-    if (saving) return
-    setSaving(true)
-    setError('')
-    try {
-      const cleaned = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, String(value).trim() || null]))
-      const payload = transform(cleaned)
-      const query = supabase.from(table)
-      const result = record ? await query.update(payload).eq('id', record.id).select('id').single() : await query.insert(payload)
-      if (result.error) throw result.error
-      if (!record) setValues(initialValues())
-      await reload()
-    } catch (issue) {
-      setError(issue.message || 'Unable to save this record.')
-    } finally {
-      setSaving(false)
-    }
+    return runAction(async () => {
+      setSaving(true)
+      setError('')
+      try {
+        const cleaned = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, String(value).trim() || null]))
+        const payload = transform(cleaned)
+        const query = supabase.from(table)
+        const result = record ? await query.update(payload).eq('id', record.id).select('id').single() : await query.insert(payload)
+        if (result.error) throw result.error
+        const nextValues = record ? values : initialValues()
+        setValues(nextValues)
+        setSavedValues(nextValues)
+        await reload()
+      } catch (issue) {
+        setError(issue.message || 'Unable to save this record.')
+      } finally {
+        setSaving(false)
+      }
+    })
   }
 
   return <form onSubmit={save} className="my-4 grid gap-3 sm:grid-cols-2">
@@ -344,7 +397,9 @@ function RecordEditor({ fields, record, table, reload, defaults = {}, transform 
       </label>
     })}
     {error && <p role="alert" className="text-sm text-red-700 sm:col-span-2">{error}</p>}
-    <button disabled={saving} className="gold-button justify-center sm:col-span-2">{saving ? 'Saving…' : saveLabel}</button>
+    <DrawerActions className="sm:col-span-2">
+      <button type="submit" className="gold-button justify-center">{saving ? copy.saving : saveLabel || copy.saveChanges}</button>
+    </DrawerActions>
   </form>
 }
 function Catalog({ data, search, reload }) {
@@ -525,12 +580,42 @@ function Marketing({ data, search, reload }) {
       <button className="table-action" onClick={() => setSelectedCampaign(item.id)}>Manage</button>])}/><Table heads={['Contact','Kind','Reason','Status','']} rows={suppressions.map((item)=>[item.normalized_value,title(item.contact_kind),item.reason,item.lifted_at?`Lifted ${date(item.lifted_at)}`:'Active',!item.lifted_at?<button className="table-action" onClick={()=>lift(item.id)}>Lift</button>:'—'])}/></div>
 }
 
-function LeadPanel({ lead, data, currentAdminId, close, reload }) {
-  const [status,setStatus]=useState(lead.status); const [note,setNote]=useState(''); const [followUp,setFollowUp]=useState(lead.follow_up_at?.slice(0,10)||''); const [agencyId,setAgencyId]=useState(lead.agency_partner_id||''); const customer=byId(data.customers,lead.customer_id)
-  const saveStatus=async()=>{const {error}=await supabase.from('crm_leads').update({status,follow_up_at:followUp?`${followUp}T09:00:00Z`:null,assigned_admin_id:currentAdminId,agency_partner_id:agencyId||null}).eq('id',lead.id).select('id').single();if(error)alert(error.message);else reload()}
-  const addNote=async()=>{if(!note.trim())return;const {error}=await supabase.from('crm_interactions').insert({customer_id:lead.customer_id,lead_id:lead.id,interaction_type:'note',summary:note.trim()});if(error)alert(error.message);else{setNote('');reload()}}
-  const repeatEnquiries = data.leads.filter((item) => item.customer_id === lead.customer_id && item.product_id === lead.product_id && item.id !== lead.id)
+function LeadPanel({ lead, data, close, ...props }) {
+  const customer = byId(data.customers, lead.customer_id)
   return <Drawer title={customer?.display_name} subtitle={byId(data.products,lead.product_id)?.name} close={close}>
+    <LeadPanelContent lead={lead} data={data} {...props}/>
+  </Drawer>
+}
+
+function LeadPanelContent({ lead, data, currentAdminId, reload }) {
+  const [draft, setDraft] = useState(() => ({
+    status: lead.status, followUp: lead.follow_up_at?.slice(0, 10) || '', agencyId: lead.agency_partner_id || '',
+  }))
+  const [saved, setSaved] = useState(draft)
+  const [note, setNote] = useState('')
+  const { status, followUp, agencyId } = draft
+  const runAction = useDrawerAction()
+  useDrawerDraft(note !== '' || status !== saved.status || followUp !== saved.followUp || agencyId !== saved.agencyId)
+  const saveStatus = () => runAction(async () => {
+    const { error } = await supabase.from('crm_leads').update({
+      status, follow_up_at: followUp ? `${followUp}T09:00:00Z` : null,
+      assigned_admin_id: currentAdminId, agency_partner_id: agencyId || null,
+    }).eq('id', lead.id).select('id').single()
+    if (error) alert(error.message)
+    else { setSaved(draft); await reload() }
+  })
+  const addNote = () => {
+    if (!note.trim()) return
+    return runAction(async () => {
+      const { error } = await supabase.from('crm_interactions').insert({
+        customer_id: lead.customer_id, lead_id: lead.id, interaction_type: 'note', summary: note.trim(),
+      })
+      if (error) alert(error.message)
+      else { setNote(''); await reload() }
+    })
+  }
+  const repeatEnquiries = data.leads.filter((item) => item.customer_id === lead.customer_id && item.product_id === lead.product_id && item.id !== lead.id)
+  return <>
     <History title="Contact details" rows={data.contacts.filter((contact) => contact.active && contact.customer_id === lead.customer_id).map((contact) => `${title(contact.kind)} · ${contact.value}`)}/>
     <History title="Attribution" rows={[
       lead.source && `Source: ${lead.source}`, lead.campaign && `Campaign: ${lead.campaign}`,
@@ -540,33 +625,76 @@ function LeadPanel({ lead, data, currentAdminId, close, reload }) {
     {repeatEnquiries.length > 0 && <p className="my-4 rounded-xl bg-amber-50 p-3 text-sm">This contact has {repeatEnquiries.length} other enquiries for the same product.</p>}
     <p className="eyebrow mt-6">Pipeline stage, follow-up and agency</p>
     <div className="mt-2 grid gap-2 sm:grid-cols-2">
-      <select aria-label="Pipeline stage" className="field" value={status} onChange={(e)=>setStatus(e.target.value)}>{WORKSPACE_LEAD_STATUSES.map((item)=><option key={item} value={item}>{title(item)}</option>)}</select>
-      <input aria-label="Follow-up date" type="date" className="field" value={followUp} onChange={(e)=>setFollowUp(e.target.value)}/>
-      <select aria-label="Referral agency" className="field" value={agencyId} onChange={(e)=>setAgencyId(e.target.value)}><option value="">Direct customer</option>{data.agencies.filter((item)=>item.status==='active' || item.id === lead.agency_partner_id).map((item)=><option key={item.id} value={item.id}>{item.trading_name||item.legal_name}</option>)}</select>
-      <button onClick={saveStatus} className="gold-button justify-center">Save / assign to me</button>
+      <select aria-label="Pipeline stage" className="field" value={status} onChange={(e)=>setDraft({...draft,status:e.target.value})}>{WORKSPACE_LEAD_STATUSES.map((item)=><option key={item} value={item}>{title(item)}</option>)}</select>
+      <input aria-label="Follow-up date" type="date" className="field" value={followUp} onChange={(e)=>setDraft({...draft,followUp:e.target.value})}/>
+      <select aria-label="Referral agency" className="field" value={agencyId} onChange={(e)=>setDraft({...draft,agencyId:e.target.value})}><option value="">Direct customer</option>{data.agencies.filter((item)=>item.status==='active' || item.id === lead.agency_partner_id).map((item)=><option key={item.id} value={item.id}>{item.trading_name||item.legal_name}</option>)}</select>
+      <DrawerActions className="sm:col-span-2"><button type="button" onClick={saveStatus} className="gold-button justify-center">Save / assign to me</button></DrawerActions>
     </div>
     <label className="mt-6 block">New interaction note<textarea className="field mt-2 min-h-28" value={note} onChange={(e)=>setNote(e.target.value)}/></label>
-    <button onClick={addNote} className="gold-button mt-3">Add to history</button>
+    <DrawerActions className="mt-3"><button type="button" onClick={addNote} className="gold-button">Add to history</button></DrawerActions>
     <History title="Interaction history" rows={data.interactions.filter((item)=>item.lead_id===lead.id)
       .sort((a,b)=>b.occurred_at.localeCompare(a.occurred_at)).map((item)=>`${title(item.interaction_type)} · ${date(item.occurred_at)} · ${item.summary}`)}/>
-  </Drawer>
+  </>
 }
 
 function BookingPanel({ booking, data, close, reload }) {
-  const [payment,setPayment]=useState({reference:'',amount:'',method:'bank_transfer',dueOn:'',confirmed:false}); const [refund,setRefund]=useState({reference:'',amount:'',reason:'',completed:false}); const [passenger,setPassenger]=useState(''); const finance=data.finances.find((item)=>item.booking_id===booking.id)
-  const pay=async(e)=>{e.preventDefault();const {error}=await supabase.rpc('workspace_record_manual_payment',{p_booking_id:booking.id,p_reference:payment.reference,p_amount_minor:Math.round(Number(payment.amount)*100),p_method:payment.method,p_due_on:payment.dueOn||null,p_confirm_received:payment.confirmed,p_note:null});if(error)alert(error.message);else{setPayment({reference:'',amount:'',method:'bank_transfer',dueOn:'',confirmed:false});reload()}}
-  const reimburse=async(e)=>{e.preventDefault();const {error}=await supabase.rpc('workspace_record_refund',{p_booking_id:booking.id,p_reference:refund.reference,p_amount_minor:Math.round(Number(refund.amount)*100),p_reason:refund.reason,p_payment_id:null,p_completed:refund.completed,p_note:null});if(error)alert(error.message);else{setRefund({reference:'',amount:'',reason:'',completed:false});reload()}}
-  const cancel=async()=>{const reason=window.prompt('Cancellation reason');if(!reason)return;const {error}=await supabase.rpc('workspace_cancel_booking',{p_booking_id:booking.id,p_reason:reason});if(error)alert(error.message);else reload()}
-  const confirmPayment=async(id)=>{const {error}=await supabase.rpc('workspace_confirm_manual_payment',{p_payment_id:id});if(error)alert(error.message);else reload()}
-  const completeRefund=async(id)=>{const {error}=await supabase.rpc('workspace_complete_refund',{p_refund_id:id});if(error)alert(error.message);else reload()}
-  const addPassenger=async()=>{if(!passenger.trim())return;const {error}=await supabase.from('workspace_booking_passengers').insert({booking_id:booking.id,display_name:passenger.trim(),passenger_type:'adult'});if(error)alert(error.message);else{setPassenger('');reload()}}
+  return <Drawer title={booking.reference} subtitle={`${money(booking.agreed_price_minor,booking.currency)} · ${title(booking.status)}`} close={close}>
+    <BookingPanelContent booking={booking} data={data} reload={reload}/>
+  </Drawer>
+}
+
+const emptyPayment = { reference: '', amount: '', method: 'bank_transfer', dueOn: '', confirmed: false }
+const emptyRefund = { reference: '', amount: '', reason: '', completed: false }
+
+function BookingPanelContent({ booking, data, reload }) {
+  const [payment, setPayment] = useState(emptyPayment)
+  const [refund, setRefund] = useState(emptyRefund)
+  const [passenger, setPassenger] = useState('')
   const [notify, setNotify] = useState(false)
+  const [cancelling, setCancelling] = useState(false)
+  const finance = data.finances.find((item) => item.booking_id === booking.id)
+  const runAction = useDrawerAction()
+  const copy = useWorkspaceDialogCopy()
+  useDrawerDraft(passenger !== '' || notify ||
+    Object.keys(emptyPayment).some((field) => payment[field] !== emptyPayment[field]) ||
+    Object.keys(emptyRefund).some((field) => refund[field] !== emptyRefund[field]))
+  function saveBookingAction(action, onSuccess) {
+    return runAction(async () => {
+      const { error } = await action()
+      if (error) alert(error.message)
+      else { onSuccess?.(); await reload() }
+    })
+  }
+  function pay(event) {
+    event.preventDefault()
+    return saveBookingAction(() => supabase.rpc('workspace_record_manual_payment', {
+      p_booking_id: booking.id, p_reference: payment.reference, p_amount_minor: Math.round(Number(payment.amount) * 100),
+      p_method: payment.method, p_due_on: payment.dueOn || null, p_confirm_received: payment.confirmed, p_note: null,
+    }), () => setPayment(emptyPayment))
+  }
+  function reimburse(event) {
+    event.preventDefault()
+    return saveBookingAction(() => supabase.rpc('workspace_record_refund', {
+      p_booking_id: booking.id, p_reference: refund.reference, p_amount_minor: Math.round(Number(refund.amount) * 100),
+      p_reason: refund.reason, p_payment_id: null, p_completed: refund.completed, p_note: null,
+    }), () => setRefund(emptyRefund))
+  }
+  const confirmPayment = (id) => saveBookingAction(() => supabase.rpc('workspace_confirm_manual_payment', { p_payment_id: id }))
+  const completeRefund = (id) => saveBookingAction(() => supabase.rpc('workspace_complete_refund', { p_refund_id: id }))
+  const addPassenger = () => {
+    if (!passenger.trim()) return
+    return saveBookingAction(() => supabase.from('workspace_booking_passengers').insert({
+      booking_id: booking.id, display_name: passenger.trim(), passenger_type: 'adult',
+    }), () => setPassenger(''))
+  }
   const canNotify = data.contacts.some((contact) => contact.active && contact.kind === 'email' && contact.customer_id === booking.customer_id)
-  const confirmBooking=async()=>{const {error}=await supabase.rpc('workspace_confirm_booking_and_notify',{p_booking_id:booking.id,p_notify:notify});if(error)alert(error.message);else reload()}
+  const confirmBooking = () => saveBookingAction(() => supabase.rpc('workspace_confirm_booking_and_notify', {
+    p_booking_id: booking.id, p_notify: notify,
+  }), () => setNotify(false))
   const bookingPayments=data.payments.filter((item)=>item.booking_id===booking.id)
   const bookingRefunds=data.refunds.filter((item)=>item.booking_id===booking.id)
   const passengers=data.passengers.filter((item)=>item.booking_id===booking.id)
-  return <Drawer title={booking.reference} subtitle={`${money(booking.agreed_price_minor,booking.currency)} · ${title(booking.status)}`} close={close}>
+  return <>
     <p className="mb-4 text-sm">{[byId(data.customers, booking.customer_id)?.display_name, byId(data.products, booking.product_id)?.name,
       byId(data.departures, booking.departure_id)?.code, byId(data.agencies, booking.agency_partner_id)?.legal_name].filter(Boolean).join(' · ')}</p>
     <div className="grid grid-cols-2 gap-3"><Metric label="Net received" value={money(finance?.net_received_minor,booking.currency)}/><Metric label="Outstanding" value={money(finance?.outstanding_minor,booking.currency)}/></div>
@@ -575,18 +703,22 @@ function BookingPanel({ booking, data, close, reload }) {
     <h3 className="mt-7 font-semibold">Passengers ({passengers.length}/{booking.passenger_count})</h3>
     <div className="mt-3 space-y-2">{passengers.map((item)=><div key={item.id} className="rounded-xl bg-[#f7f5ef] p-3 text-sm">{item.display_name}{item.is_lead_passenger?' · Lead passenger':''}</div>)}</div>
     {['draft','provisional'].includes(booking.status) && <>
-      {passengers.length<booking.passenger_count&&<div className="mt-3 flex gap-2"><input className="field" placeholder="Passenger name" value={passenger} onChange={(e)=>setPassenger(e.target.value)}/><button onClick={addPassenger} className="gold-button">Add</button></div>}
+      {passengers.length<booking.passenger_count&&<div className="mt-3 grid gap-2"><input className="field" placeholder="Passenger name" value={passenger} onChange={(e)=>setPassenger(e.target.value)}/><DrawerActions><button type="button" onClick={addPassenger} className="gold-button">Add</button></DrawerActions></div>}
       {canNotify && <label className="mt-4 flex gap-2 text-sm"><input type="checkbox" checked={notify} onChange={(e) => setNotify(e.target.checked)}/>Queue confirmation email</label>}
-      <button onClick={confirmBooking} disabled={!canConfirmBooking({status:booking.status,expectedPassengers:booking.passenger_count,actualPassengers:passengers.length})} className="gold-button mt-4">Confirm booking</button>
+      <DrawerActions className="mt-4"><button type="button" onClick={confirmBooking} disabled={!canConfirmBooking({status:booking.status,expectedPassengers:booking.passenger_count,actualPassengers:passengers.length})} className="gold-button">Confirm booking</button></DrawerActions>
     </>}
     <h3 className="mt-7 font-semibold">Manual payment</h3>
-    <form onSubmit={pay} className="mt-3 grid gap-3"><input required className="field" placeholder="Reference" value={payment.reference} onChange={(e)=>setPayment({...payment,reference:e.target.value})}/><input required min="0.01" step="0.01" type="number" className="field" placeholder="Amount AUD" value={payment.amount} onChange={(e)=>setPayment({...payment,amount:e.target.value})}/><input type="date" className="field" aria-label="Payment due date" value={payment.dueOn} onChange={(e)=>setPayment({...payment,dueOn:e.target.value})}/><select className="field" value={payment.method} onChange={(e)=>setPayment({...payment,method:e.target.value})}><option value="bank_transfer">Bank transfer</option><option value="cash">Cash</option><option value="other">Other</option></select><label className="flex gap-2 text-sm"><input type="checkbox" checked={payment.confirmed} onChange={(e)=>setPayment({...payment,confirmed:e.target.checked})}/>Confirm manually received (not processor verified)</label><button className="gold-button justify-center">Record payment</button></form>
+    <form onSubmit={pay} className="mt-3 grid gap-3"><input required className="field" placeholder="Reference" value={payment.reference} onChange={(e)=>setPayment({...payment,reference:e.target.value})}/><input required min="0.01" step="0.01" type="number" className="field" placeholder="Amount AUD" value={payment.amount} onChange={(e)=>setPayment({...payment,amount:e.target.value})}/><input type="date" className="field" aria-label="Payment due date" value={payment.dueOn} onChange={(e)=>setPayment({...payment,dueOn:e.target.value})}/><select className="field" value={payment.method} onChange={(e)=>setPayment({...payment,method:e.target.value})}><option value="bank_transfer">Bank transfer</option><option value="cash">Cash</option><option value="other">Other</option></select><label className="flex gap-2 text-sm"><input type="checkbox" checked={payment.confirmed} onChange={(e)=>setPayment({...payment,confirmed:e.target.checked})}/>Confirm manually received (not processor verified)</label><DrawerActions><button type="submit" className="gold-button justify-center">Record payment</button></DrawerActions></form>
     <div className="mt-3 space-y-2">{bookingPayments.map((item)=><div key={item.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-[#f7f5ef] p-3 text-sm"><span>{item.reference} · {money(item.amount_minor,item.currency)} · {title(item.status)}{item.due_on && ` · Due ${date(item.due_on)}`}{item.received_at && ` · Received ${date(item.received_at)}`}</span>{item.status==='pending'&&<button onClick={()=>confirmPayment(item.id)} className="table-action">Confirm received</button>}</div>)}</div>
     <h3 className="mt-7 font-semibold">Refund</h3>
-    <form onSubmit={reimburse} className="mt-3 grid gap-3"><input required className="field" placeholder="Reference" value={refund.reference} onChange={(e)=>setRefund({...refund,reference:e.target.value})}/><input required min="0.01" step="0.01" type="number" className="field" placeholder="Amount AUD" value={refund.amount} onChange={(e)=>setRefund({...refund,amount:e.target.value})}/><input required className="field" placeholder="Reason" value={refund.reason} onChange={(e)=>setRefund({...refund,reason:e.target.value})}/><label className="flex gap-2 text-sm"><input type="checkbox" checked={refund.completed} onChange={(e)=>setRefund({...refund,completed:e.target.checked})}/>Mark completed (otherwise request only)</label><button className="gold-button justify-center">Record refund</button></form>
+    <form onSubmit={reimburse} className="mt-3 grid gap-3"><input required className="field" placeholder="Reference" value={refund.reference} onChange={(e)=>setRefund({...refund,reference:e.target.value})}/><input required min="0.01" step="0.01" type="number" className="field" placeholder="Amount AUD" value={refund.amount} onChange={(e)=>setRefund({...refund,amount:e.target.value})}/><input required className="field" placeholder="Reason" value={refund.reason} onChange={(e)=>setRefund({...refund,reason:e.target.value})}/><label className="flex gap-2 text-sm"><input type="checkbox" checked={refund.completed} onChange={(e)=>setRefund({...refund,completed:e.target.checked})}/>Mark completed (otherwise request only)</label><DrawerActions><button type="submit" className="gold-button justify-center">Record refund</button></DrawerActions></form>
     <div className="mt-3 space-y-2">{bookingRefunds.map((item)=><div key={item.id} className="flex items-center justify-between rounded-xl bg-[#f7f5ef] p-3 text-sm"><span>{item.reference} · {money(item.amount_minor,item.currency)} · {title(item.status)}</span>{['requested','approved'].includes(item.status)&&<button onClick={()=>completeRefund(item.id)} className="table-action">Mark completed</button>}</div>)}</div>
-    {booking.status!=='cancelled'&&<button onClick={cancel} className="mt-7 text-sm font-semibold text-red-700">Cancel booking with reason</button>}
-  </Drawer>
+    {booking.status !== 'cancelled' && <button type="button" onClick={() => setCancelling(true)} className="mt-7 text-sm font-semibold text-red-700">{copy.cancelBooking}</button>}
+    {cancelling && <Drawer modal title={copy.cancelBooking} subtitle={booking.reference} close={() => setCancelling(false)}>
+      <DrawerActionForm fieldLabel={copy.cancellationReason} actionLabel={copy.cancelBooking} reload={reload} close={() => setCancelling(false)}
+        action={(reason) => supabase.rpc('workspace_cancel_booking', { p_booking_id: booking.id, p_reason: reason })}/>
+    </Drawer>}
+  </>
 }
 
 const byId=(items,id)=>items.find((item)=>item.id===id)
@@ -594,6 +726,5 @@ const includes=(term,...values)=>!term||values.some((value)=>String(value||'').t
 const Card=({children})=><div className="rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white p-6 shadow-[0_18px_55px_rgba(24,24,27,.06)]">{children}</div>
 const Metric=({label,value})=><div className="rounded-2xl bg-[#f7f5ef] p-4"><p className="eyebrow">{label}</p><p className="mt-2 text-xl font-semibold">{value}</p></div>
 function Table({heads,rows}){return <div className="overflow-hidden rounded-[1.5rem] border border-[var(--color-luxury-gold)]/20 bg-white"><div className="overflow-x-auto"><table className="min-w-full text-sm"><thead className="bg-[var(--color-deep-forest)] text-left text-xs uppercase tracking-wider text-[#f1d991]"><tr>{heads.map((head)=><th key={head} className="px-5 py-4">{head}</th>)}</tr></thead><tbody className="divide-y divide-zinc-100">{rows.map((cells,index)=><tr key={index}>{cells.map((cell,i)=><td key={i} className="px-5 py-4">{cell??'—'}</td>)}</tr>)}</tbody></table></div>{!rows.length&&<p className="p-6 text-zinc-500">No matching records.</p>}</div>}
-function Drawer({title,subtitle,close,children}){return <div className="fixed inset-0 z-[80] flex justify-end bg-black/55"><div className="h-full w-full max-w-xl overflow-y-auto bg-white shadow-2xl"><div className="sticky top-0 flex items-start justify-between bg-[var(--color-deep-forest)] p-7 text-white"><div><p className="eyebrow text-[#f1d991]">Workspace record</p><h2 className="mt-2 text-3xl font-semibold">{title}</h2><p className="mt-2 text-sm text-white/60">{subtitle}</p></div><button onClick={close} className="text-2xl">×</button></div><div className="p-7">{children}</div></div></div>}
 const Centered=({children})=><div className="flex min-h-screen items-center justify-center bg-[#f7f5ef] p-6 text-[#8b6a21]">{children}</div>
 function Login({form,setForm,error,onSubmit}){return <Centered><form onSubmit={onSubmit} className="w-full max-w-md overflow-hidden rounded-[2rem] bg-white shadow-2xl"><div className="bg-[var(--color-deep-forest)] p-8 text-white"><p className="eyebrow text-[#f1d991]">Curated Brazil</p><h1 className="mt-3 text-3xl font-semibold">Commercial Workspace</h1></div><div className="space-y-4 p-8"><input required type="email" className="field" placeholder="Email" value={form.email} onChange={(e)=>setForm({...form,email:e.target.value})}/><input required type="password" className="field" placeholder="Password" value={form.password} onChange={(e)=>setForm({...form,password:e.target.value})}/>{error&&<p className="text-sm text-red-700">{error}</p>}<button className="gold-button w-full justify-center">Sign in</button><Link to="/" className="block text-center text-xs uppercase tracking-wider text-zinc-500">Return to website</Link></div></form></Centered>}
